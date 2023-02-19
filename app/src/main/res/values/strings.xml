@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SleepSchedule</string>
+    <string name="date_added_by">Added by %s</string>
+</resources>
