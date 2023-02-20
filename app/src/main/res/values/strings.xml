@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SleepSchedule</string>
     <string name="date_added_by">Added by %s</string>
+    <string name="empty_schedule">No items yet.</string>
 </resources>
