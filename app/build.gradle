@@ -63,6 +63,12 @@ dependencies {
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
+    // Coil
+    implementation libs.bundles.coil
+
+    //  Navigation
+    implementation libs.bundles.navigation
+
     testImplementation libs.junit
     androidTestImplementation libs.bundles.android.test
     androidTestImplementation libs.compose.test.junit

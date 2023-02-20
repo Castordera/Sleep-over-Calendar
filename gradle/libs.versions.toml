@@ -9,6 +9,9 @@ android-junit = "1.1.5"
 junit = "4.13.2"
 espresso-core = "3.5.1"
 hilt = "2.44"
+coil = "2.2.2"
+navigation-compose = "2.5.3"
+hilt-navigation-compose = "1.0.0"
 
 [libraries]
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
@@ -26,6 +29,10 @@ junit = { module = "junit:junit", version.ref = "junit" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 compose-view-model = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-view-model"}
+coil-core = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-ui-preview", "activity-compose", "compose-view-model"]
@@ -33,5 +40,7 @@ android-core = ["androidx-core", "lifecycle-runtime-ktx"]
 material = ["material-compose"]
 android-test = ["test-junit", "test-espresso"]
 compose-test = ["compose-ui-tooling", "compose-ui-test"]
+coil = ["coil-core", "coil-compose"]
+navigation = ["navigation-compose", "hilt-navigation-compose"]
 
 [plugins]
