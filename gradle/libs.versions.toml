@@ -12,6 +12,9 @@ hilt = "2.44"
 coil = "2.2.2"
 navigation-compose = "2.5.3"
 hilt-navigation-compose = "1.0.0"
+javax-inject = "1"
+room = "2.5.0"
+coroutine-core = "1.6.4"
 
 [libraries]
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
@@ -31,8 +34,14 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 compose-view-model = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-view-model"}
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+room-core = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine-core" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-ui-preview", "activity-compose", "compose-view-model"]
@@ -40,7 +49,8 @@ android-core = ["androidx-core", "lifecycle-runtime-ktx"]
 material = ["material-compose"]
 android-test = ["test-junit", "test-espresso"]
 compose-test = ["compose-ui-tooling", "compose-ui-test"]
-coil = ["coil-core", "coil-compose"]
+coil = ["coil-core", "coil-compose", "coil-svg"]
 navigation = ["navigation-compose", "hilt-navigation-compose"]
+room = ["room-core", "room-ktx"]
 
 [plugins]

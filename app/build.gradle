@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.ulises.sleepschedule"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -54,7 +54,11 @@ kapt {
 }
 
 dependencies {
+    //  Firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
+    implementation 'com.google.firebase:firebase-database-ktx'
+
+    //  Android
     implementation libs.bundles.android.core
     implementation libs.bundles.compose.core
     implementation libs.bundles.material
@@ -68,6 +72,14 @@ dependencies {
 
     //  Navigation
     implementation libs.bundles.navigation
+
+    //  Room
+    implementation libs.bundles.room
+    kapt libs.room.compiler
+
+    implementation project(":data")
+    implementation project(":usecases")
+    implementation project(":domain")
 
     testImplementation libs.junit
     androidTestImplementation libs.bundles.android.test
