@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">SleepSchedule</string>
     <string name="date_added_by">Added by %s</string>
-    <string name="empty_schedule">No items yet.</string>
+    <string name="empty_schedule">Nothing to see here, yet.</string>
+    <string name="add_schedule_person">Name</string>
+    <string name="add_schedule_date">When?</string>
+    <string name="title_add_element">It\'s time to add a new sleep over day.</string>
 </resources>

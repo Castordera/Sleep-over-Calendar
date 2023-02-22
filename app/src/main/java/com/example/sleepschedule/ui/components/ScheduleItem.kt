@@ -8,15 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sleepschedule.R
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import models.ScheduledEvent
 
 @Composable
 fun ScheduleItem(
     modifier: Modifier = Modifier,
+    item: ScheduledEvent,
     onClickUpdate: () -> Unit,
     onClickDelete: () -> Unit
 ) {
@@ -26,15 +30,20 @@ fun ScheduleItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(16.dp)
         ) {
-            Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Text(
-                    text = "24 de Enero, 2020"
+                    fontSize = 12.sp,
+                    text = stringResource(id = R.string.date_added_by, item.createdBy),
+                    fontStyle = FontStyle.Italic
                 )
                 Text(
-                    fontSize = 8.sp,
-                    text = stringResource(id = R.string.date_added_by, "Ricardo")
+                    text = item.date,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -53,6 +62,16 @@ fun ScheduleItem(
 @Composable
 fun Prev_ScheduleItem() {
     SleepScheduleTheme {
-        ScheduleItem(onClickUpdate = {}, onClickDelete = {})
+        ScheduleItem(
+            item = ScheduledEvent(
+                id = "123",
+                date = "24/02/2023",
+                createdBy = "Ulises",
+                createdOn = "24/02/2023",
+                rating = 0
+            ),
+            onClickUpdate = {},
+            onClickDelete = {}
+        )
     }
 }

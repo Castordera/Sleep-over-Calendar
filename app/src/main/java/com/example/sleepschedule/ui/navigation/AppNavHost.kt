@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sleepschedule.ui.screens.MainScheduleScreen
+import com.example.sleepschedule.ui.screens.ScheduleDateDetail
 
 @Composable
 fun AppNavHost(
@@ -24,6 +25,12 @@ fun AppNavHost(
             MainScheduleScreen(
                 scheduleViewModel = hiltViewModel(),
                 onNavigateToAdd = { navController.navigate(NavDestinations.ADD_DATE) }
+            )
+        }
+        composable(NavDestinations.ADD_DATE) {
+            ScheduleDateDetail(
+                viewModel = hiltViewModel(),
+                onNavigateBackClick = { navController.popBackStack() }
             )
         }
     }
