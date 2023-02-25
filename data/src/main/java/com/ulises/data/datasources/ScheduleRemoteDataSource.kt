@@ -7,4 +7,6 @@ import outcomes.OutcomeScheduledEvent
 interface ScheduleRemoteDataSource {
     fun getAllScheduledEvents(): Flow<List<ScheduledEvent>>
     suspend fun addNewScheduleEvent(event: OutcomeScheduledEvent)
+    suspend fun deleteScheduleEvent(eventId: String)
+    suspend fun updateScheduleEventRating(eventId: String, newRating: Int)
 }

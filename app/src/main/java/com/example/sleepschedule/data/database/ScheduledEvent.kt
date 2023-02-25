@@ -15,5 +15,6 @@ fun ScheduledEvent.toDomain(timeHelper: TimeHelper) = models.ScheduledEvent(
     date = date?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
     createdBy = createdBy ?: "",
     createdOn = createdOn?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
-    rating = rating ?: 0
+    rating = rating ?: 0,
+    kidName = "Renata"
 )

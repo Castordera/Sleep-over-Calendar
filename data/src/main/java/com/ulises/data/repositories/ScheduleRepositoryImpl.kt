@@ -17,4 +17,12 @@ class ScheduleRepositoryImpl @Inject constructor(
     override fun getAllScheduledEvents(): Flow<List<ScheduledEvent>> {
         return remoteDataSource.getAllScheduledEvents()
     }
+
+    override suspend fun deleteScheduleEvent(eventId: String) {
+        remoteDataSource.deleteScheduleEvent(eventId)
+    }
+
+    override suspend fun updateScheduleEventRating(eventId: String, newRating: Int) {
+        remoteDataSource.updateScheduleEventRating(eventId, newRating)
+    }
 }

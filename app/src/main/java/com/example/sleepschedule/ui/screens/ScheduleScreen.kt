@@ -15,7 +15,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sleepschedule.ui.components.FAButton
 import com.example.sleepschedule.ui.components.LoadingIndicator
 import com.example.sleepschedule.ui.components.ScheduleItem
+import com.example.sleepschedule.ui.dialogs.DialogDeleteEvent
+import com.example.sleepschedule.ui.dialogs.DialogFeedback
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.example.sleepschedule.ui.utils.DialogType
 import com.example.sleepschedule.ui.viewmodels.MainScheduleViewModel
 import models.ScheduledEvent
 
@@ -27,8 +30,40 @@ fun MainScheduleScreen(
     val uiState by scheduleViewModel.uiState.collectAsState()
 
     Scaffold (
-        floatingActionButton = { FAButton { onNavigateToAdd() } }
+        floatingActionButton = {
+            if (!uiState.isLoading) {
+                FAButton { onNavigateToAdd() }
+            }
+        }
     ) { paddingValues ->
+        if (uiState.showDialogDelete) {
+            DialogDeleteEvent(
+                event = uiState.selectedEvent,
+                onDismiss = {
+                    scheduleViewModel.onDialogCloseVisibilityChange(
+                        dialogType = DialogType.Delete,
+                        isVisible = false
+                    )
+                },
+                onDelete = {
+                    scheduleViewModel.onDeleteScheduleEvent(uiState.selectedEvent?.id)
+                }
+            )
+        }
+        if (uiState.showDialogRating) {
+            DialogFeedback(
+                event = uiState.selectedEvent,
+                onDismiss = {
+                    scheduleViewModel.onDialogCloseVisibilityChange(
+                        dialogType = DialogType.Rating,
+                        isVisible = false
+                    )
+                },
+                onUpdateRating = {
+                    scheduleViewModel.onUpdateRating(uiState.selectedEvent, it)
+                }
+            )
+        }
         if (uiState.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize()
@@ -50,8 +85,20 @@ fun MainScheduleScreen(
                     ) {
                         ScheduleItem(
                             item = it,
-                            onClickUpdate = {},
-                            onClickDelete = {}
+                            onClickUpdateFeedback = {
+                                scheduleViewModel.onDialogCloseVisibilityChange(
+                                    dialogType = DialogType.Rating,
+                                    isVisible = true,
+                                    event = it
+                                )
+                            },
+                            onClickDelete = {
+                                scheduleViewModel.onDialogCloseVisibilityChange(
+                                    dialogType = DialogType.Delete,
+                                    isVisible = true,
+                                    event = it
+                                )
+                            }
                         )
                     }
                 }

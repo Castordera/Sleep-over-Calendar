@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.di.AppDispatchers
+import com.example.sleepschedule.ui.utils.DialogType
+import com.ulises.usecases.DeleteScheduleEventUseCase
 import com.ulises.usecases.GetAllScheduledEventsUseCase
+import com.ulises.usecases.UpdateScheduleEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -13,8 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScheduleViewModel @Inject constructor(
-    dispatchers: AppDispatchers,
-    private val getAllScheduledEventsUseCase: GetAllScheduledEventsUseCase
+    private val dispatchers: AppDispatchers,
+    private val getAllScheduledEventsUseCase: GetAllScheduledEventsUseCase,
+    private val deleteScheduleEventUseCase: DeleteScheduleEventUseCase,
+    private val updateScheduleEventUseCase: UpdateScheduleEventUseCase
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -22,7 +27,10 @@ class MainScheduleViewModel @Inject constructor(
 
     data class UiState(
         val scheduleEvents: List<ScheduledEvent>? = null,
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
+        val showDialogDelete: Boolean = false,
+        val showDialogRating: Boolean = false,
+        val selectedEvent: ScheduledEvent? = null
     )
 
     init {
@@ -34,6 +42,49 @@ class MainScheduleViewModel @Inject constructor(
                     Log.d("MainScheduleViewModel", "Collected $list")
                     _uiState.update { it.copy(scheduleEvents = list, isLoading = false) }
                 }
+        }
+    }
+
+    fun onDialogCloseVisibilityChange(
+        dialogType: DialogType,
+        isVisible: Boolean,
+        event: ScheduledEvent? = null
+    ) {
+        when (dialogType) {
+            is DialogType.Rating -> {
+                _uiState.update { it.copy(showDialogRating = isVisible, selectedEvent = event) }
+            }
+            is DialogType.Delete -> {
+                _uiState.update { it.copy(showDialogDelete = isVisible, selectedEvent = event) }
+            }
+        }
+    }
+
+    fun onDeleteScheduleEvent(eventId: String?) {
+        viewModelScope.launch(dispatchers.io) {
+            if (!eventId.isNullOrEmpty()) {
+                runCatching {
+                    deleteScheduleEventUseCase(eventId)
+                }.onFailure {
+
+                }.onSuccess {
+                    onDialogCloseVisibilityChange(DialogType.Delete, false)
+                }
+            }
+        }
+    }
+
+    fun onUpdateRating(event: ScheduledEvent?, newRating: Int) {
+        viewModelScope.launch(dispatchers.io) {
+            event?.also {
+                runCatching {
+                    updateScheduleEventUseCase(it.id, newRating)
+                }.onFailure {
+
+                }.onSuccess {
+                    onDialogCloseVisibilityChange(DialogType.Rating, false)
+                }
+            }
         }
     }
 }

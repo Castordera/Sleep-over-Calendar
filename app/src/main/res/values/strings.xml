@@ -5,4 +5,9 @@
     <string name="add_schedule_person">Name</string>
     <string name="add_schedule_date">When?</string>
     <string name="title_add_element">It\'s time to add a new sleep over day.</string>
+    <string name="dialog_delete_message">Are you sure you want to delete this day</string>
+    <string name="dialog_delete_message_end_message">\?</string>
+    <string name="dialog_delete_button">Delete</string>
+    <string name="dialog_rating_message">How good %s behaved this time?</string>
+    <string name="dialog_rating_save">Save</string>
 </resources>

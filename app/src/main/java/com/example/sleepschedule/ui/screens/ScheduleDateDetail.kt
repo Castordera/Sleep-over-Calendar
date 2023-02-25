@@ -3,6 +3,7 @@ package com.example.sleepschedule.ui.screens
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -73,7 +74,7 @@ fun ScheduleDateDetail(
                     onValueChange = { },
                     enabled = false,
                     label = { Text(text = stringResource(id = R.string.add_schedule_date)) },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).clickable { dialog.show() }
                 )
                 Button(
                     enabled = !uiState.isLoading,
@@ -87,7 +88,7 @@ fun ScheduleDateDetail(
                 }
             }
             Button(
-                enabled = !uiState.isLoading,
+                enabled = !uiState.isLoading && uiState.isReadyToSend,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { viewModel.onAddSchedule() }
             ) {

@@ -30,13 +30,15 @@ class ScheduleDateDetailViewModel @Inject constructor(
     data class UiState(
         val createdText: String = "",
         val dateText: String = "",
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
+        val isReadyToSend: Boolean = false
     )
 
     fun onUpdateTextField(type: TextFieldType, text: String) {
         when (type) {
             is TextFieldType.CreatedBy -> {
                 _uiState.update { it.copy(createdText = text) }
+                validateInputsFilled()
             }
         }
     }
@@ -46,6 +48,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
             timeSelectedMillis = Calendar.getInstance().getDateFromRaw(year, month, day)
             val time = timeHelper.convertToLocalDateFromMillis(timeSelectedMillis)
             _uiState.update { it.copy(dateText = time) }
+            validateInputsFilled()
         }
     }
 
@@ -55,7 +58,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
             val scheduleEvent = OutcomeScheduledEvent(
                 id = Date().time.toString(),
                 date = timeSelectedMillis,
-                createdBy = _uiState.value.createdText,
+                createdBy = _uiState.value.createdText.trim(),
                 createdOn = LocalDate.now().toEpochDay(),
                 rating = 0
             )
@@ -67,6 +70,11 @@ class ScheduleDateDetailViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false) }
             }
         }
+    }
+
+    private fun validateInputsFilled() {
+        val isReady = timeSelectedMillis != 0L && _uiState.value.createdText.isNotBlank()
+        _uiState.update { it.copy(isReadyToSend = isReady) }
     }
 }
 

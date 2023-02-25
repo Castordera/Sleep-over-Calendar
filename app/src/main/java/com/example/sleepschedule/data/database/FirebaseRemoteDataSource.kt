@@ -51,7 +51,16 @@ class FirebaseRemoteDataSource @Inject constructor (
         database.child(event.id).setValue(event).await()
     }
 
+    override suspend fun deleteScheduleEvent(eventId: String) {
+        database.child(eventId).setValue(null).await()
+    }
+
+    override suspend fun updateScheduleEventRating(eventId: String, newRating: Int) {
+        database.child(eventId).child(KEY_RATING).setValue(newRating).await()
+    }
+
     private companion object {
         const val TAG = "FirebaseRemoteDataSource"
+        const val KEY_RATING = "rating"
     }
 }
