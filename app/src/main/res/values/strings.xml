@@ -1,13 +1,15 @@
 <resources>
-    <string name="app_name">SleepSchedule</string>
+    <string name="app_name">Sleep Schedule</string>
     <string name="date_added_by">Added by %s</string>
     <string name="empty_schedule">Nothing to see here, yet.</string>
     <string name="add_schedule_person">Name</string>
     <string name="add_schedule_date">When?</string>
     <string name="title_add_element">It\'s time to add a new sleep over day.</string>
     <string name="dialog_delete_message">Are you sure you want to delete this day</string>
-    <string name="dialog_delete_message_end_message">\?</string>
+    <string name="dialog_delete_message_end_message" translatable="false">\?</string>
     <string name="dialog_delete_button">Delete</string>
     <string name="dialog_rating_message">How good %s behaved this time?</string>
     <string name="dialog_rating_save">Save</string>
+    <string name="add_schedule_button_add">Add day</string>
+    <string name="add_schedule_kid_name">Kid name</string>
 </resources>
