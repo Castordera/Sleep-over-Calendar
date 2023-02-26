@@ -6,5 +6,5 @@ data class OutcomeScheduledEvent(
     val createdBy: String,
     val createdOn: Long,
     val rating: Int,
-    val kidName: String = "Renata"
+    val kidName: String
 )

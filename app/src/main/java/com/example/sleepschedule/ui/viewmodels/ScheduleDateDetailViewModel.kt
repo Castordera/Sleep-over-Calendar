@@ -31,7 +31,9 @@ class ScheduleDateDetailViewModel @Inject constructor(
         val createdText: String = "",
         val dateText: String = "",
         val isLoading: Boolean = false,
-        val isReadyToSend: Boolean = false
+        val isReadyToSend: Boolean = false,
+        val kidName: String = "Renata",
+        val addComplete: Boolean = false
     )
 
     fun onUpdateTextField(type: TextFieldType, text: String) {
@@ -60,12 +62,13 @@ class ScheduleDateDetailViewModel @Inject constructor(
                 date = timeSelectedMillis,
                 createdBy = _uiState.value.createdText.trim(),
                 createdOn = LocalDate.now().toEpochDay(),
-                rating = 0
+                rating = 0,
+                kidName = _uiState.value.kidName
             )
             runCatching {
                 addScheduledEventUseCase(scheduleEvent)
             }.onSuccess {
-                _uiState.update { it.copy(isLoading = false) }
+                _uiState.update { it.copy(isLoading = false, addComplete = true) }
             }.onFailure {
                 _uiState.update { it.copy(isLoading = false) }
             }
