@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sleepschedule.R
+import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.utils.RatingType
 import models.ScheduledEvent
@@ -49,7 +50,7 @@ fun ScheduleItem(
                     fontStyle = FontStyle.Italic
                 )
                 Text(
-                    text = item.date,
+                    text = TimeHelper.convertToLocalDateFromMillis(item.date),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
@@ -73,11 +74,12 @@ fun Prev_ScheduleItem() {
         ScheduleItem(
             item = ScheduledEvent(
                 id = "123",
-                date = "Martes 17 de Enro de 2020",
+                date = 0L,
                 createdBy = "Ulises",
-                createdOn = "24/02/2023",
+                createdOn = 0L,
                 rating = 0,
-                kidName = ""
+                kidName = "",
+                comments = "Estos son mis comentarios"
             ),
             onClickUpdateFeedback = {},
             onClickDelete = {}

@@ -19,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: AppDispatchers,
-    private val timeHelper: TimeHelper,
     private val addScheduledEventUseCase: AddScheduledEventUseCase
 ): ViewModel() {
 
@@ -30,6 +29,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
     data class UiState(
         val createdText: String = "",
         val dateText: String = "",
+        val comments: String = "",
         val isLoading: Boolean = false,
         val isReadyToSend: Boolean = false,
         val kidName: String = "Renata",
@@ -48,7 +48,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
     fun onDateSelected(year: Int, month: Int, day: Int) {
         viewModelScope.launch(dispatchers.main) {
             timeSelectedMillis = Calendar.getInstance().getDateFromRaw(year, month, day)
-            val time = timeHelper.convertToLocalDateFromMillis(timeSelectedMillis)
+            val time = TimeHelper.convertToLocalDateFromMillis(timeSelectedMillis)
             _uiState.update { it.copy(dateText = time) }
             validateInputsFilled()
         }
@@ -63,7 +63,8 @@ class ScheduleDateDetailViewModel @Inject constructor(
                 createdBy = _uiState.value.createdText.trim(),
                 createdOn = LocalDate.now().toEpochDay(),
                 rating = 0,
-                kidName = _uiState.value.kidName
+                kidName = _uiState.value.kidName,
+                comments = _uiState.value.comments
             )
             runCatching {
                 addScheduledEventUseCase(scheduleEvent)

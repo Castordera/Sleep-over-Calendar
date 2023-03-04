@@ -56,3 +56,4 @@ navigation = ["navigation-compose", "hilt-navigation-compose"]
 room = ["room-core", "room-ktx"]
 
 [plugins]
+android-app = { id = "com.android.application", version = "'7.4.1'"}

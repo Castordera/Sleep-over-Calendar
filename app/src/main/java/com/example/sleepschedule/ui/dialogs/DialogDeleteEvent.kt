@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.sleepschedule.R
+import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.ui.components.HeaderDialog
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
 import models.ScheduledEvent
@@ -46,7 +47,7 @@ fun DialogDeleteEvent(
                     text = buildAnnotatedString {
                         append(stringResource(id = R.string.dialog_delete_message))
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(" ${event?.date.orEmpty()}")
+                            append(" ${TimeHelper.convertToLocalDateFromMillis(event?.date ?: 0L)}")
                         }
                         append(stringResource(id = R.string.dialog_delete_message_end_message))
                     },

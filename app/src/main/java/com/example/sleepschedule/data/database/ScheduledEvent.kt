@@ -1,20 +1,20 @@
 package com.example.sleepschedule.data.database
 
-import com.example.sleepschedule.common.TimeHelper
-
 data class ScheduledEvent(
     val id: String? = null,
     val date: Long? = null,
     val createdBy: String? = null,
     val createdOn: Long? = null,
-    val rating: Int? = null
+    val rating: Int? = null,
+    val comments: String? = null
 )
 
-fun ScheduledEvent.toDomain(timeHelper: TimeHelper) = models.ScheduledEvent(
-    id = id ?: "",
-    date = date?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
-    createdBy = createdBy ?: "",
-    createdOn = createdOn?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
+fun ScheduledEvent.toDomain() = models.ScheduledEvent(
+    id = id.orEmpty(),
+    date = date ?: 0L,//?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
+    createdBy = createdBy.orEmpty(),
+    createdOn = createdOn ?: 0L,//?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
     rating = rating ?: 0,
-    kidName = "Renata"
+    kidName = "Renata",
+    comments = comments.orEmpty()
 )

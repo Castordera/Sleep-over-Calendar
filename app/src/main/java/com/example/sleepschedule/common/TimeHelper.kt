@@ -5,11 +5,10 @@ import androidx.compose.ui.text.intl.Locale
 import java.time.Duration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-const val TIME_PATTERN_HUMAN_READABLE = "EEEE dd/MM/yyyy"
+object TimeHelper {
 
-class TimeHelper @Inject constructor() {
+    private const val TIME_PATTERN_HUMAN_READABLE = "EEEE dd/MM/yyyy"
 
     fun convertToLocalDateFromMillis(time: Long): String {
         val date = LocalDate.ofEpochDay(Duration.ofMillis(time).toDays())

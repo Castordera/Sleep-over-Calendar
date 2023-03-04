@@ -1,7 +1,6 @@
 package com.example.sleepschedule.data.database
 
 import android.util.Log
-import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.di.AppDispatchers
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,7 +19,6 @@ import kotlin.collections.toList
 
 class FirebaseRemoteDataSource @Inject constructor (
     private val database: DatabaseReference,
-    private val timeHelper: TimeHelper,
     private val dispatchers: AppDispatchers
 ): ScheduleRemoteDataSource {
 
@@ -44,7 +42,7 @@ class FirebaseRemoteDataSource @Inject constructor (
     }.transform {map ->
         emit(map.values.toList().sortedBy { it.date })
     }.transform { orderedList ->
-        emit(orderedList.map { it.toDomain(timeHelper) })
+        emit(orderedList.map { it.toDomain() })
     }.flowOn(dispatchers.default)
 
     override suspend fun addNewScheduleEvent(event: OutcomeScheduledEvent) {

@@ -2,9 +2,10 @@ package models
 
 data class ScheduledEvent(
     val id: String,
-    val date: String,
+    val date: Long,
     val createdBy: String,
-    val createdOn: String,
+    val createdOn: Long,
     val rating: Int,
-    val kidName: String
+    val kidName: String,
+    val comments: String
 )
