@@ -3,7 +3,6 @@ package com.example.sleepschedule.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.common.TimeHelper
-import com.example.sleepschedule.common.getDateFromRaw
 import com.example.sleepschedule.di.AppDispatchers
 import com.ulises.usecases.AddScheduledEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import outcomes.OutcomeScheduledEvent
-import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
     private val addScheduledEventUseCase: AddScheduledEventUseCase
 ): ViewModel() {
 
-    private var timeSelectedMillis: Long = 0L
+    private var selectedTime: String = ""
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
@@ -47,9 +47,8 @@ class ScheduleDateDetailViewModel @Inject constructor(
 
     fun onDateSelected(year: Int, month: Int, day: Int) {
         viewModelScope.launch(dispatchers.main) {
-            timeSelectedMillis = Calendar.getInstance().getDateFromRaw(year, month, day)
-            val time = TimeHelper.convertToLocalDateFromMillis(timeSelectedMillis)
-            _uiState.update { it.copy(dateText = time) }
+            selectedTime = TimeHelper.convertRawToFormattedString(year, month + 1, day)
+            _uiState.update { it.copy(dateText = TimeHelper.convertToHumanReadable(selectedTime)) }
             validateInputsFilled()
         }
     }
@@ -59,9 +58,9 @@ class ScheduleDateDetailViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
             val scheduleEvent = OutcomeScheduledEvent(
                 id = Date().time.toString(),
-                date = timeSelectedMillis,
+                date = selectedTime,
                 createdBy = _uiState.value.createdText.trim(),
-                createdOn = LocalDate.now().toEpochDay(),
+                createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 rating = 0,
                 kidName = _uiState.value.kidName,
                 comments = _uiState.value.comments
@@ -77,7 +76,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
     }
 
     private fun validateInputsFilled() {
-        val isReady = timeSelectedMillis != 0L && _uiState.value.createdText.isNotBlank()
+        val isReady = selectedTime.isNotBlank() && _uiState.value.createdText.isNotBlank()
         _uiState.update { it.copy(isReadyToSend = isReady) }
     }
 }

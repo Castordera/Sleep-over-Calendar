@@ -50,7 +50,7 @@ fun ScheduleItem(
                     fontStyle = FontStyle.Italic
                 )
                 Text(
-                    text = TimeHelper.convertToLocalDateFromMillis(item.date),
+                    text = TimeHelper.convertToHumanReadable(item.date),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
@@ -74,9 +74,9 @@ fun Prev_ScheduleItem() {
         ScheduleItem(
             item = ScheduledEvent(
                 id = "123",
-                date = 0L,
+                date = "2020-12-12",
                 createdBy = "Ulises",
-                createdOn = 0L,
+                createdOn = "2020-12-10",
                 rating = 0,
                 kidName = "",
                 comments = "Estos son mis comentarios"

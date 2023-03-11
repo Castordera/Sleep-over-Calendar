@@ -1,19 +1,22 @@
 package com.example.sleepschedule.data.database
 
+import androidx.annotation.Keep
+
+@Keep
 data class ScheduledEvent(
     val id: String? = null,
-    val date: Long? = null,
+    val date: String? = null,
     val createdBy: String? = null,
-    val createdOn: Long? = null,
+    val createdOn: String? = null,
     val rating: Int? = null,
     val comments: String? = null
 )
 
 fun ScheduledEvent.toDomain() = models.ScheduledEvent(
     id = id.orEmpty(),
-    date = date ?: 0L,//?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
+    date = date.orEmpty(),
     createdBy = createdBy.orEmpty(),
-    createdOn = createdOn ?: 0L,//?.let { timeHelper.convertToLocalDateFromMillis(it) } ?: "",
+    createdOn = date.orEmpty(),
     rating = rating ?: 0,
     kidName = "Renata",
     comments = comments.orEmpty()

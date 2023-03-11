@@ -25,7 +25,6 @@ class FirebaseRemoteDataSource @Inject constructor (
     override fun getAllScheduledEvents(): Flow<List<models.ScheduledEvent>> = callbackFlow {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d(TAG, "${snapshot.value}")
                 val mapResponse = snapshot.getValue<Map<String, ScheduledEvent>>() ?: emptyMap()
                 trySend(mapResponse)
             }
@@ -34,9 +33,8 @@ class FirebaseRemoteDataSource @Inject constructor (
                 Log.e(TAG, error.message)
             }
         }
-        database.orderByChild("/date").addValueEventListener(listener)
+        database.addValueEventListener(listener)
         awaitClose {
-            Log.d(TAG, "Stop getting values")
             database.removeEventListener(listener)
         }
     }.transform {map ->

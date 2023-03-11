@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Sleep Schedule</string>
     <string name="date_added_by">Agregado por %s</string>
-    <string name="empty_schedule">Aún no agregas ningún día, puedes agregar dando click en +</string>
+    <string name="empty_schedule_title">Aún no agregas ningún día</string>
     <string name="add_schedule_person">Nombre del Adulto</string>
     <string name="add_schedule_date">Selecciona el día</string>
     <string name="title_add_element">Es momento de agregar una Pijamada.</string>

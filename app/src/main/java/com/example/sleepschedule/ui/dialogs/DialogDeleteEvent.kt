@@ -47,7 +47,7 @@ fun DialogDeleteEvent(
                     text = buildAnnotatedString {
                         append(stringResource(id = R.string.dialog_delete_message))
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(" ${TimeHelper.convertToLocalDateFromMillis(event?.date ?: 0L)}")
+                            append(" ${TimeHelper.convertToHumanReadable(event?.date ?: "")}")
                         }
                         append(stringResource(id = R.string.dialog_delete_message_end_message))
                     },
