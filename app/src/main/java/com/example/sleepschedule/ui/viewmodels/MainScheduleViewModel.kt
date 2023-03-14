@@ -1,6 +1,5 @@
 package com.example.sleepschedule.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.di.AppDispatchers
@@ -39,7 +38,6 @@ class MainScheduleViewModel @Inject constructor(
                 .onStart { _uiState.update { it.copy(isLoading = true) } }
                 .catch { _uiState.update { it.copy(isLoading = false) } }
                 .collect { list ->
-                    Log.d("MainScheduleViewModel", "Collected $list")
                     _uiState.update { it.copy(scheduleEvents = list, isLoading = false) }
                 }
         }

@@ -3,6 +3,7 @@ package com.example.sleepschedule.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.common.TimeHelper
+import com.example.sleepschedule.common.TimeHelper.toISODate
 import com.example.sleepschedule.di.AppDispatchers
 import com.ulises.usecases.AddScheduledEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import outcomes.OutcomeScheduledEvent
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -20,7 +22,7 @@ import javax.inject.Inject
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: AppDispatchers,
     private val addScheduledEventUseCase: AddScheduledEventUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private var selectedTime: String = ""
     private val _uiState = MutableStateFlow(UiState())
@@ -36,20 +38,33 @@ class ScheduleDateDetailViewModel @Inject constructor(
         val addComplete: Boolean = false
     )
 
+    init {
+        calculateInitialDate()
+    }
+
+    private fun calculateInitialDate() {
+        viewModelScope.launch {
+            selectedTime = LocalDate.now().toISODate()
+            _uiState.update { it.copy(dateText = TimeHelper.convertToHumanReadable(selectedTime)) }
+        }
+    }
+
     fun onUpdateTextField(type: TextFieldType, text: String) {
         when (type) {
             is TextFieldType.CreatedBy -> {
                 _uiState.update { it.copy(createdText = text) }
                 validateInputsFilled()
             }
+            is TextFieldType.Comment -> {
+                _uiState.update { it.copy(comments = text) }
+            }
         }
     }
 
     fun onDateSelected(year: Int, month: Int, day: Int) {
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch {
             selectedTime = TimeHelper.convertRawToFormattedString(year, month + 1, day)
             _uiState.update { it.copy(dateText = TimeHelper.convertToHumanReadable(selectedTime)) }
-            validateInputsFilled()
         }
     }
 
@@ -82,5 +97,6 @@ class ScheduleDateDetailViewModel @Inject constructor(
 }
 
 sealed interface TextFieldType {
-    object CreatedBy: TextFieldType
+    object CreatedBy : TextFieldType
+    object Comment: TextFieldType
 }

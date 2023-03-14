@@ -20,6 +20,7 @@ import com.example.sleepschedule.R
 import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.ui.components.HeaderDialog
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.example.sleepschedule.ui.utils.demoEvent
 import models.ScheduledEvent
 
 @Composable
@@ -47,7 +48,8 @@ fun DialogDeleteEvent(
                     text = buildAnnotatedString {
                         append(stringResource(id = R.string.dialog_delete_message))
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(" ${TimeHelper.convertToHumanReadable(event?.date ?: "")}")
+                            val time = TimeHelper.convertToHumanReadable(event?.date ?: "")
+                            append(" ${time.split(',')[1]}")
                         }
                         append(stringResource(id = R.string.dialog_delete_message_end_message))
                     },
@@ -66,6 +68,10 @@ fun DialogDeleteEvent(
 @Composable
 fun Prev_DialogDeleteEvent() {
     SleepScheduleTheme {
-        DialogDeleteEvent(event = null, onDismiss = {}, onDelete = {})
+        DialogDeleteEvent(
+            event = demoEvent,
+            onDismiss = {},
+            onDelete = {}
+        )
     }
 }

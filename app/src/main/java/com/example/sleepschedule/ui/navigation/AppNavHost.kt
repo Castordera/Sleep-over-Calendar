@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.sleepschedule.ui.screens.MainScheduleScreen
-import com.example.sleepschedule.ui.screens.ScheduleDateDetail
+import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -38,7 +38,7 @@ fun AppNavHost(
             enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
-            ScheduleDateDetail(
+            ScheduleDetailRoute(
                 viewModel = hiltViewModel(),
                 onNavigateBackClick = { navController.popBackStack() }
             )

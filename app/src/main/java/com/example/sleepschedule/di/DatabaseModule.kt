@@ -1,6 +1,8 @@
 package com.example.sleepschedule.di
 
+import com.example.sleepschedule.BuildConfig
 import com.example.sleepschedule.data.utils.DATABASE_SECTION_NAME_SCHEDULE
+import com.example.sleepschedule.data.utils.DATABASE_SECTION_NAME_SCHEDULE_DEBUG
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dagger.Module
@@ -15,5 +17,18 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseDatabase() = Firebase.database.reference.child(DATABASE_SECTION_NAME_SCHEDULE)
+    @DatabaseUrl
+    fun provideDataBaseUrl(): String {
+        return if (!BuildConfig.DEBUG) {
+            DATABASE_SECTION_NAME_SCHEDULE
+        } else {
+            DATABASE_SECTION_NAME_SCHEDULE_DEBUG
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDatabase(
+        @DatabaseUrl databaseUrl: String
+    ) = Firebase.database.reference.child(databaseUrl)
 }

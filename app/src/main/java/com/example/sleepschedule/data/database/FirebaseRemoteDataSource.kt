@@ -38,7 +38,7 @@ class FirebaseRemoteDataSource @Inject constructor (
             database.removeEventListener(listener)
         }
     }.transform {map ->
-        emit(map.values.toList().sortedBy { it.date })
+        emit(map.values.toList().sortedByDescending { it.date })
     }.transform { orderedList ->
         emit(orderedList.map { it.toDomain() })
     }.flowOn(dispatchers.default)

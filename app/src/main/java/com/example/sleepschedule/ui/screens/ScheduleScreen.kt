@@ -29,7 +29,7 @@ fun MainScheduleScreen(
 ) {
     val uiState by scheduleViewModel.uiState.collectAsState()
 
-    Scaffold (
+    Scaffold(
         floatingActionButton = {
             if (!uiState.isLoading) {
                 FAButton { onNavigateToAdd() }
@@ -75,8 +75,13 @@ fun MainScheduleScreen(
                 EmptyScheduleScreen(Modifier.padding(paddingValues))
             } else {
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 82.dp
+                    ),
                     modifier = Modifier.padding(paddingValues)
                 ) {
                     items(

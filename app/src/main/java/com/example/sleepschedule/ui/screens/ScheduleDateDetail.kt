@@ -3,7 +3,6 @@ package com.example.sleepschedule.ui.screens
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -11,40 +10,62 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
-import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sleepschedule.R
 import com.example.sleepschedule.common.day
 import com.example.sleepschedule.common.month
 import com.example.sleepschedule.common.year
 import com.example.sleepschedule.ui.components.TopBar
+import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import com.example.sleepschedule.ui.viewmodels.TextFieldType
 import java.util.*
 
 @Composable
-fun ScheduleDateDetail(
+fun ScheduleDetailRoute(
     viewModel: ScheduleDateDetailViewModel = viewModel(),
     onNavigateBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val dialog = createCalendarDialog(LocalContext.current) { year, month, day ->
-        viewModel.onDateSelected(year, month, day)
-    }
+
+    ScheduleDateDetail(
+        uiState = uiState,
+        onDateSelected = viewModel::onDateSelected,
+        onUpdateTextField = viewModel::onUpdateTextField,
+        onUpdateCommentField = viewModel::onUpdateTextField,
+        onAddEvent = viewModel::onAddSchedule,
+        onNavigateBackClick = onNavigateBackClick
+    )
+}
+
+@Composable
+fun ScheduleDateDetail(
+    uiState: ScheduleDateDetailViewModel.UiState,
+    onDateSelected: (year: Int, month: Int, day: Int) -> Unit,
+    onUpdateTextField: (type: TextFieldType, text: String) -> Unit,
+    onUpdateCommentField: (type: TextFieldType, text: String) -> Unit,
+    onAddEvent: () -> Unit,
+    onNavigateBackClick: () -> Unit
+) {
+    val dialog = createCalendarDialog(LocalContext.current, onDateSelected)
 
     if (uiState.addComplete) {
         LaunchedEffect(key1 = Unit) {
             onNavigateBackClick()
         }
     }
+
     Scaffold(
         topBar = { TopBar { onNavigateBackClick() } }
     ) {
@@ -63,10 +84,7 @@ fun ScheduleDateDetail(
             TextField(
                 value = uiState.createdText,
                 onValueChange = { text ->
-                    viewModel.onUpdateTextField(
-                        type = TextFieldType.CreatedBy,
-                        text = text
-                    )
+                    onUpdateTextField(TextFieldType.CreatedBy, text)
                 },
                 enabled = !uiState.isLoading,
                 singleLine = true,
@@ -74,41 +92,57 @@ fun ScheduleDateDetail(
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
             )
+            Column {
+                Text(
+                    text = "Selecciona la fecha:",
+                    fontSize = 12.sp
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.height(intrinsicSize = IntrinsicSize.Max)
+                ) {
+                    Text(
+                        text = buildAnnotatedString {
+                            val date = uiState.dateText.split(",")
+                            append(date[1])
+                        },
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Button(
+                        enabled = !uiState.isLoading,
+                        modifier = Modifier.fillMaxHeight(),
+                        onClick = { dialog.show() }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_calendar),
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
             TextField(
                 value = "Renata",
                 onValueChange = {},
                 label = { Text(text = stringResource(id = R.string.add_schedule_kid_name)) },
-                enabled = false,
+                readOnly = true,
                 modifier = Modifier.fillMaxWidth()
             )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.height(intrinsicSize = IntrinsicSize.Max)
-            ) {
-                TextField(
-                    value = uiState.dateText,
-                    onValueChange = { },
-                    enabled = false,
-                    label = { Text(text = stringResource(id = R.string.add_schedule_date)) },
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { dialog.show() }
-                )
-                Button(
-                    enabled = !uiState.isLoading,
-                    modifier = Modifier.fillMaxHeight(),
-                    onClick = { dialog.show() }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_calendar),
-                        contentDescription = null
-                    )
-                }
-            }
+            TextField(
+                label = { Text(text = "Comentarios") },
+                value = uiState.comments,
+                onValueChange = { value ->
+                    onUpdateCommentField(TextFieldType.Comment, value)
+                },
+                maxLines = 3,
+                modifier = Modifier.fillMaxWidth()
+            )
             Button(
                 enabled = !uiState.isLoading && uiState.isReadyToSend,
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { viewModel.onAddSchedule() }
+                onClick = onAddEvent
             ) {
                 Text(text = stringResource(id = R.string.add_schedule_button_add))
             }
@@ -135,10 +169,19 @@ private fun createCalendarDialog(
     return mDatePickerDialog
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun Prev_ScheduleDateDetail() {
     SleepScheduleTheme {
-        ScheduleDateDetail {}
+        ScheduleDateDetail(
+            uiState = ScheduleDateDetailViewModel.UiState(
+                dateText = "Monday,12 de March del 2023"
+            ),
+            onNavigateBackClick = {},
+            onDateSelected = { _, _, _ -> },
+            onUpdateTextField = { _, _ -> },
+            onUpdateCommentField = { _, _ -> },
+            onAddEvent = {}
+        )
     }
 }
