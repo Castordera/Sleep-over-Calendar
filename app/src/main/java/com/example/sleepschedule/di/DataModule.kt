@@ -1,7 +1,9 @@
 package com.example.sleepschedule.di
 
 import com.example.sleepschedule.data.database.FirebaseRemoteDataSource
+import com.example.sleepschedule.data.session.FirebaseSessionDataSource
 import com.ulises.data.datasources.ScheduleRemoteDataSource
+import com.ulises.data.datasources.SessionRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,4 +15,7 @@ abstract class DataModule {
 
     @Binds
     abstract fun bindScheduleRemoteDataSource(dataSource: FirebaseRemoteDataSource): ScheduleRemoteDataSource
+
+    @Binds
+    abstract fun bindSessionRemoteDataSource(sessionSource: FirebaseSessionDataSource): SessionRemoteDataSource
 }

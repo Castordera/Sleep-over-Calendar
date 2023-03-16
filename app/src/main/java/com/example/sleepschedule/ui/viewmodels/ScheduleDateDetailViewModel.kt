@@ -6,6 +6,7 @@ import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.common.TimeHelper.toISODate
 import com.example.sleepschedule.di.AppDispatchers
 import com.ulises.usecases.AddScheduledEventUseCase
+import com.ulises.usecases.session.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: AppDispatchers,
-    private val addScheduledEventUseCase: AddScheduledEventUseCase
+    private val addScheduledEventUseCase: AddScheduledEventUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
     private var selectedTime: String = ""
@@ -71,16 +73,18 @@ class ScheduleDateDetailViewModel @Inject constructor(
     fun onAddSchedule() {
         viewModelScope.launch(dispatchers.main) {
             _uiState.update { it.copy(isLoading = true) }
-            val scheduleEvent = OutcomeScheduledEvent(
-                id = Date().time.toString(),
-                date = selectedTime,
-                createdBy = _uiState.value.createdText.trim(),
-                createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                rating = 0,
-                kidName = _uiState.value.kidName,
-                comments = _uiState.value.comments
-            )
             runCatching {
+                val user = getCurrentUserUseCase()
+                val scheduleEvent = OutcomeScheduledEvent(
+                    id = Date().time.toString(),
+                    date = selectedTime,
+                    createdBy = _uiState.value.createdText.trim(),
+                    createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    rating = 0,
+                    kidName = _uiState.value.kidName,
+                    comments = _uiState.value.comments,
+                    createdById = user?.id ?: "Unknown"
+                )
                 addScheduledEventUseCase(scheduleEvent)
             }.onSuccess {
                 _uiState.update { it.copy(isLoading = false, addComplete = true) }
@@ -98,5 +102,5 @@ class ScheduleDateDetailViewModel @Inject constructor(
 
 sealed interface TextFieldType {
     object CreatedBy : TextFieldType
-    object Comment: TextFieldType
+    object Comment : TextFieldType
 }
