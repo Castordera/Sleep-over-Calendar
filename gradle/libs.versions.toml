@@ -16,6 +16,7 @@ javax-inject = "1"
 room = "2.5.0"
 coroutine-core = "1.6.4"
 navigation-animation-compose = "0.29.1-alpha"
+timber = "5.0.1"
 
 [libraries]
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
@@ -44,6 +45,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine-core" }
 navigation-animation-compose = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "navigation-animation-compose" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-ui-preview", "activity-compose", "compose-view-model", "navigation-animation-compose"]
