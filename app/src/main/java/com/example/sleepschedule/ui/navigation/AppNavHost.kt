@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
 import com.example.sleepschedule.ui.screens.ScheduleListScreen
-import com.example.sleepschedule.ui.screens.user.UserScreen
+import com.example.sleepschedule.ui.screens.user.UserRoute
 
 @Composable
 fun AppNavHost(
@@ -41,7 +41,13 @@ fun AppNavHost(
         composable(
             route = Screens.User.route
         ) {
-            UserScreen()
+            UserRoute(
+                onLoggedOut = {
+                    navController.navigate(Graphs.Login.route) {
+                        popUpTo(Screens.User.route) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

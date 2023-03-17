@@ -17,4 +17,8 @@ class SessionRepositoryImpl @Inject constructor(
     override suspend fun registerUser(email: String, password: String): User? {
         return sessionRemoteDataSource.registerUser(email, password)
     }
+
+    override suspend fun signOut() {
+        sessionRemoteDataSource.closeSession()
+    }
 }

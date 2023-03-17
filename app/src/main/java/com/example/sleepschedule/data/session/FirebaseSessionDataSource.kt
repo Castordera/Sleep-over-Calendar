@@ -44,7 +44,7 @@ class FirebaseSessionDataSource @Inject constructor(
             }
     }
 
-    override suspend fun reEnterCredentials(): User? {
-        TODO("Not yet implemented")
+    override suspend fun closeSession() {
+        firebaseAuth.signOut()
     }
 }

@@ -6,5 +6,5 @@ interface SessionRemoteDataSource {
     suspend fun getCurrentUser(): User?
     suspend fun signInWithEmailPassword(email: String, password: String): User?
     suspend fun registerUser(email: String, password: String): User?
-    suspend fun reEnterCredentials(): User?
+    suspend fun closeSession()
 }
