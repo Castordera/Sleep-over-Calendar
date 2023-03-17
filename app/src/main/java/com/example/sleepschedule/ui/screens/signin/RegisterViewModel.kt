@@ -22,6 +22,7 @@ class RegisterViewModel @Inject constructor(
     data class UiState(
         val isLoading: Boolean = false,
         val isEnabled: Boolean = false,
+        val nameNickname: String = "",
         val email: String = "",
         val password: String = "",
         val rePassword: String = "",
@@ -37,6 +38,7 @@ class RegisterViewModel @Inject constructor(
             is TextType.Email -> _uiState.update { it.copy(email = text) }
             is TextType.Password -> _uiState.update { it.copy(password = text) }
             is TextType.RePassword -> _uiState.update { it.copy(rePassword = text) }
+            is TextType.Name -> _uiState.update { it.copy(nameNickname = text) }
         }
         validateInputs()
     }
@@ -74,6 +76,7 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             val validationList = mutableListOf<Boolean>()
             with(_uiState.value) {
+                validationList.add(nameNickname.isNotBlank())
                 validationList.add(email.isNotBlank())
                 validationList.add(password.length >= 6)
                 validationList.add(rePassword.length >= 6)

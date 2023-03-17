@@ -18,12 +18,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sleepschedule.R
 import com.example.sleepschedule.ui.components.AppTextField
 import com.example.sleepschedule.ui.components.TextType
+import com.example.sleepschedule.ui.components.TopBar
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
 
 @Composable
 fun SignInRoute(
     registerViewModel: RegisterViewModel = viewModel(),
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     val uiState by registerViewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -42,7 +44,8 @@ fun SignInRoute(
     }
 
     Scaffold(
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        topBar = { TopBar(title = stringResource(id = R.string.signin_top_bar)) { navigateBack() }}
     ) {
         SignInScreen(
             modifier = Modifier.padding(it),
@@ -73,10 +76,10 @@ fun SignInScreen(
                 fontSize = 20.sp
             )
             AppTextField(
-                text = uiState.email,
+                text = uiState.nameNickname,
                 label = stringResource(id = R.string.filed_name_or_nickname),
                 enabled = !uiState.isLoading,
-                onTextChange = { onTextChange(TextType.Email, it) },
+                onTextChange = { onTextChange(TextType.Name, it) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next

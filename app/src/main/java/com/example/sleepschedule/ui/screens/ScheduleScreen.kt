@@ -23,13 +23,15 @@ import com.example.sleepschedule.ui.viewmodels.MainScheduleViewModel
 import models.ScheduledEvent
 
 @Composable
-fun MainScheduleScreen(
+fun ScheduleListScreen(
+    modifier: Modifier = Modifier,
     scheduleViewModel: MainScheduleViewModel = viewModel(),
     onNavigateToAdd: () -> Unit
 ) {
     val uiState by scheduleViewModel.uiState.collectAsState()
 
     Scaffold(
+        modifier = modifier,
         floatingActionButton = {
             if (!uiState.isLoading) {
                 FAButton { onNavigateToAdd() }
@@ -116,6 +118,6 @@ fun MainScheduleScreen(
 @Composable
 fun Prev_MainScheduleScreen() {
     SleepScheduleTheme {
-        MainScheduleScreen {}
+        ScheduleListScreen {}
     }
 }

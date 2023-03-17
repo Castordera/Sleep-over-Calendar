@@ -12,4 +12,14 @@
     <string name="dialog_rating_save">Guardar</string>
     <string name="add_schedule_button_add">Agregar día</string>
     <string name="add_schedule_kid_name">¿Quién hace la pijamada?</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Contraseña</string>
+    <string name="field_re_password">Repite contraseña</string>
+    <string name="filed_name_or_nickname">Nombre o apodo</string>
+    <string name="message_name_or_nickname">ej. Ricardo o Yoyis</string>
+    <string name="field_label_min_characters">Mínimo %s letras</string>
+    <string name="button_login">Iniciar sesión</string>
+    <string name="button_signin">Registrarme</string>
+    <string name="label_signin_title">Llena los campos</string>
+    <string name="signin_top_bar">Registro de usuario</string>
 </resources>

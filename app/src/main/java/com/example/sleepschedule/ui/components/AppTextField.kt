@@ -48,4 +48,5 @@ sealed interface TextType {
     object Email: TextType
     object Password: TextType
     object RePassword: TextType
+    object Name: TextType
 }
