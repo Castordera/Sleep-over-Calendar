@@ -25,6 +25,7 @@ class LoginViewModel @Inject constructor(
         val email: String = "",
         val password: String = "",
         val navigateTo: Screens? = null,
+        val error: String = ""
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -47,15 +48,20 @@ class LoginViewModel @Inject constructor(
             runCatching {
                 loginUseCase(uiState.value.email, uiState.value.password)
             }.fold(
-                onSuccess = {
-                    Timber.d("Login Success for: $it")
+                onSuccess = { user ->
+                    Timber.d("Login Success for: $user")
                     _uiState.update { it.copy(navigateTo = Screens.Home) }
                 },
-                onFailure = {
-                    Timber.d("Login error ${it.message}", it)
+                onFailure = { error ->
+                    Timber.d("Login error ${error.message}", error)
+                    _uiState.update { it.copy(error = error.message.orEmpty()) }
                 }
             )
         }
+    }
+
+    fun onErrorShowed() {
+        _uiState.update { it.copy(error = "") }
     }
 
     fun onSignInClicked() {

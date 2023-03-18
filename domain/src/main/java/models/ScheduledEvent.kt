@@ -7,5 +7,11 @@ data class ScheduledEvent(
     val createdOn: String,
     val rating: Int,
     val kidName: String,
-    val comments: String
+    val comments: String,
+    val cardFace: CardFace = CardFace.FRONT
 )
+
+enum class CardFace {
+    FRONT,
+    BACK
+}

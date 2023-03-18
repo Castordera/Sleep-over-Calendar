@@ -33,6 +33,14 @@ fun LoginRoute(
     navigateTo: (Screens) -> Unit
 ) {
     val uiState by loginViewModel.uiState.collectAsState()
+    val scaffoldState = rememberScaffoldState()
+
+    if (uiState.error.isNotBlank()) {
+        LaunchedEffect(uiState.error) {
+            scaffoldState.snackbarHostState.showSnackbar(uiState.error)
+            loginViewModel.onErrorShowed()
+        }
+    }
 
     if (uiState.navigateTo != null) {
         LaunchedEffect(key1 = Unit) {
@@ -41,73 +49,75 @@ fun LoginRoute(
         }
     }
 
-    LoginScreen(
-        uiState = uiState,
-        onTextChange = loginViewModel::onTextChange,
-        onLoginClick = loginViewModel::onLoginClick,
-        onSignInClick = loginViewModel::onSignInClicked
-    )
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) { padding ->
+        LoginScreen(
+            modifier = Modifier.padding(padding),
+            uiState = uiState,
+            onTextChange = loginViewModel::onTextChange,
+            onLoginClick = loginViewModel::onLoginClick,
+            onSignInClick = loginViewModel::onSignInClicked
+        )
+    }
 }
 
 @Composable
 fun LoginScreen(
+    modifier: Modifier = Modifier,
     uiState: LoginViewModel.UiState,
     onTextChange: (type: TextType, text: String) -> Unit,
     onLoginClick: () -> Unit,
     onSignInClick: () -> Unit
 ) {
-    Scaffold { padding ->
-        Surface(
+    Surface(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(16.dp)
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(320.dp)
+            )
+            AppTextField(
+                text = uiState.email,
+                label = stringResource(id = R.string.field_email),
+                enabled = !uiState.isLoading,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                onTextChange = { onTextChange(TextType.Email, it) }
+            )
+            AppTextField(
+                text = uiState.password,
+                label = stringResource(id = R.string.field_password),
+                enabled = !uiState.isLoading,
+                passwordVisible = false,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Password,
+                    autoCorrect = false
+                ),
+                onTextChange = { onTextChange(TextType.Password, it) }
+            )
+            Button(
+                onClick = onLoginClick,
+                enabled = !uiState.isLoading,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(320.dp)
-                )
-                AppTextField(
-                    text = uiState.email,
-                    label = stringResource(id = R.string.field_email),
-                    enabled = !uiState.isLoading,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    onTextChange = { onTextChange(TextType.Email, it) }
-                )
-                AppTextField(
-                    text = uiState.password,
-                    label = stringResource(id = R.string.field_password),
-                    enabled = !uiState.isLoading,
-                    passwordVisible = false,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Password,
-                        autoCorrect = false
-                    ),
-                    onTextChange = { onTextChange(TextType.Password, it) }
-                )
-                Button(
-                    onClick = onLoginClick,
-                    enabled = !uiState.isLoading,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(id = R.string.button_login))
-                }
-                OutlinedButton(
-                    onClick = onSignInClick,
-                    border = BorderStroke(0.dp, Color.Transparent)
-                ) {
-                    Text(text = stringResource(id = R.string.button_signin))
-                }
+                Text(text = stringResource(id = R.string.button_login))
+            }
+            OutlinedButton(
+                onClick = onSignInClick,
+                border = BorderStroke(0.dp, Color.Transparent)
+            ) {
+                Text(text = stringResource(id = R.string.button_signin))
             }
         }
     }

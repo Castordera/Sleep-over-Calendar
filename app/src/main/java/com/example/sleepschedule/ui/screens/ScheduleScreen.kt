@@ -105,7 +105,8 @@ fun ScheduleListScreen(
                                     isVisible = true,
                                     event = it
                                 )
-                            }
+                            },
+                            onClickItem = scheduleViewModel::onClickItemForRotation
                         )
                     }
                 }

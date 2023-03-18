@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.di.AppDispatchers
 import com.example.sleepschedule.ui.components.TextType
 import com.ulises.usecases.session.RegisterUserUseCase
+import com.ulises.usecases.users.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val dispatchers: AppDispatchers,
-    private val registerUserUseCase: RegisterUserUseCase
+    private val registerUserUseCase: RegisterUserUseCase,
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
 
     data class UiState(
@@ -53,7 +55,8 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch(dispatchers.main) {
             runCatching {
                 _uiState.update { it.copy(isLoading = true) }
-                registerUserUseCase(uiState.value.email, uiState.value.password)
+                val user = registerUserUseCase(uiState.value.email, uiState.value.password)
+                createUserUseCase(requireNotNull(user?.copy(name = uiState.value.nameNickname)))
             }.fold(
                 onSuccess = { user ->
                     Timber.d("User created : $user")

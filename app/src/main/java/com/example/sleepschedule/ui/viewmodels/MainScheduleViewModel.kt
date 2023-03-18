@@ -10,6 +10,7 @@ import com.ulises.usecases.UpdateScheduleEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import models.CardFace
 import models.ScheduledEvent
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class MainScheduleViewModel @Inject constructor(
     private val getAllScheduledEventsUseCase: GetAllScheduledEventsUseCase,
     private val deleteScheduleEventUseCase: DeleteScheduleEventUseCase,
     private val updateScheduleEventUseCase: UpdateScheduleEventUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
@@ -83,6 +84,17 @@ class MainScheduleViewModel @Inject constructor(
                     onDialogCloseVisibilityChange(DialogType.Rating, false)
                 }
             }
+        }
+    }
+
+    fun onClickItemForRotation(item: ScheduledEvent) {
+        viewModelScope.launch(dispatchers.default) {
+            val items = _uiState.value.scheduleEvents?.toMutableList() ?: return@launch
+            val itemSelected = items.indexOf(item)
+            items[itemSelected] = with(items[itemSelected]) {
+                copy(cardFace = if (cardFace == CardFace.FRONT) CardFace.BACK else CardFace.FRONT)
+            }
+            _uiState.update { it.copy(scheduleEvents = items.toList()) }
         }
     }
 }

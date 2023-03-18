@@ -1,9 +1,6 @@
 package com.ulises.data.di
 
-import com.ulises.data.repositories.ScheduleRepository
-import com.ulises.data.repositories.ScheduleRepositoryImpl
-import com.ulises.data.repositories.SessionRepository
-import com.ulises.data.repositories.SessionRepositoryImpl
+import com.ulises.data.repositories.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +15,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindSessionRepository(repository: SessionRepositoryImpl): SessionRepository
+
+    @Binds
+    abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
 }
