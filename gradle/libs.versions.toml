@@ -3,52 +3,56 @@ agp = "8.1.1"
 kotlin = "1.9.10"
 ksp = "1.9.10-1.0.13"
 composeCompiler = "1.5.3"
-androidx-core = "1.9.0"
-lifecycle-runtime-ktx = "2.5.1"
-material = "1.3.1"
-activity-compose = "1.6.1"
-compose = "1.3.3"
-compose-view-model = "2.5.1"
+androidx-core = "1.12.0"
+lifecycle-runtime-ktx = "2.6.2"
+material = "1.5.1"
+activity-compose = "1.7.2"
+compose = "1.5.1"
 android-junit = "1.1.5"
 junit = "4.13.2"
 espresso-core = "3.5.1"
 hilt = "2.46.1"
-coil = "2.2.2"
-navigation-compose = "2.5.3"
+coil = "2.4.0"
+coil-svg = "2.3.0"
+navigation-compose = "2.7.3"
 hilt-navigation-compose = "1.0.0"
 javax-inject = "1"
-room = "2.5.0"
-coroutine-core = "1.6.4"
-navigation-animation-compose = "0.29.1-alpha"
+room = "2.5.2"
+coroutine-core = "1.7.3"
 timber = "5.0.1"
 
 [libraries]
-androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx"}
-material-compose = { module = "androidx.compose.material:material", version.ref = "material"}
-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose"}
+# Android
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
+#androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx"}
+# Compose
+compose-material = { module = "androidx.compose.material:material", version.ref = "material"}
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose"}
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose"}
 compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose"}
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose"}
-compose-ui-test = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose"}
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose"}
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+# Test
 test-junit = { module = "androidx.test.ext:junit", version.ref = "android-junit" }
 test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
-compose-test-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 junit = { module = "junit:junit", version.ref = "junit" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-compose-view-model = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-view-model"}
+# Coil
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil-svg" }
+# Hilt
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
-javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+# Room
 room-core = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+# Other
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine-core" }
-navigation-animation-compose = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "navigation-animation-compose" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 # Build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -56,13 +60,12 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 [bundles]
-compose-core = ["compose-ui", "compose-ui-preview", "activity-compose", "compose-view-model", "navigation-animation-compose"]
-android-core = ["androidx-core", "lifecycle-runtime-ktx"]
-material = ["material-compose"]
+compose-core = ["compose-ui", "compose-ui-preview", "compose-activity"]
+compose-test = ["compose-ui-test-manifest", "compose-ui-test-junit4"]
+#android-core = ["androidx-core-ktx", "androidx-lifecycle-runtime-ktx"]
 android-test = ["test-junit", "test-espresso"]
-compose-test = ["compose-ui-tooling", "compose-ui-test"]
 coil = ["coil-core", "coil-compose", "coil-svg"]
-navigation = ["navigation-compose", "hilt-navigation-compose"]
+navigation = ["compose-navigation", "hilt-navigation-compose"]
 room = ["room-core", "room-ktx"]
 
 [plugins]

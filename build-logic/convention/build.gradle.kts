@@ -25,6 +25,18 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("androidApplicationCompose") {
+            id = "sleepover.android.app.compose"
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+        register("androidKotlin") {
+            id = "sleepover.android.kotlin"
+            implementationClass = "AndroidKotlinConventionPlugin"
+        }
+        register("androidCommon") {
+            id = "sleepover.android.common"
+            implementationClass = "AndroidCommonConventionPlugin"
+        }
         register("kotlinLibraryCommon") {
             id = "sleepover.kotlin.library"
             implementationClass = "KotlinLibraryCommonConventionPlugin"

@@ -40,6 +40,6 @@ internal fun Project.configureAndroidAppCommon(
 
 internal fun Project.configureCommonDependencies() {
     dependencies {
-        add("implementation", libs.library("android-core-ktx"))
+        add("implementation", libs.library("androidx-core-ktx"))
     }
 }

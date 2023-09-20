@@ -18,8 +18,8 @@ internal fun Project.configureAndroidCompose(
 
         dependencies {
             add("implementation", libs.library("compose-ui"))
-            add("implementation", libs.library("compose-preview"))
-            add("debugImplementation", libs.library("compose-tooling"))
+            add("implementation", libs.library("compose-ui-preview"))
+            add("debugImplementation", libs.library("compose-ui-tooling"))
         }
     }
 }
