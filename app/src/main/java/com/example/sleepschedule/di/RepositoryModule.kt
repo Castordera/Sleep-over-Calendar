@@ -1,4 +1,4 @@
-package com.ulises.data.di
+package com.example.sleepschedule.di
 
 import com.ulises.data.repositories.*
 import dagger.Binds
