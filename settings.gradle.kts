@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        includeBuild("build-logic")
     }
 }
 dependencyResolutionManagement {
@@ -12,8 +13,11 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+includeBuild("build-logic")
+
 rootProject.name = "SleepSchedule"
-include ':app'
-include ':usecases'
-include ':domain'
-include ':data'
+include(":app")
+include(":usecases")
+include(":domain")
+include(":data")
