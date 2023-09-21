@@ -2,8 +2,8 @@ package com.example.sleepschedule.ui.screens.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.di.AppDispatchers
 import com.example.sleepschedule.ui.components.TextType
+import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.session.RegisterUserUseCase
 import com.ulises.usecases.users.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val dispatchers: AppDispatchers,
+    private val dispatchers: ScheduleDispatchers,
     private val registerUserUseCase: RegisterUserUseCase,
     private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {

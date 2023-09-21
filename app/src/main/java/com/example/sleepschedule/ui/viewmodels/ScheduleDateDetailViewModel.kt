@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.common.TimeHelper.toISODate
-import com.example.sleepschedule.di.AppDispatchers
+import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.AddScheduledEventUseCase
 import com.ulises.usecases.session.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,12 +16,12 @@ import outcomes.OutcomeScheduledEvent
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleDateDetailViewModel @Inject constructor(
-    private val dispatchers: AppDispatchers,
+    private val dispatchers: ScheduleDispatchers,
     private val addScheduledEventUseCase: AddScheduledEventUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {

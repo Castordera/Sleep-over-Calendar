@@ -1,6 +1,5 @@
 package com.example.sleepschedule.data.database
 
-import com.example.sleepschedule.di.AppDispatchers
 import com.example.sleepschedule.di.FirebaseEventsReference
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -8,6 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.ulises.data.datasources.ScheduleRemoteDataSource
+import com.ulises.dispatcher_core.ScheduleDispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class FirebaseRemoteDataSource @Inject constructor (
     @FirebaseEventsReference private val database: DatabaseReference,
-    private val dispatchers: AppDispatchers
+    private val dispatchers: ScheduleDispatchers
 ): ScheduleRemoteDataSource {
 
     override fun getAllScheduledEvents(): Flow<List<models.ScheduledEvent>> = callbackFlow {

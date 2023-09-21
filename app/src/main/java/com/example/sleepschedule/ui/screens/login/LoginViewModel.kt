@@ -2,9 +2,9 @@ package com.example.sleepschedule.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.di.AppDispatchers
 import com.example.sleepschedule.ui.components.TextType
 import com.example.sleepschedule.ui.navigation.Screens
+import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.session.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val dispatchers: AppDispatchers,
+    private val dispatchers: ScheduleDispatchers,
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 

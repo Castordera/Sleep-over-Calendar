@@ -2,6 +2,7 @@ package com.example.sleepschedule.ui.screens.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.session.CloseSessionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
+    private val dispatchers: ScheduleDispatchers,
     private val closeSessionUseCase: CloseSessionUseCase
 ) : ViewModel() {
 
@@ -24,7 +26,7 @@ class UserViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun onLogoutClicked() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.main) {
             closeSessionUseCase()
             _uiState.update { it.copy(loggedOutAction = true) }
         }

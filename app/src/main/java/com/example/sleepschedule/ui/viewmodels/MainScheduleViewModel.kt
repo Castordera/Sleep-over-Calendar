@@ -2,13 +2,17 @@ package com.example.sleepschedule.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.di.AppDispatchers
 import com.example.sleepschedule.ui.utils.DialogType
+import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.DeleteScheduleEventUseCase
 import com.ulises.usecases.GetAllScheduledEventsUseCase
 import com.ulises.usecases.UpdateScheduleEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import models.CardFace
 import models.ScheduledEvent
@@ -16,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScheduleViewModel @Inject constructor(
-    private val dispatchers: AppDispatchers,
+    private val dispatchers: ScheduleDispatchers,
     private val getAllScheduledEventsUseCase: GetAllScheduledEventsUseCase,
     private val deleteScheduleEventUseCase: DeleteScheduleEventUseCase,
     private val updateScheduleEventUseCase: UpdateScheduleEventUseCase

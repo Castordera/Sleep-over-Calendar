@@ -28,7 +28,7 @@ fun FabButton(
 ) {
     FloatingActionButton(
         onClick = onClick,
-        shape = Shapes.extraLarge,
+        shape = Shapes.small,
     ) {
         Icon(
             painter = painterResource(icon),
