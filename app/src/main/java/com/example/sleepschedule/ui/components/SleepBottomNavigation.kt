@@ -1,10 +1,9 @@
 package com.example.sleepschedule.ui.components
 
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
@@ -41,7 +40,6 @@ fun SleepBottomNavigation(
 fun PrevNavigationBar() {
     SleepBottomNavigation(
         appState = SleepScheduleAppState(
-            scaffoldState = rememberScaffoldState(),
             navController = rememberNavController(),
             coroutineScope = rememberCoroutineScope()
         ),

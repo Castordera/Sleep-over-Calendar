@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -37,11 +38,11 @@ fun SignInRoute(
     navigateBack: () -> Unit
 ) {
     val uiState by registerViewModel.uiState.collectAsStateWithLifecycle()
-    val scaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     if (uiState.error.isNotBlank()) {
         LaunchedEffect(uiState.error) {
-            scaffoldState.snackbarHostState.showSnackbar(uiState.error)
+            snackBarHostState.showSnackbar(uiState.error)
             registerViewModel.onErrorShown()
         }
     }
@@ -53,8 +54,9 @@ fun SignInRoute(
     }
 
     Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = { TopBar(title = stringResource(id = R.string.signin_top_bar)) { navigateBack() }}
+        topBar = {
+            TopBar(title = stringResource(id = R.string.signin_top_bar)) { navigateBack() }
+        }
     ) {
         SignInScreen(
             modifier = Modifier.padding(it),

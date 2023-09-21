@@ -1,7 +1,5 @@
 package com.example.sleepschedule.ui
 
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -15,16 +13,14 @@ import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun rememberAppState(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
-) = remember(scaffoldState, navController, coroutineScope) {
-    SleepScheduleAppState(scaffoldState, navController, coroutineScope)
+) = remember(navController, coroutineScope) {
+    SleepScheduleAppState(navController, coroutineScope)
 }
 
 @Stable
 class SleepScheduleAppState(
-    val scaffoldState: ScaffoldState,
     val navController: NavHostController,
     coroutineScope: CoroutineScope
 ) {

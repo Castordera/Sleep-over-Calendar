@@ -10,15 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,11 +44,11 @@ fun LoginRoute(
     navigateTo: (Screens) -> Unit
 ) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-    val scaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     if (uiState.error.isNotBlank()) {
         LaunchedEffect(uiState.error) {
-            scaffoldState.snackbarHostState.showSnackbar(uiState.error)
+            snackBarHostState.showSnackbar(uiState.error)
             loginViewModel.onErrorShowed()
         }
     }
@@ -59,9 +60,7 @@ fun LoginRoute(
         }
     }
 
-    Scaffold(
-        scaffoldState = scaffoldState
-    ) { padding ->
+    Scaffold { padding ->
         LoginScreen(
             modifier = Modifier.padding(padding),
             uiState = uiState,

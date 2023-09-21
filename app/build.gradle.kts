@@ -49,7 +49,6 @@ dependencies {
 //    implementation(libs.bundles.android.core)
     //  Compose
     implementation(libs.compose.activity)
-    implementation(libs.compose.material)
     implementation(libs.compose.material3)
     implementation(libs.compose.lifecycle.runtime)
 
