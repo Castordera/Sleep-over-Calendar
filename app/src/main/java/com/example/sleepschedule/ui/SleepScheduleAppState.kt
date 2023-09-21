@@ -1,5 +1,6 @@
 package com.example.sleepschedule.ui
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -14,15 +15,17 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun rememberAppState(
     navController: NavHostController = rememberNavController(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) = remember(navController, coroutineScope) {
-    SleepScheduleAppState(navController, coroutineScope)
+    SleepScheduleAppState(navController, coroutineScope, snackBarHostState)
 }
 
 @Stable
 class SleepScheduleAppState(
     val navController: NavHostController,
-    coroutineScope: CoroutineScope
+    val coroutineScope: CoroutineScope,
+    val snackBarHostState: SnackbarHostState
 ) {
     private val bottomBarRoutes = bottomNavigationScreens.map { it.route }
 

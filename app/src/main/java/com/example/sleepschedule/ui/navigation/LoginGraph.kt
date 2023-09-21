@@ -5,11 +5,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.screens.login.LoginRoute
 import com.example.sleepschedule.ui.screens.signin.SignInRoute
 
 fun NavGraphBuilder.loginGraph(
-    navController: NavHostController
+    appState: SleepScheduleAppState,
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = Screens.Login.route,
@@ -21,6 +23,7 @@ fun NavGraphBuilder.loginGraph(
         ) {
             LoginRoute(
                 loginViewModel = hiltViewModel(),
+                snackBarHostState = appState.snackBarHostState,
                 navigateTo = { dest ->
                     if (dest is Screens.SignIn) {
                         navController.navigate(dest.route)

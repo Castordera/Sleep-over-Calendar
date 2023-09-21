@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
 import com.example.sleepschedule.common.scheduleEventMockList
 import com.example.sleepschedule.ui.components.FabButton
-import com.example.sleepschedule.ui.components.LoadingIndicator
+import com.ulises.components.indicators.LoadingIndicator
 import com.example.sleepschedule.ui.components.ScheduleItem
 import com.example.sleepschedule.ui.dialogs.DialogDeleteEvent
 import com.example.sleepschedule.ui.dialogs.DialogFeedback
@@ -85,7 +85,11 @@ private fun ScheduleListScreen(
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                LoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                LoadingIndicator(
+                    modifier = Modifier.align(
+                        Alignment.Center
+                    )
+                )
             }
         } else {
             if (uiState.scheduleEvents.isNullOrEmpty()) {

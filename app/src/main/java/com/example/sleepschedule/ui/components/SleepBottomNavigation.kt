@@ -5,10 +5,8 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.navigation.Screens
 
@@ -17,10 +15,23 @@ fun SleepBottomNavigation(
     appState: SleepScheduleAppState,
     items: List<Screens>
 ) {
+    BottomNav(
+        items = items,
+        currentDestination = appState.currentDestination?.route,
+        navigateTo = appState::navigateToBottomBarRoute
+    )
+}
+
+@Composable
+private fun BottomNav(
+    items: List<Screens>,
+    currentDestination: String?,
+    navigateTo: (String) -> Unit,
+) {
     NavigationBar {
         items.forEach { screen ->
             NavigationBarItem(
-                selected = appState.currentDestination?.route == screen.route,
+                selected = currentDestination == screen.route,
                 icon = {
                     Icon(
                         painter = painterResource(id = screen.icon!!),
@@ -29,7 +40,7 @@ fun SleepBottomNavigation(
                 },
                 label = { Text(screen.name.orEmpty()) },
                 alwaysShowLabel = false,
-                onClick = { appState.navigateToBottomBarRoute(screen.route) }
+                onClick = { navigateTo(screen.route) }
             )
         }
     }
@@ -38,14 +49,9 @@ fun SleepBottomNavigation(
 @Preview
 @Composable
 fun PrevNavigationBar() {
-    SleepBottomNavigation(
-        appState = SleepScheduleAppState(
-            navController = rememberNavController(),
-            coroutineScope = rememberCoroutineScope()
-        ),
-        items = listOf(
-            Screens.Home,
-            Screens.User
-        )
+    BottomNav(
+        items = listOf(Screens.Home, Screens.User),
+        currentDestination = Screens.User.route,
+        navigateTo = {},
     )
 }

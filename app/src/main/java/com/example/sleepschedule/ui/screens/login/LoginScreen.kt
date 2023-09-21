@@ -13,13 +13,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,10 +41,10 @@ import com.ulises.theme.SleepScheduleTheme
 @Composable
 fun LoginRoute(
     loginViewModel: LoginViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     navigateTo: (Screens) -> Unit
 ) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-    val snackBarHostState = remember { SnackbarHostState() }
 
     if (uiState.error.isNotBlank()) {
         LaunchedEffect(uiState.error) {
@@ -60,7 +60,9 @@ fun LoginRoute(
         }
     }
 
-    Scaffold { padding ->
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackBarHostState) }
+    ) { padding ->
         LoginScreen(
             modifier = Modifier.padding(padding),
             uiState = uiState,

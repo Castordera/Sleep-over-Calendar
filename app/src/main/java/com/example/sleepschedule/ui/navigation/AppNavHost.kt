@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
 import com.example.sleepschedule.ui.screens.ScheduleListRoute
 import com.example.sleepschedule.ui.screens.user.UserRoute
@@ -13,6 +14,7 @@ import com.example.sleepschedule.ui.screens.user.UserRoute
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
+    appState: SleepScheduleAppState,
     navController: NavHostController
 ) {
     NavHost(
@@ -21,7 +23,10 @@ fun AppNavHost(
         startDestination = Graphs.Splash.route
     ) {
         splashGraph(navController = navController)
-        loginGraph(navController = navController)
+        loginGraph(
+            appState = appState,
+            navController = navController,
+        )
         composable(
             route = Screens.Home.route
         ) {

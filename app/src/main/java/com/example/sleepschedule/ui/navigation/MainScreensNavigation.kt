@@ -10,6 +10,7 @@ import com.example.sleepschedule.ui.rememberAppState
 @Composable
 fun MainScreensNavigation() {
     val appState = rememberAppState()
+
     Scaffold(
         bottomBar = {
             if (appState.shouldShowBottomBar) {
@@ -22,6 +23,7 @@ fun MainScreensNavigation() {
     ) { padding ->
         AppNavHost(
             modifier = Modifier.padding(padding),
+            appState = appState,
             navController = appState.navController
         )
     }

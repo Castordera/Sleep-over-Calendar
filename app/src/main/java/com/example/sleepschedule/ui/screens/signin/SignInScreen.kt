@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -56,7 +57,8 @@ fun SignInRoute(
     Scaffold(
         topBar = {
             TopBar(title = stringResource(id = R.string.signin_top_bar)) { navigateBack() }
-        }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) }
     ) {
         SignInScreen(
             modifier = Modifier.padding(it),

@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.components.indicators
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
