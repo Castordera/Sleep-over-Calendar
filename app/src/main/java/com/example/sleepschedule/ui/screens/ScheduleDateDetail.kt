@@ -3,12 +3,22 @@ package com.example.sleepschedule.ui.screens
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +31,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
 import com.example.sleepschedule.common.day
 import com.example.sleepschedule.common.month
@@ -30,14 +41,14 @@ import com.example.sleepschedule.ui.components.TopBar
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import com.example.sleepschedule.ui.viewmodels.TextFieldType
-import java.util.*
+import java.util.Calendar
 
 @Composable
 fun ScheduleDetailRoute(
-    viewModel: ScheduleDateDetailViewModel = viewModel(),
+    viewModel: ScheduleDateDetailViewModel = hiltViewModel(),
     onNavigateBackClick: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ScheduleDateDetail(
         uiState = uiState,
@@ -58,10 +69,11 @@ fun ScheduleDateDetail(
     onAddEvent: () -> Unit,
     onNavigateBackClick: () -> Unit
 ) {
+    //Todo(Change it to Compose Date Picker)
     val dialog = createCalendarDialog(LocalContext.current, onDateSelected)
 
     if (uiState.addComplete) {
-        LaunchedEffect(key1 = Unit) {
+        LaunchedEffect(Unit) {
             onNavigateBackClick()
         }
     }
@@ -169,7 +181,7 @@ private fun createCalendarDialog(
     return mDatePickerDialog
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 fun Prev_ScheduleDateDetail() {
     SleepScheduleTheme {

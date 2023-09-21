@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
-import com.example.sleepschedule.ui.screens.ScheduleListScreen
+import com.example.sleepschedule.ui.screens.ScheduleListRoute
 import com.example.sleepschedule.ui.screens.user.UserRoute
 
 @Composable
@@ -25,8 +25,8 @@ fun AppNavHost(
         composable(
             route = Screens.Home.route
         ) {
-            ScheduleListScreen(
-                scheduleViewModel = hiltViewModel(),
+            ScheduleListRoute(
+                viewModel = hiltViewModel(),
                 onNavigateToAdd = { navController.navigate(Screens.AddEvent.route) }
             )
         }

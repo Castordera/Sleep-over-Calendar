@@ -3,12 +3,21 @@ package com.example.sleepschedule.ui.screens.login
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +29,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
 import com.example.sleepschedule.ui.components.AppTextField
 import com.example.sleepschedule.ui.components.TextType
@@ -29,10 +39,10 @@ import com.example.sleepschedule.ui.theme.SleepScheduleTheme
 
 @Composable
 fun LoginRoute(
-    loginViewModel: LoginViewModel = viewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
     navigateTo: (Screens) -> Unit
 ) {
-    val uiState by loginViewModel.uiState.collectAsState()
+    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     val scaffoldState = rememberScaffoldState()
 
     if (uiState.error.isNotBlank()) {
@@ -43,7 +53,7 @@ fun LoginRoute(
     }
 
     if (uiState.navigateTo != null) {
-        LaunchedEffect(key1 = Unit) {
+        LaunchedEffect(Unit) {
             navigateTo(uiState.navigateTo!!)
             loginViewModel.onNavigatedToRegister()
         }
@@ -123,8 +133,8 @@ fun LoginScreen(
     }
 }
 
-@Preview(showSystemUi = true)
-@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PrevLoginScreen() {
     SleepScheduleTheme {

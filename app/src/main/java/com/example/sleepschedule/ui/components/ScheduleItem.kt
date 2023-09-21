@@ -3,12 +3,24 @@ package com.example.sleepschedule.ui.components
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -27,8 +39,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.sleepschedule.R
 import com.example.sleepschedule.common.TimeHelper
+import com.example.sleepschedule.common.scheduleEventMockList
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
-import com.example.sleepschedule.ui.utils.demoEvent
 import com.example.sleepschedule.ui.utils.getImageFromMonth
 import models.CardFace
 import models.ScheduledEvent
@@ -42,7 +54,10 @@ fun ScheduleItem(
     onClickItem: (ScheduledEvent) -> Unit
 ) {
     var image by remember { mutableStateOf<Int?>(null) }
-    val rotation: Float by animateFloatAsState(if (item.cardFace == CardFace.BACK) 180f else 0f)
+    val rotation: Float by animateFloatAsState(
+        targetValue = if (item.cardFace == CardFace.BACK) 180f else 0f,
+        label = "Rotation Card"
+    )
 
     LaunchedEffect(key1 = Unit) {
         image = item.getImageFromMonth()
@@ -139,10 +154,10 @@ fun ScheduleItem(
 @Preview
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Prev_ScheduleItem() {
+private fun Prev_ScheduleItem() {
     SleepScheduleTheme {
         ScheduleItem(
-            item = demoEvent,
+            item = scheduleEventMockList[0],
             onClickUpdateFeedback = {},
             onClickDelete = {},
             onClickItem = {}

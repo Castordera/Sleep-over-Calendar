@@ -1,5 +1,6 @@
 package com.example.sleepschedule.ui.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
@@ -22,7 +23,7 @@ fun EmptyScheduleScreen(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = Color.White,
+        color = Color.White,//Todo(Remove this color, Mess up Dark mode)
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -45,10 +46,13 @@ fun EmptyScheduleScreen(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Prev_EmptyScheduleScreen() {
+private fun Prev_EmptyScheduleScreen() {
     SleepScheduleTheme {
-        EmptyScheduleScreen()
+        Surface {
+            EmptyScheduleScreen()
+        }
     }
 }

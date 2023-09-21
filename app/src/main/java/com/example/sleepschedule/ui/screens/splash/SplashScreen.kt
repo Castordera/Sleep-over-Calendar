@@ -7,22 +7,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.ui.components.LoadingIndicator
 import com.example.sleepschedule.ui.theme.SleepScheduleTheme
 
 @Composable
 fun SplashRoute(
-    splashViewModel: SplashViewModel = viewModel(),
+    splashViewModel: SplashViewModel = hiltViewModel(),
     onUserLogAction: (Boolean) -> Unit
 ) {
-    val uiState by splashViewModel.uiState.collectAsState()
+    val uiState by splashViewModel.uiState.collectAsStateWithLifecycle()
 
     SplashScreen(
         uiState = uiState,
@@ -33,7 +33,7 @@ fun SplashRoute(
 @Composable
 fun SplashScreen(
     uiState: SplashViewModel.UiState,
-    onUserLogAction: (Boolean) -> Unit
+    onUserLogAction: (Boolean) -> Unit = {}
 ) {
     LaunchedEffect(uiState.userFound) {
         uiState.userFound?.also(onUserLogAction)
@@ -59,7 +59,6 @@ fun PrevSplashScreen() {
     SleepScheduleTheme {
         SplashScreen(
             uiState = SplashViewModel.UiState(),
-            onUserLogAction = {}
         )
     }
 }

@@ -1,17 +1,24 @@
 package com.example.sleepschedule.ui.screens
 
-import androidx.compose.foundation.layout.*
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.sleepschedule.common.scheduleEventMockList
 import com.example.sleepschedule.ui.components.FAButton
 import com.example.sleepschedule.ui.components.LoadingIndicator
 import com.example.sleepschedule.ui.components.ScheduleItem
@@ -23,15 +30,32 @@ import com.example.sleepschedule.ui.viewmodels.MainScheduleViewModel
 import models.ScheduledEvent
 
 @Composable
-fun ScheduleListScreen(
-    modifier: Modifier = Modifier,
-    scheduleViewModel: MainScheduleViewModel = viewModel(),
-    onNavigateToAdd: () -> Unit
+fun ScheduleListRoute(
+    viewModel: MainScheduleViewModel = hiltViewModel(),
+    onNavigateToAdd: () -> Unit,
 ) {
-    val uiState by scheduleViewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    ScheduleListScreen(
+        uiState = uiState,
+        onNavigateToAdd = onNavigateToAdd,
+        onClickItem = viewModel::onClickItemForRotation,
+        onDialogChangeVisibility = viewModel::onDialogCloseVisibilityChange,
+        onUpdateRating = viewModel::onUpdateRating,
+        onDeleteEvent = viewModel::onDeleteScheduleEvent,
+    )
+}
+
+@Composable
+private fun ScheduleListScreen(
+    uiState: MainScheduleViewModel.UiState,
+    onNavigateToAdd: () -> Unit,
+    onClickItem: (ScheduledEvent) -> Unit,
+    onDialogChangeVisibility: (DialogType, Boolean, ScheduledEvent?) -> Unit,
+    onUpdateRating: (event: ScheduledEvent?, rating: Int) -> Unit,
+    onDeleteEvent: (eventId: String?) -> Unit,
+) {
     Scaffold(
-        modifier = modifier,
         floatingActionButton = {
             if (!uiState.isLoading) {
                 FAButton { onNavigateToAdd() }
@@ -41,28 +65,16 @@ fun ScheduleListScreen(
         if (uiState.showDialogDelete) {
             DialogDeleteEvent(
                 event = uiState.selectedEvent,
-                onDismiss = {
-                    scheduleViewModel.onDialogCloseVisibilityChange(
-                        dialogType = DialogType.Delete,
-                        isVisible = false
-                    )
-                },
-                onDelete = {
-                    scheduleViewModel.onDeleteScheduleEvent(uiState.selectedEvent?.id)
-                }
+                onDismiss = { onDialogChangeVisibility(DialogType.Delete, false, null) },
+                onDelete = { onDeleteEvent(uiState.selectedEvent?.id) }
             )
         }
         if (uiState.showDialogRating) {
             DialogFeedback(
                 event = uiState.selectedEvent,
-                onDismiss = {
-                    scheduleViewModel.onDialogCloseVisibilityChange(
-                        dialogType = DialogType.Rating,
-                        isVisible = false
-                    )
-                },
+                onDismiss = { onDialogChangeVisibility(DialogType.Rating, false, null) },
                 onUpdateRating = {
-                    scheduleViewModel.onUpdateRating(uiState.selectedEvent, it)
+                    onUpdateRating(uiState.selectedEvent, it)
                 }
             )
         }
@@ -87,26 +99,18 @@ fun ScheduleListScreen(
                     modifier = Modifier.padding(paddingValues)
                 ) {
                     items(
-                        items = uiState.scheduleEvents as List<ScheduledEvent>,
+                        items = uiState.scheduleEvents,
                         key = { it.id }
                     ) {
                         ScheduleItem(
                             item = it,
                             onClickUpdateFeedback = {
-                                scheduleViewModel.onDialogCloseVisibilityChange(
-                                    dialogType = DialogType.Rating,
-                                    isVisible = true,
-                                    event = it
-                                )
+                                onDialogChangeVisibility(DialogType.Rating, true, it)
                             },
                             onClickDelete = {
-                                scheduleViewModel.onDialogCloseVisibilityChange(
-                                    dialogType = DialogType.Delete,
-                                    isVisible = true,
-                                    event = it
-                                )
+                                onDialogChangeVisibility(DialogType.Delete, true, it)
                             },
-                            onClickItem = scheduleViewModel::onClickItemForRotation
+                            onClickItem = onClickItem
                         )
                     }
                 }
@@ -115,10 +119,22 @@ fun ScheduleListScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Prev_MainScheduleScreen() {
+private fun Prev_MainScheduleScreen() {
     SleepScheduleTheme {
-        ScheduleListScreen {}
+        Surface {
+            ScheduleListScreen(
+                uiState = MainScheduleViewModel.UiState(
+                    scheduleEvents = scheduleEventMockList
+                ),
+                onNavigateToAdd = {},
+                onClickItem = {},
+                onDialogChangeVisibility = { _, _, _ -> },
+                onUpdateRating = { _, _ -> },
+                onDeleteEvent = {},
+            )
+        }
     }
 }
