@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.screens.splash
+package com.ulises.features.splash.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ulises.components.indicators.LoadingIndicator
+import com.ulises.features.splash.models.UiState
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable
@@ -32,7 +33,7 @@ fun SplashRoute(
 
 @Composable
 fun SplashScreen(
-    uiState: SplashViewModel.UiState,
+    uiState: UiState,
     onUserLogAction: (Boolean) -> Unit = {}
 ) {
     LaunchedEffect(uiState.userFound) {
@@ -58,7 +59,7 @@ fun SplashScreen(
 fun PrevSplashScreen() {
     SleepScheduleTheme {
         SplashScreen(
-            uiState = SplashViewModel.UiState(),
+            uiState = UiState(),
         )
     }
 }

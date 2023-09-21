@@ -1,5 +1,7 @@
 package com.example.sleepschedule.di
 
+import com.ulises.dispatcher_core.ScheduleDispatchersImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,15 +12,22 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DispatchersModule {
+interface DispatchersModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideDispatchers() = AppDispatchers(
-        main = Dispatchers.Main,
-        io = Dispatchers.IO,
-        default = Dispatchers.Default
-    )
+    fun bindDispatchers(imp: ScheduleDispatchersImpl): com.ulises.dispatcher_core.ScheduleDispatchers
+    //Todo(Remove other dispatcher)
+
+    companion object {
+        @Provides
+        @Singleton
+        fun provideDispatchers() = AppDispatchers(
+            main = Dispatchers.Main,
+            io = Dispatchers.IO,
+            default = Dispatchers.Default
+        )
+    }
 }
 
 class AppDispatchers(

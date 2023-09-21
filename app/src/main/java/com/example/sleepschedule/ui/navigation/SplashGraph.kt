@@ -1,11 +1,10 @@
 package com.example.sleepschedule.ui.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.sleepschedule.ui.screens.splash.SplashRoute
+import com.ulises.features.splash.ui.SplashRoute
 
 fun NavGraphBuilder.splashGraph(
     navController: NavHostController
@@ -18,7 +17,6 @@ fun NavGraphBuilder.splashGraph(
             route = Screens.Splash.route
         ) {
             SplashRoute(
-                splashViewModel = hiltViewModel(),
                 onUserLogAction = { loggedIn ->
                     val route = if (loggedIn) Screens.Home.route else Graphs.Login.route
                     navController.navigate(route) {

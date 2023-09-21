@@ -71,6 +71,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":design:theme"))
     implementation(project(":design:components"))
+    implementation(project(":common:dispatcher-core"))
+    implementation(project(":features:splash"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.android.test)
