@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.sleepschedule.ui.navigation.MainScreensNavigation
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

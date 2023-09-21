@@ -40,7 +40,7 @@ import coil.request.ImageRequest
 import com.example.sleepschedule.R
 import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.common.scheduleEventMockList
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.utils.getImageFromMonth
 import models.CardFace
 import models.ScheduledEvent

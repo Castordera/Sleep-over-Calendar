@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":usecases"))
     implementation(project(":domain"))
+    implementation(project(":design:theme"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.android.test)

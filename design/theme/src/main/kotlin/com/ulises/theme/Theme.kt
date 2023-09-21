@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.theme
+package com.ulises.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -7,7 +7,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val darkColorPalette = darkColors(
     primary = Color(0xffcfbcff),
     secondary = Color(0xffcbc2db),
     surface = Color(0xFF49454F),
@@ -15,7 +15,7 @@ private val DarkColorPalette = darkColors(
 
 )
 
-private val LightColorPalette = lightColors(
+private val lightColorPalette = lightColors(
     primary = Color(0xff6750a4),
     secondary = Color(0xff625b71),
     surface = Color(0xFFE7E0EC),
@@ -37,9 +37,9 @@ fun SleepScheduleTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        darkColorPalette
     } else {
-        LightColorPalette
+        lightColorPalette
     }
 
     MaterialTheme(

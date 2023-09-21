@@ -20,6 +20,8 @@ javax-inject = "1"
 room = "2.5.2"
 coroutine-core = "1.7.3"
 timber = "5.0.1"
+appcompat = "1.6.1"
+com-google-android-material-material = "1.9.0"
 
 [libraries]
 # Android
@@ -59,6 +61,7 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-ui-preview", "compose-activity"]

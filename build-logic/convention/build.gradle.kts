@@ -29,6 +29,10 @@ gradlePlugin {
             id = "sleepover.android.app.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("androidLibraryCompose") {
+            id = "sleepover.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
         register("androidKotlin") {
             id = "sleepover.android.kotlin"
             implementationClass = "AndroidKotlinConventionPlugin"

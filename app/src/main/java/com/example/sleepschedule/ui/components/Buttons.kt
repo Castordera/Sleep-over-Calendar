@@ -19,8 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sleepschedule.R
-import com.example.sleepschedule.ui.theme.Shapes
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.Shapes
+import com.ulises.theme.SleepScheduleTheme
 
 @Composable
 fun FAButton(

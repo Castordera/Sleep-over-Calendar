@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.ui.components.LoadingIndicator
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 
 @Composable
 fun SplashRoute(

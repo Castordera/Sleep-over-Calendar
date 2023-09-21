@@ -24,7 +24,7 @@ import com.example.sleepschedule.ui.components.LoadingIndicator
 import com.example.sleepschedule.ui.components.ScheduleItem
 import com.example.sleepschedule.ui.dialogs.DialogDeleteEvent
 import com.example.sleepschedule.ui.dialogs.DialogFeedback
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.utils.DialogType
 import com.example.sleepschedule.ui.viewmodels.MainScheduleViewModel
 import models.ScheduledEvent

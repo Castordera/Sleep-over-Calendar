@@ -38,7 +38,7 @@ import com.example.sleepschedule.common.day
 import com.example.sleepschedule.common.month
 import com.example.sleepschedule.common.year
 import com.example.sleepschedule.ui.components.TopBar
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import com.example.sleepschedule.ui.viewmodels.TextFieldType
 import java.util.Calendar

@@ -35,7 +35,7 @@ import com.example.sleepschedule.R
 import com.example.sleepschedule.ui.components.AppTextField
 import com.example.sleepschedule.ui.components.TextType
 import com.example.sleepschedule.ui.navigation.Screens
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 
 @Composable
 fun LoginRoute(

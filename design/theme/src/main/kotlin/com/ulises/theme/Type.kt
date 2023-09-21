@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.theme
+package com.ulises.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

@@ -28,7 +28,7 @@ import com.example.sleepschedule.R
 import com.example.sleepschedule.ui.components.AppTextField
 import com.example.sleepschedule.ui.components.TextType
 import com.example.sleepschedule.ui.components.TopBar
-import com.example.sleepschedule.ui.theme.SleepScheduleTheme
+import com.ulises.theme.SleepScheduleTheme
 
 @Composable
 fun SignInRoute(
