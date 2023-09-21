@@ -50,6 +50,7 @@ dependencies {
     //  Compose
     implementation(libs.compose.activity)
     implementation(libs.compose.material)
+    implementation(libs.compose.material3)
     implementation(libs.compose.lifecycle.runtime)
 
     //  Hilt

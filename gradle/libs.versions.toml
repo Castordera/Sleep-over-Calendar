@@ -6,6 +6,7 @@ composeCompiler = "1.5.3"
 androidx-core = "1.12.0"
 lifecycle-runtime = "2.6.2"
 material = "1.5.1"
+material3 = "1.1.2"
 activity-compose = "1.7.2"
 compose = "1.5.1"
 android-junit = "1.1.5"
@@ -22,6 +23,7 @@ coroutine-core = "1.7.3"
 timber = "5.0.1"
 appcompat = "1.6.1"
 com-google-android-material-material = "1.9.0"
+com-google-android-material-material190 = "1.9.0"
 
 [libraries]
 # Android
@@ -29,6 +31,7 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 #androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx"}
 # Compose
 compose-material = { module = "androidx.compose.material:material", version.ref = "material"}
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose"}
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose"}
 compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose"}
@@ -62,6 +65,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material190" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-ui-preview", "compose-activity"]

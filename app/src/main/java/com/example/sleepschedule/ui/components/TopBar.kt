@@ -1,31 +1,42 @@
 package com.example.sleepschedule.ui.components
 
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import android.content.res.Configuration
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.sleepschedule.R
 import com.ulises.theme.SleepScheduleTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     title: String = "",
-    onBackClick: () -> Unit
+    onBackClick: (() -> Unit)? = null
 ) {
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
-            IconButton(imageResource = R.drawable.ic_arrow_back) {
-                onBackClick()
+            if (onBackClick == null) Unit
+            else {
+                IconButton(
+                    icon = R.drawable.ic_arrow_back,
+                    onClick = onBackClick,
+                )
             }
         }
     )
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Prev_TopBar() {
+fun PrevTopBar() {
     SleepScheduleTheme {
-        TopBar {}
+        TopBar(
+            title = "This is my title",
+            onBackClick = {}
+        )
     }
 }

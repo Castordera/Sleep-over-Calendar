@@ -1,16 +1,23 @@
 package com.example.sleepschedule.ui.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ulises.theme.SleepScheduleTheme
 
 @Composable
 fun AppTextField(
@@ -44,9 +51,39 @@ fun AppTextField(
     }
 }
 
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PrevTextField() {
+    SleepScheduleTheme {
+        Surface {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(8.dp)
+            ) {
+                AppTextField(
+                    text = "This is my text",
+                    label = "Label",
+                    enabled = true,
+                    keyboardOptions = KeyboardOptions.Default,
+                    onTextChange = {},
+                )
+                AppTextField(
+                    text = "",
+                    label = "Label",
+                    message = "Message value",
+                    enabled = true,
+                    keyboardOptions = KeyboardOptions.Default,
+                    onTextChange = {},
+                )
+            }
+        }
+    }
+}
+
 sealed interface TextType {
-    object Email: TextType
-    object Password: TextType
-    object RePassword: TextType
-    object Name: TextType
+    object Email : TextType
+    object Password : TextType
+    object RePassword : TextType
+    object Name : TextType
 }

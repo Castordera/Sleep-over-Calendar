@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ulises.theme"
+    namespace = "com.ulises.components"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,5 +24,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.compose.material3)
+    implementation(project(":design:theme"))
+    implementation(libs.compose.material)
 }

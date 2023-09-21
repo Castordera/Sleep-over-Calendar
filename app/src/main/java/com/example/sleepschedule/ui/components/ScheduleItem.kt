@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -80,10 +80,11 @@ fun ScheduleItem(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
                 ) {
                     Column(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(top = 16.dp, bottom = 16.dp, start = 16.dp)
                     ) {
                         Text(
                             text = buildAnnotatedString {
@@ -111,11 +112,15 @@ fun ScheduleItem(
                             }
                         }
                     }
-                    ButtonIcon(image = R.drawable.ic_thumbs_up_down) {
-                        onClickUpdateFeedback()
-                    }
-                    ButtonIcon(image = R.drawable.ic_delete) {
-                        onClickDelete()
+                    Row {
+                        IconButton(
+                            icon = R.drawable.ic_thumbs_up_down,
+                            onClick = onClickUpdateFeedback,
+                        )
+                        IconButton(
+                            icon = R.drawable.ic_delete,
+                            onClick = onClickDelete,
+                        )
                     }
                 }
                 if (image != null) {
@@ -152,12 +157,26 @@ fun ScheduleItem(
 }
 
 @Preview
-@Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun Prev_ScheduleItem() {
+private fun PrevScheduleItem() {
     SleepScheduleTheme {
         ScheduleItem(
             item = scheduleEventMockList[0],
+            onClickUpdateFeedback = {},
+            onClickDelete = {},
+            onClickItem = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun PrevScheduleItemBack() {
+    SleepScheduleTheme {
+        ScheduleItem(
+            item = scheduleEventMockList[0].copy(cardFace = CardFace.BACK),
             onClickUpdateFeedback = {},
             onClickDelete = {},
             onClickItem = {}

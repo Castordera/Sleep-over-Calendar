@@ -8,8 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,8 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.sleepschedule.R
 import com.example.sleepschedule.common.scheduleEventMockList
-import com.example.sleepschedule.ui.components.FAButton
+import com.example.sleepschedule.ui.components.FabButton
 import com.example.sleepschedule.ui.components.LoadingIndicator
 import com.example.sleepschedule.ui.components.ScheduleItem
 import com.example.sleepschedule.ui.dialogs.DialogDeleteEvent
@@ -58,7 +58,10 @@ private fun ScheduleListScreen(
     Scaffold(
         floatingActionButton = {
             if (!uiState.isLoading) {
-                FAButton { onNavigateToAdd() }
+                FabButton(
+                    icon = R.drawable.ic_add,
+                    onClick = onNavigateToAdd,
+                )
             }
         }
     ) { paddingValues ->
@@ -122,19 +125,17 @@ private fun ScheduleListScreen(
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun Prev_MainScheduleScreen() {
+private fun PrevMainScheduleScreen() {
     SleepScheduleTheme {
-        Surface {
-            ScheduleListScreen(
-                uiState = MainScheduleViewModel.UiState(
-                    scheduleEvents = scheduleEventMockList
-                ),
-                onNavigateToAdd = {},
-                onClickItem = {},
-                onDialogChangeVisibility = { _, _, _ -> },
-                onUpdateRating = { _, _ -> },
-                onDeleteEvent = {},
-            )
-        }
+        ScheduleListScreen(
+            uiState = MainScheduleViewModel.UiState(
+                scheduleEvents = scheduleEventMockList
+            ),
+            onNavigateToAdd = {},
+            onClickItem = {},
+            onDialogChangeVisibility = { _, _, _ -> },
+            onUpdateRating = { _, _ -> },
+            onDeleteEvent = {},
+        )
     }
 }

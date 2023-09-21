@@ -6,11 +6,9 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,32 +21,34 @@ import com.ulises.theme.Shapes
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable
-fun FAButton(
-    onClickButton: () -> Unit
+fun FabButton(
+    @DrawableRes icon: Int,
+    contentDescription: String = "",
+    onClick: () -> Unit,
 ) {
-    FloatingActionButton(onClick = { onClickButton() }) {
+    FloatingActionButton(
+        onClick = onClick,
+        shape = Shapes.extraLarge,
+    ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_add),
-            contentDescription = null
+            painter = painterResource(icon),
+            contentDescription = contentDescription
         )
     }
 }
 
 @Composable
-fun ButtonIcon(
-    modifier: Modifier = Modifier,
-    @DrawableRes image: Int,
-    onClick: () -> Unit
+fun IconButton(
+    @DrawableRes icon: Int,
+    contentDescription: String = "",
+    onClick: () -> Unit,
 ) {
-    Icon(
-        painter = painterResource(id = image),
-        contentDescription = null,
-        modifier = modifier
-            .size(25.dp)
-            .clip(CircleShape)
-            .clickable { onClick() }
-            .padding(2.dp)
-    )
+    androidx.compose.material3.IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = contentDescription
+        )
+    }
 }
 
 @Composable
@@ -57,7 +57,10 @@ fun RatingButton(
     isSelected: Boolean = false,
     onClick: () -> Unit
 ) {
-    val animatedSize by animateDpAsState(targetValue = if (isSelected) 60.dp else 30.dp)
+    val animatedSize by animateDpAsState(
+        targetValue = if (isSelected) 60.dp else 30.dp,
+        label = "Animated Rating"
+    )
 
     Image(
         painter = painterResource(id = image),
@@ -72,13 +75,18 @@ fun RatingButton(
 @Preview
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Prev_FAButton() {
+fun PrevFabButton() {
     SleepScheduleTheme {
         Column {
-            FAButton {}
-            ButtonIcon(image = R.drawable.ic_thumbs_up_down) {
-
-            }
+            FabButton(
+                icon = R.drawable.ic_add,
+                contentDescription = "Content Description",
+                onClick = {}
+            )
+            IconButton(
+                icon = R.drawable.ic_add,
+                onClick = {}
+            )
         }
     }
 }
