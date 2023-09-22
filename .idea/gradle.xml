@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/build-logic/convention" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/dispatcher-core" />
+            <option value="$PROJECT_DIR$/common/test-core" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/design" />
             <option value="$PROJECT_DIR$/design/components" />

@@ -45,5 +45,9 @@ gradlePlugin {
             id = "sleepover.kotlin.library"
             implementationClass = "KotlinLibraryCommonConventionPlugin"
         }
+        register("unitTestCommon") {
+            id = "sleepover.unit.test"
+            implementationClass = "UnitTestConventionPlugin"
+        }
     }
 }

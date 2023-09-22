@@ -16,6 +16,11 @@ internal fun Project.configureAndroidCompose(
             kotlinCompilerExtensionVersion = libs.version("composeCompiler")
         }
 
+        packaging {
+            resources.excludes.add("META-INF/LICENSE-notice.md")
+            resources.excludes.add("META-INF/LICENSE.md")
+        }
+
         dependencies {
             add("implementation", libs.library("compose-ui"))
             add("implementation", libs.library("compose-ui-preview"))

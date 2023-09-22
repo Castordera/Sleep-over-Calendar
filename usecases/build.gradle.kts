@@ -1,5 +1,6 @@
 plugins {
     id("sleepover.kotlin.library")
+    id("sleepover.unit.test")
 }
 
 dependencies {
@@ -8,4 +9,5 @@ dependencies {
 
     implementation(libs.javax.inject)
     implementation(libs.coroutines.core)
+    testImplementation(project(":common:test-core"))
 }
