@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
 import com.example.sleepschedule.common.scheduleEventMockList
-import com.example.sleepschedule.ui.components.FabButton
+import com.ulises.components.FabButton
 import com.ulises.components.indicators.LoadingIndicator
 import com.example.sleepschedule.ui.components.ScheduleItem
 import com.example.sleepschedule.ui.dialogs.DialogDeleteEvent

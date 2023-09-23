@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.components
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.sleepschedule.R
 import com.ulises.theme.Shapes
 import com.ulises.theme.SleepScheduleTheme
 

@@ -2,7 +2,7 @@ package com.example.sleepschedule.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.ui.components.TextType
+import com.ulises.components.TextType
 import com.example.sleepschedule.ui.navigation.Screens
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.session.LoginUseCase

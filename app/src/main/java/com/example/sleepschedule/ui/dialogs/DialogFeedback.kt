@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sleepschedule.R
 import com.example.sleepschedule.ui.components.HeaderDialog
-import com.example.sleepschedule.ui.components.RatingButton
+import com.ulises.components.RatingButton
 import com.ulises.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.utils.RatingType
 import models.ScheduledEvent

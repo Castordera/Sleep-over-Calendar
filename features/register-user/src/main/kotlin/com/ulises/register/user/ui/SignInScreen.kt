@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.screens.signin
+package com.ulises.register.user.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sleepschedule.R
-import com.example.sleepschedule.ui.components.AppTextField
-import com.example.sleepschedule.ui.components.TextType
-import com.example.sleepschedule.ui.components.TopBar
+import com.ulises.components.AppTextField
+import com.ulises.components.TextType
+import com.ulises.components.toolbar.TopBar
+import com.ulises.register.user.R
+import com.ulises.register.user.models.UiState
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable
@@ -72,7 +73,7 @@ fun SignInRoute(
 @Composable
 private fun SignInScreen(
     modifier: Modifier = Modifier,
-    uiState: RegisterViewModel.UiState,
+    uiState: UiState,
     onTextChange: (type: TextType, text: String) -> Unit,
     onSignInClick: () -> Unit
 ) {
@@ -150,7 +151,7 @@ private fun SignInScreen(
 private fun PrevSignInScreen() {
     SleepScheduleTheme {
         SignInScreen(
-            uiState = RegisterViewModel.UiState(),
+            uiState = UiState(),
             onTextChange = { _, _ -> },
             onSignInClick = {}
         )

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ulises.features.splash"
+    namespace = "com.ulises.register.user"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -26,9 +26,9 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     //  Core
+    implementation(project(":common:dispatcher-core"))
     implementation(libs.hilt.navigation.compose)
     implementation(libs.compose.lifecycle.runtime)
-    implementation(project(":common:dispatcher-core"))
     //  Test
     testImplementation(project(":common:test-core"))
 }

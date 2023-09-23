@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.screens.login.LoginRoute
-import com.example.sleepschedule.ui.screens.signin.SignInRoute
+import com.ulises.register.user.ui.SignInRoute
 
 fun NavGraphBuilder.loginGraph(
     appState: SleepScheduleAppState,

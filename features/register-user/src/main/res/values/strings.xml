@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signin_top_bar">Register user</string>
+    <string name="label_signin_title">Fill in your data</string>
+    <string name="message_name_or_nickname">e.g. Ricardo or Yoyis</string>
+    <string name="filed_name_or_nickname">Name or Nickname</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Password</string>
+    <string name="field_re_password">Confirm Password</string>
+    <string name="field_label_min_characters">Min %s characters</string>
+    <string name="button_signin">Sign in</string>
+</resources>

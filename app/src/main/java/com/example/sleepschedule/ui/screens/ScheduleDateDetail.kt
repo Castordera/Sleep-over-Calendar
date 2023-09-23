@@ -38,7 +38,7 @@ import com.example.sleepschedule.R
 import com.example.sleepschedule.common.day
 import com.example.sleepschedule.common.month
 import com.example.sleepschedule.common.year
-import com.example.sleepschedule.ui.components.TopBar
+import com.ulises.components.toolbar.TopBar
 import com.ulises.theme.SleepScheduleTheme
 import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import com.example.sleepschedule.ui.viewmodels.TextFieldType

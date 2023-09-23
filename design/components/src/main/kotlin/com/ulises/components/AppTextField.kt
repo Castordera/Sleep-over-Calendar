@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -82,8 +82,8 @@ fun PrevTextField() {
 }
 
 sealed interface TextType {
-    object Email : TextType
-    object Password : TextType
-    object RePassword : TextType
-    object Name : TextType
+    data object Email : TextType
+    data object Password : TextType
+    data object RePassword : TextType
+    data object Name : TextType
 }

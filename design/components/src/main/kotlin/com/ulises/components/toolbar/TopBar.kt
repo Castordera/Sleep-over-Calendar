@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.components.toolbar
 
 import android.content.res.Configuration
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -6,7 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.sleepschedule.R
+import com.ulises.components.IconButton
+import com.ulises.components.R
 import com.ulises.theme.SleepScheduleTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

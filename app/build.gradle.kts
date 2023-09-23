@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":design:components"))
     implementation(project(":common:dispatcher-core"))
     implementation(project(":features:splash"))
+    implementation(project(":features:register-user"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.android.test)

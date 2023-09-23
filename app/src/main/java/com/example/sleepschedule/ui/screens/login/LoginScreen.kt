@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
-import com.example.sleepschedule.ui.components.AppTextField
-import com.example.sleepschedule.ui.components.TextType
+import com.ulises.components.AppTextField
+import com.ulises.components.TextType
 import com.example.sleepschedule.ui.navigation.Screens
 import com.ulises.theme.SleepScheduleTheme
 

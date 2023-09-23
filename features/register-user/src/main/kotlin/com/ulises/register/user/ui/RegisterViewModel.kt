@@ -1,9 +1,10 @@
-package com.example.sleepschedule.ui.screens.signin
+package com.ulises.register.user.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.ui.components.TextType
+import com.ulises.components.TextType
 import com.ulises.dispatcher_core.ScheduleDispatchers
+import com.ulises.register.user.models.UiState
 import com.ulises.usecases.session.RegisterUserUseCase
 import com.ulises.usecases.users.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,17 +21,6 @@ class RegisterViewModel @Inject constructor(
     private val registerUserUseCase: RegisterUserUseCase,
     private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
-
-    data class UiState(
-        val isLoading: Boolean = false,
-        val isEnabled: Boolean = false,
-        val nameNickname: String = "",
-        val email: String = "",
-        val password: String = "",
-        val rePassword: String = "",
-        val error: String = "",
-        val navigateToHome: Boolean = false
-    )
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
