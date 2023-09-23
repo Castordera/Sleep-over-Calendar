@@ -16,7 +16,7 @@ fun MainScreensNavigation() {
             if (appState.shouldShowBottomBar) {
                 SleepBottomNavigation(
                     appState = appState,
-                    items = bottomNavigationScreens
+                    items = com.ulises.navigation.bottomNavigationScreens
                 )
             }
         }

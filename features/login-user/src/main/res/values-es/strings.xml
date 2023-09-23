@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="field_email">Email</string>
+    <string name="field_password">Contraseña</string>
+    <string name="button_login">Iniciar sesión</string>
+    <string name="button_signin">Registrarme</string>
+</resources>

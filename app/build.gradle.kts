@@ -44,24 +44,17 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:31.2.2"))
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
-
-    //  Android
-//    implementation(libs.bundles.android.core)
     //  Compose
     implementation(libs.compose.activity)
     implementation(libs.compose.material3)
     implementation(libs.compose.lifecycle.runtime)
-
     //  Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
     // Coil
     implementation(libs.bundles.coil)
-
     //  Navigation
     implementation(libs.bundles.navigation)
-
     //  Room
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
@@ -74,6 +67,8 @@ dependencies {
     implementation(project(":common:dispatcher-core"))
     implementation(project(":features:splash"))
     implementation(project(":features:register-user"))
+    implementation(project(":features:login-user"))
+    implementation(project(":common:navigation"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.android.test)

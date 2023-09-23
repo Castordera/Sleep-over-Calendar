@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.screens.login
+package com.ulises.login.user.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -32,10 +32,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sleepschedule.R
 import com.ulises.components.AppTextField
 import com.ulises.components.TextType
-import com.example.sleepschedule.ui.navigation.Screens
+import com.ulises.login.user.R
+import com.ulises.login.user.model.UiState
+import com.ulises.navigation.Screens
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable
@@ -76,7 +77,7 @@ fun LoginRoute(
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    uiState: LoginViewModel.UiState,
+    uiState: UiState,
     onTextChange: (type: TextType, text: String) -> Unit,
     onLoginClick: () -> Unit,
     onSignInClick: () -> Unit
@@ -140,7 +141,7 @@ fun LoginScreen(
 fun PrevLoginScreen() {
     SleepScheduleTheme {
         LoginScreen(
-            uiState = LoginViewModel.UiState(),
+            uiState = UiState(),
             onTextChange = { _, _ -> },
             onLoginClick = {},
             onSignInClick = {}

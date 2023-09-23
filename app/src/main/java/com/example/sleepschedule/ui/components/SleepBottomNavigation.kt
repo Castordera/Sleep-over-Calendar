@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.sleepschedule.ui.SleepScheduleAppState
-import com.example.sleepschedule.ui.navigation.Screens
+import com.ulises.navigation.Screens
 
 @Composable
 fun SleepBottomNavigation(

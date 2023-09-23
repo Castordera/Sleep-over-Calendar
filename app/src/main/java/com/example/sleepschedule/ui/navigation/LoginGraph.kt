@@ -6,7 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.sleepschedule.ui.SleepScheduleAppState
-import com.example.sleepschedule.ui.screens.login.LoginRoute
+import com.ulises.login.user.ui.LoginRoute
+import com.ulises.navigation.Graphs
+import com.ulises.navigation.Screens
 import com.ulises.register.user.ui.SignInRoute
 
 fun NavGraphBuilder.loginGraph(

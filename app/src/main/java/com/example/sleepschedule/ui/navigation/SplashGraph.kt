@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ulises.features.splash.ui.SplashRoute
+import com.ulises.navigation.Graphs
+import com.ulises.navigation.Screens
 
 fun NavGraphBuilder.splashGraph(
     navController: NavHostController

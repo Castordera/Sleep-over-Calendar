@@ -9,7 +9,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.sleepschedule.ui.navigation.bottomNavigationScreens
+import com.ulises.navigation.bottomNavigationScreens
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

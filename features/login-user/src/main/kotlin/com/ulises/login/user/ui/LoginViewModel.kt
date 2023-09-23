@@ -1,10 +1,11 @@
-package com.example.sleepschedule.ui.screens.login
+package com.ulises.login.user.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.components.TextType
-import com.example.sleepschedule.ui.navigation.Screens
 import com.ulises.dispatcher_core.ScheduleDispatchers
+import com.ulises.login.user.model.UiState
+import com.ulises.navigation.Screens
 import com.ulises.usecases.session.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,14 +20,6 @@ class LoginViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
-
-    data class UiState(
-        val isLoading: Boolean = false,
-        val email: String = "",
-        val password: String = "",
-        val navigateTo: Screens? = null,
-        val error: String = ""
-    )
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
