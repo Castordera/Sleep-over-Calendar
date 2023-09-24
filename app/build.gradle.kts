@@ -66,8 +66,9 @@ dependencies {
     implementation(project(":design:components"))
     implementation(project(":common:dispatcher-core"))
     implementation(project(":features:splash"))
-    implementation(project(":features:register-user"))
-    implementation(project(":features:login-user"))
+    implementation(project(":features:user-register"))
+    implementation(project(":features:user-login"))
+    implementation(project(":features:user-detail"))
     implementation(project(":common:navigation"))
 
     testImplementation(libs.junit)

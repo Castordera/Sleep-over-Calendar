@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.screens.user
+package com.ulises.user.detail.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -20,8 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sleepschedule.R
 import com.ulises.theme.SleepScheduleTheme
+import com.ulises.user.detail.R
+import com.ulises.user.detail.models.UiState
 
 @Composable
 fun UserRoute(
@@ -44,7 +45,7 @@ fun UserRoute(
 
 @Composable
 fun UserScreen(
-    uiState: UserViewModel.UiState,
+    uiState: UiState,
     onLogoutClicked: () -> Unit = {}
 ) {
     Surface(
@@ -72,7 +73,7 @@ fun UserScreen(
 fun PrevUserScreen() {
     SleepScheduleTheme {
         UserScreen(
-            uiState = UserViewModel.UiState()
+            uiState = UiState()
         )
     }
 }

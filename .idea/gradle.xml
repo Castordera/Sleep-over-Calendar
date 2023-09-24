@@ -36,9 +36,10 @@
             <option value="$PROJECT_DIR$/design/theme" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/features" />
-            <option value="$PROJECT_DIR$/features/login-user" />
-            <option value="$PROJECT_DIR$/features/register-user" />
             <option value="$PROJECT_DIR$/features/splash" />
+            <option value="$PROJECT_DIR$/features/user-detail" />
+            <option value="$PROJECT_DIR$/features/user-login" />
+            <option value="$PROJECT_DIR$/features/user-register" />
             <option value="$PROJECT_DIR$/usecases" />
           </set>
         </option>

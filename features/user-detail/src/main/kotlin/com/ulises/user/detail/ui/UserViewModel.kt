@@ -1,9 +1,10 @@
-package com.example.sleepschedule.ui.screens.user
+package com.ulises.user.detail.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.session.CloseSessionUseCase
+import com.ulises.user.detail.models.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,17 +15,27 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
-    private val closeSessionUseCase: CloseSessionUseCase
+    private val closeSessionUseCase: CloseSessionUseCase,
 ) : ViewModel() {
 
-    data class UiState(
-        val isLoading: Boolean = false,
-        val loggedOutAction: Boolean = false
-    )
+    init {
+        getUser()
+    }
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
+    private fun getUser() {
+        viewModelScope.launch(dispatchers.main) {
+//            runCatching {
+//                getCurrentUserUseCase()
+//            }.onFailure {
+//                Timber.e(it, "Error getting user")
+//            }.onSuccess {
+//
+//            }
+        }
+    }
     fun onLogoutClicked() {
         viewModelScope.launch(dispatchers.main) {
             closeSessionUseCase()

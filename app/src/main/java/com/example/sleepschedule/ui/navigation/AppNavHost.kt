@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
 import com.example.sleepschedule.ui.screens.ScheduleListRoute
-import com.example.sleepschedule.ui.screens.user.UserRoute
+import com.ulises.user.detail.ui.UserRoute
 import com.ulises.navigation.Graphs
 import com.ulises.navigation.Screens
 
@@ -33,7 +33,6 @@ fun AppNavHost(
             route = Screens.Home.route
         ) {
             ScheduleListRoute(
-                viewModel = hiltViewModel(),
                 onNavigateToAdd = { navController.navigate(Screens.AddEvent.route) }
             )
         }
@@ -41,7 +40,6 @@ fun AppNavHost(
             route = Screens.AddEvent.route,
         ) {
             ScheduleDetailRoute(
-                viewModel = hiltViewModel(),
                 onNavigateBackClick = { navController.popBackStack() }
             )
         }

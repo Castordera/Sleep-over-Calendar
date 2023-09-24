@@ -24,7 +24,6 @@ fun NavGraphBuilder.loginGraph(
             route = Screens.Login.route
         ) {
             LoginRoute(
-                loginViewModel = hiltViewModel(),
                 snackBarHostState = appState.snackBarHostState,
                 navigateTo = { dest ->
                     if (dest is Screens.SignIn) {
@@ -42,7 +41,6 @@ fun NavGraphBuilder.loginGraph(
             route = Screens.SignIn.route
         ) {
             SignInRoute(
-                registerViewModel = hiltViewModel(),
                 navigateToHome = {
                     navController.navigate(Screens.Home.route) {
                         popUpTo(Screens.SignIn.route) { inclusive = true }

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ulises.login.user"
+    namespace = "com.ulises.user.detail"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -15,7 +15,7 @@ android {
 }
 
 dependencies {
-//  UI
+    //  UI
     implementation(project(":design:theme"))
     implementation(project(":design:components"))
     implementation(libs.compose.material3)
@@ -29,7 +29,6 @@ dependencies {
     implementation(project(":common:dispatcher-core"))
     implementation(libs.hilt.navigation.compose)
     implementation(libs.compose.lifecycle.runtime)
-    implementation(project(":common:navigation"))
     //  Test
     testImplementation(project(":common:test-core"))
 }
