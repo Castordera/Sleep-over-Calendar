@@ -89,7 +89,7 @@ fun ScheduleItem(
                     ) {
                         Text(
                             text = buildAnnotatedString {
-                                val date = TimeHelper.convertToHumanReadable(item.date).split(",")
+                                val date = TimeHelper.toHumanReadable(item.date).split(",")
                                 appendLine(date[0].capitalize(Locale.current))
                                 append(date[1])
                             },

@@ -2,8 +2,8 @@ package com.example.sleepschedule.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.common.TimeHelper
 import com.example.sleepschedule.common.TimeHelper.toISODate
+import com.example.sleepschedule.common.TimeHelper.toLocalDate
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.usecases.AddScheduledEventUseCase
 import com.ulises.usecases.session.GetCurrentUserUseCase
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import outcomes.OutcomeScheduledEvent
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -26,29 +27,22 @@ class ScheduleDateDetailViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
-    private var selectedTime: String = ""
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
     data class UiState(
         val createdText: String = "",
-        val dateText: String = "",
         val comments: String = "",
         val isLoading: Boolean = false,
         val isReadyToSend: Boolean = false,
         val kidName: String = "Renata",
-        val addComplete: Boolean = false
+        val addComplete: Boolean = false,
+        val isDateDialogVisible: Boolean = false,
+        val selectedDate: LocalDate = LocalDate.now()
     )
 
-    init {
-        calculateInitialDate()
-    }
-
-    private fun calculateInitialDate() {
-        viewModelScope.launch {
-            selectedTime = LocalDate.now().toISODate()
-            _uiState.update { it.copy(dateText = TimeHelper.convertToHumanReadable(selectedTime)) }
-        }
+    fun onDateDialogVisibilityChange(visible: Boolean) {
+        _uiState.update { it.copy(isDateDialogVisible = visible) }
     }
 
     fun onUpdateTextField(type: TextFieldType, text: String) {
@@ -63,10 +57,22 @@ class ScheduleDateDetailViewModel @Inject constructor(
         }
     }
 
-    fun onDateSelected(year: Int, month: Int, day: Int) {
-        viewModelScope.launch {
-            selectedTime = TimeHelper.convertRawToFormattedString(year, month + 1, day)
-            _uiState.update { it.copy(dateText = TimeHelper.convertToHumanReadable(selectedTime)) }
+    fun onDateSelected(millis: Long?) {
+        viewModelScope.launch(dispatchers.main) {
+            runCatching {
+                checkNotNull(millis)
+                millis.toLocalDate()
+            }.onFailure {
+                Timber.e(it, "Error parsing Date")
+            }.onSuccess { date ->
+                Timber.d("New selected time: $date")
+                _uiState.update {
+                    it.copy(
+                        isDateDialogVisible = false,
+                        selectedDate = date
+                    )
+                }
+            }
         }
     }
 
@@ -77,7 +83,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
                 val user = getCurrentUserUseCase()
                 val scheduleEvent = OutcomeScheduledEvent(
                     id = Date().time.toString(),
-                    date = selectedTime,
+                    date = _uiState.value.selectedDate.toISODate(),
                     createdBy = _uiState.value.createdText.trim(),
                     createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                     rating = 0,
@@ -86,7 +92,9 @@ class ScheduleDateDetailViewModel @Inject constructor(
                     createdById = user?.id ?: "Unknown"
                 )
                 addScheduledEventUseCase(scheduleEvent)
-            }.onSuccess {
+                scheduleEvent
+            }.onSuccess { event ->
+                Timber.d("Event created: $event")
                 _uiState.update { it.copy(isLoading = false, addComplete = true) }
             }.onFailure {
                 _uiState.update { it.copy(isLoading = false) }
@@ -95,12 +103,12 @@ class ScheduleDateDetailViewModel @Inject constructor(
     }
 
     private fun validateInputsFilled() {
-        val isReady = selectedTime.isNotBlank() && _uiState.value.createdText.isNotBlank()
+        val isReady = _uiState.value.createdText.isNotBlank()
         _uiState.update { it.copy(isReadyToSend = isReady) }
     }
 }
 
 sealed interface TextFieldType {
-    object CreatedBy : TextFieldType
-    object Comment : TextFieldType
+    data object CreatedBy : TextFieldType
+    data object Comment : TextFieldType
 }

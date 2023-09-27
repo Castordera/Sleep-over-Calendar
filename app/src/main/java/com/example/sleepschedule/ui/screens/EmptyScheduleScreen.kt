@@ -23,7 +23,6 @@ fun EmptyScheduleScreen(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = Color.White,//Todo(Remove this color, Mess up Dark mode)
         modifier = modifier
             .fillMaxSize()
     ) {

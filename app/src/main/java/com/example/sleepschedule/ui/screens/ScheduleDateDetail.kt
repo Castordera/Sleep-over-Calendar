@@ -1,9 +1,6 @@
 package com.example.sleepschedule.ui.screens
 
-import android.app.DatePickerDialog
-import android.content.Context
 import android.content.res.Configuration
-import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -14,16 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -35,14 +33,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
-import com.example.sleepschedule.common.day
-import com.example.sleepschedule.common.month
-import com.example.sleepschedule.common.year
-import com.ulises.components.toolbar.TopBar
-import com.ulises.theme.SleepScheduleTheme
+import com.example.sleepschedule.common.TimeHelper.toHumanReadable
+import com.example.sleepschedule.common.TimeHelper.toMillis
 import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import com.example.sleepschedule.ui.viewmodels.TextFieldType
-import java.util.Calendar
+import com.ulises.components.pickers.DatePickerDialog
+import com.ulises.components.toolbar.TopBar
+import com.ulises.theme.SleepScheduleTheme
+import java.time.LocalDate
 
 @Composable
 fun ScheduleDetailRoute(
@@ -53,6 +51,7 @@ fun ScheduleDetailRoute(
 
     ScheduleDateDetail(
         uiState = uiState,
+        onDateDialogVisibilityChange = viewModel::onDateDialogVisibilityChange,
         onDateSelected = viewModel::onDateSelected,
         onUpdateTextField = viewModel::onUpdateTextField,
         onUpdateCommentField = viewModel::onUpdateTextField,
@@ -61,18 +60,17 @@ fun ScheduleDetailRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleDateDetail(
     uiState: ScheduleDateDetailViewModel.UiState,
-    onDateSelected: (year: Int, month: Int, day: Int) -> Unit,
+    onDateDialogVisibilityChange: (Boolean) -> Unit,
+    onDateSelected: (Long?) -> Unit,
     onUpdateTextField: (type: TextFieldType, text: String) -> Unit,
     onUpdateCommentField: (type: TextFieldType, text: String) -> Unit,
     onAddEvent: () -> Unit,
     onNavigateBackClick: () -> Unit
 ) {
-    //Todo(Change it to Compose Date Picker)
-    val dialog = createCalendarDialog(LocalContext.current, onDateSelected)
-
     if (uiState.addComplete) {
         LaunchedEffect(Unit) {
             onNavigateBackClick()
@@ -90,6 +88,12 @@ fun ScheduleDateDetail(
                 .padding(16.dp)
 
         ) {
+            DatePickerDialog(
+                isVisible = uiState.isDateDialogVisible,
+                datePickerState = rememberDatePickerState(uiState.selectedDate.toMillis()),
+                onSelectDate = onDateSelected,
+                onDismiss = { onDateDialogVisibilityChange(false) }
+            )
             Text(
                 text = stringResource(id = R.string.title_add_element),
                 fontSize = 24.sp
@@ -117,7 +121,7 @@ fun ScheduleDateDetail(
                 ) {
                     Text(
                         text = buildAnnotatedString {
-                            val date = uiState.dateText.split(",")
+                            val date = uiState.selectedDate.toHumanReadable().split(",")
                             append(date[1])
                         },
                         fontSize = 18.sp,
@@ -127,7 +131,7 @@ fun ScheduleDateDetail(
                     Button(
                         enabled = !uiState.isLoading,
                         modifier = Modifier.fillMaxHeight(),
-                        onClick = { dialog.show() }
+                        onClick = { onDateDialogVisibilityChange(true) }
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_calendar),
@@ -163,25 +167,6 @@ fun ScheduleDateDetail(
     }
 }
 
-private fun createCalendarDialog(
-    context: Context,
-    onDateSelected: (year: Int, month: Int, day: Int) -> Unit
-): DatePickerDialog {
-    val calendar = Calendar.getInstance()
-    //  Get current day
-    val mYear = calendar.year
-    val mMonth = calendar.month
-    val mDay = calendar.day
-
-    val mDatePickerDialog = DatePickerDialog(
-        context,
-        { _: DatePicker, year: Int, month: Int, day: Int ->
-            onDateSelected(year, month, day)
-        }, mYear, mMonth, mDay
-    )
-    return mDatePickerDialog
-}
-
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -189,10 +174,11 @@ fun PrevScheduleDateDetail() {
     SleepScheduleTheme {
         ScheduleDateDetail(
             uiState = ScheduleDateDetailViewModel.UiState(
-                dateText = "Monday,12 de March del 2023"
+                selectedDate = LocalDate.now()
             ),
+            onDateDialogVisibilityChange = {},
             onNavigateBackClick = {},
-            onDateSelected = { _, _, _ -> },
+            onDateSelected = {},
             onUpdateTextField = { _, _ -> },
             onUpdateCommentField = { _, _ -> },
             onAddEvent = {}
