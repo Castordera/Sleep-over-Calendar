@@ -6,7 +6,7 @@ import com.ulises.login.user.model.UiState
 import com.ulises.navigation.Screens
 import com.ulises.test_core.CoroutineTestRule
 import com.ulises.test_core.TestDispatchers
-import com.ulises.usecases.session.LoginUseCase
+import com.ulises.usecase.session.LoginUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class LoginViewModelTest {
 
     @MockK
-    private lateinit var loginUseCase: LoginUseCase
+    private lateinit var loginUseCase: com.ulises.usecase.session.LoginUseCase
     private lateinit var viewModel: LoginViewModel
 
 

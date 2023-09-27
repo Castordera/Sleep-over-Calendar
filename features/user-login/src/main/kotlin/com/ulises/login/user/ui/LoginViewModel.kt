@@ -6,7 +6,7 @@ import com.ulises.components.TextType
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.login.user.model.UiState
 import com.ulises.navigation.Screens
-import com.ulises.usecases.session.LoginUseCase
+import com.ulises.usecase.session.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

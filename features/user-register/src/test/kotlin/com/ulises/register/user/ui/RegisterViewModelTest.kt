@@ -5,8 +5,8 @@ import com.ulises.components.TextType
 import com.ulises.register.user.models.UiState
 import com.ulises.test_core.CoroutineTestRule
 import com.ulises.test_core.TestDispatchers
-import com.ulises.usecases.session.RegisterUserUseCase
-import com.ulises.usecases.users.CreateUserUseCase
+import com.ulises.usecase.session.RegisterUserUseCase
+import com.ulises.usecase.user.CreateUserUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -27,10 +27,10 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class RegisterViewModelTest {
 
     @MockK
-    private lateinit var registerUserUseCase: RegisterUserUseCase
+    private lateinit var registerUserUseCase: com.ulises.usecase.session.RegisterUserUseCase
 
     @MockK
-    private lateinit var createUserUseCase: CreateUserUseCase
+    private lateinit var createUserUseCase: com.ulises.usecase.user.CreateUserUseCase
     private lateinit var viewModel: RegisterViewModel
 
     @BeforeEach

@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.ui.utils.DialogType
 import com.ulises.dispatcher_core.ScheduleDispatchers
-import com.ulises.usecases.DeleteScheduleEventUseCase
-import com.ulises.usecases.GetAllScheduledEventsUseCase
-import com.ulises.usecases.UpdateScheduleEventUseCase
+import com.ulises.events.DeleteScheduleEventUseCase
+import com.ulises.events.GetAllScheduledEventsUseCase
+import com.ulises.events.UpdateScheduleEventUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -3,7 +3,7 @@ package com.ulises.user.detail.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.dispatcher_core.ScheduleDispatchers
-import com.ulises.usecases.session.CloseSessionUseCase
+import com.ulises.usecase.session.CloseSessionUseCase
 import com.ulises.user.detail.models.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

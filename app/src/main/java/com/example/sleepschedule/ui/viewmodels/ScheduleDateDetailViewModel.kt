@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.sleepschedule.common.TimeHelper.toISODate
 import com.example.sleepschedule.common.TimeHelper.toLocalDate
 import com.ulises.dispatcher_core.ScheduleDispatchers
-import com.ulises.usecases.AddScheduledEventUseCase
-import com.ulises.usecases.session.GetCurrentUserUseCase
+import com.ulises.events.AddScheduledEventUseCase
+import com.ulises.usecase.session.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
     private val addScheduledEventUseCase: AddScheduledEventUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val getCurrentUserUseCase: com.ulises.usecase.session.GetCurrentUserUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())

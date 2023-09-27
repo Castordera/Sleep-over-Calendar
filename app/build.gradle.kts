@@ -60,7 +60,6 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(project(":data"))
-    implementation(project(":usecases"))
     implementation(project(":domain"))
     implementation(project(":design:theme"))
     implementation(project(":design:components"))
@@ -70,6 +69,8 @@ dependencies {
     implementation(project(":features:user-login"))
     implementation(project(":features:user-detail"))
     implementation(project(":common:navigation"))
+    implementation(project(":usecases:events"))
+    implementation(project(":usecases:session"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.android.test)

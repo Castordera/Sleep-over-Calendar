@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.features.splash.models.UiState
-import com.ulises.usecases.session.GetCurrentUserUseCase
+import com.ulises.usecase.session.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

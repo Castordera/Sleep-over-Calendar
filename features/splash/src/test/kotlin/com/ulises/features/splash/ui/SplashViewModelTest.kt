@@ -3,7 +3,7 @@ package com.ulises.features.splash.ui
 import app.cash.turbine.test
 import com.ulises.features.splash.models.UiState
 import com.ulises.test_core.CoroutineTestRule
-import com.ulises.usecases.session.GetCurrentUserUseCase
+import com.ulises.usecase.session.GetCurrentUserUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class SplashViewModelTest {
 
     @MockK
-    private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
+    private lateinit var getCurrentUserUseCase: com.ulises.usecase.session.GetCurrentUserUseCase
     private lateinit var viewModel: SplashViewModel
 
     @BeforeEach

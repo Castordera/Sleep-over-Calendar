@@ -3,7 +3,7 @@ package com.ulises.user.detail.ui
 import app.cash.turbine.test
 import com.ulises.test_core.CoroutineTestRule
 import com.ulises.test_core.TestDispatchers
-import com.ulises.usecases.session.CloseSessionUseCase
+import com.ulises.usecase.session.CloseSessionUseCase
 import com.ulises.user.detail.models.UiState
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class UserViewModelTest {
 
     @MockK
-    private lateinit var closeSessionUseCase: CloseSessionUseCase
+    private lateinit var closeSessionUseCase: com.ulises.usecase.session.CloseSessionUseCase
     private lateinit var viewModel: UserViewModel
 
     @BeforeEach

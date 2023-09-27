@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.ulises.components.TextType
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.register.user.models.UiState
-import com.ulises.usecases.session.RegisterUserUseCase
-import com.ulises.usecases.users.CreateUserUseCase
+import com.ulises.usecase.session.RegisterUserUseCase
+import com.ulises.usecase.user.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

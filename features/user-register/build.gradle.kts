@@ -20,7 +20,8 @@ dependencies {
     implementation(project(":design:components"))
     implementation(libs.compose.material3)
     //  Data
-    implementation(project(":usecases"))
+    implementation(project(":usecases:session"))
+    implementation(project(":usecases:user"))
     implementation(project(":domain"))
     //  Hilt
     implementation(libs.hilt.android)
