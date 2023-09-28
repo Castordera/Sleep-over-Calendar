@@ -1,4 +1,4 @@
-package com.example.sleepschedule.common
+package com.ulises.common.time.utils
 
 import java.time.Instant
 import java.time.LocalDate
