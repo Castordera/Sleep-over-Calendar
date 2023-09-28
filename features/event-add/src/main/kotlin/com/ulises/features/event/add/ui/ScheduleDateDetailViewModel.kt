@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.viewmodels
+package com.ulises.features.event.add.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,6 +6,8 @@ import com.ulises.common.time.utils.TimeHelper.toISODate
 import com.ulises.common.time.utils.TimeHelper.toLocalDate
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.events.AddScheduledEventUseCase
+import com.ulises.features.event.add.models.UiState
+import com.ulises.usecase.session.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import outcomes.OutcomeScheduledEvent
 import timber.log.Timber
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -23,22 +24,11 @@ import javax.inject.Inject
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
     private val addScheduledEventUseCase: AddScheduledEventUseCase,
-    private val getCurrentUserUseCase: com.ulises.usecase.session.GetCurrentUserUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
-
-    data class UiState(
-        val createdText: String = "",
-        val comments: String = "",
-        val isLoading: Boolean = false,
-        val isReadyToSend: Boolean = false,
-        val kidName: String = "Renata",
-        val addComplete: Boolean = false,
-        val isDateDialogVisible: Boolean = false,
-        val selectedDate: LocalDate = LocalDate.now()
-    )
 
     fun onDateDialogVisibilityChange(visible: Boolean) {
         _uiState.update { it.copy(isDateDialogVisible = visible) }

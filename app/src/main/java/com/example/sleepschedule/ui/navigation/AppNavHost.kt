@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.SleepScheduleAppState
-import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
+import com.ulises.features.event.add.ui.ScheduleDetailRoute
 import com.ulises.features.events.list.ui.ScheduleListRoute
 import com.ulises.user.detail.ui.UserRoute
 import com.ulises.navigation.Graphs

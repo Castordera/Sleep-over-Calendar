@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_add_element">It\'s time to add a new sleep over day.</string>
+    <string name="add_schedule_person">Name</string>
+    <string name="add_schedule_button_add">Add day</string>
+    <string name="add_schedule_kid_name">Kid name</string>
+</resources>

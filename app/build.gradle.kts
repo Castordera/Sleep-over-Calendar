@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":features:user-login"))
     implementation(project(":features:user-detail"))
     implementation(project(":features:event-list"))
+    implementation(project(":features:event-add"))
     implementation(project(":common:navigation"))
     implementation(project(":usecases:events"))
     implementation(project(":usecases:session"))

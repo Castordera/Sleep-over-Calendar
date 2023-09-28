@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.screens
+package com.ulises.features.event.add.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -32,13 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sleepschedule.R
 import com.ulises.common.time.utils.TimeHelper.toHumanReadable
 import com.ulises.common.time.utils.TimeHelper.toMillis
-import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
-import com.example.sleepschedule.ui.viewmodels.TextFieldType
 import com.ulises.components.pickers.DatePickerDialog
 import com.ulises.components.toolbar.TopBar
+import com.ulises.features.event.add.R
+import com.ulises.features.event.add.models.UiState
 import com.ulises.theme.SleepScheduleTheme
 import java.time.LocalDate
 
@@ -63,7 +62,7 @@ fun ScheduleDetailRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleDateDetail(
-    uiState: ScheduleDateDetailViewModel.UiState,
+    uiState: UiState,
     onDateDialogVisibilityChange: (Boolean) -> Unit,
     onDateSelected: (Long?) -> Unit,
     onUpdateTextField: (type: TextFieldType, text: String) -> Unit,
@@ -173,7 +172,7 @@ fun ScheduleDateDetail(
 fun PrevScheduleDateDetail() {
     SleepScheduleTheme {
         ScheduleDateDetail(
-            uiState = ScheduleDateDetailViewModel.UiState(
+            uiState = UiState(
                 selectedDate = LocalDate.now()
             ),
             onDateDialogVisibilityChange = {},
