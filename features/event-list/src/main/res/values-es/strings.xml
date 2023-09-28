@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_schedule_title">Aún no agregas ningún día</string>
+    <!--    -->
+    <string name="dialog_rating_message">¿Que tal se comportó %s en este día?</string>
+    <string name="dialog_rating_save">Guardar</string>
+    <!--    -->
+    <string name="dialog_delete_message">¿Estas seguro que quieres borrar la pijamada del día</string>
+    <string name="dialog_delete_button">Borrar</string>
+    <!--    -->
+    <string name="date_added_by">Agregado por %s</string>
+    <string name="card_comments_title">Comentarios</string>
+</resources>

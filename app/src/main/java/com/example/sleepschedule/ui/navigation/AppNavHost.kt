@@ -2,13 +2,12 @@ package com.example.sleepschedule.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.screens.ScheduleDetailRoute
-import com.example.sleepschedule.ui.screens.ScheduleListRoute
+import com.ulises.features.events.list.ui.ScheduleListRoute
 import com.ulises.user.detail.ui.UserRoute
 import com.ulises.navigation.Graphs
 import com.ulises.navigation.Screens

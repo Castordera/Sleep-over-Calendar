@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.features.events.list.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ulises.features.events.list.utils.RatingType
 import com.ulises.theme.SleepScheduleTheme
-import com.example.sleepschedule.ui.utils.RatingType
 
 @Composable
 fun KidRate(

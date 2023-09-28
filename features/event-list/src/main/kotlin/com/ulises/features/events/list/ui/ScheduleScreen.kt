@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.screens
+package com.ulises.features.events.list.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -17,16 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sleepschedule.R
-import com.example.sleepschedule.common.scheduleEventMockList
 import com.ulises.components.FabButton
 import com.ulises.components.indicators.LoadingIndicator
-import com.example.sleepschedule.ui.components.ScheduleItem
-import com.example.sleepschedule.ui.dialogs.DialogDeleteEvent
-import com.example.sleepschedule.ui.dialogs.DialogFeedback
+import com.ulises.features.events.list.R
+import com.ulises.features.events.list.components.ScheduleItem
+import com.ulises.features.events.list.dialogs.DialogDeleteEvent
+import com.ulises.features.events.list.dialogs.DialogFeedback
+import com.ulises.features.events.list.models.DialogType
+import com.ulises.features.events.list.models.UiState
+import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.SleepScheduleTheme
-import com.example.sleepschedule.ui.utils.DialogType
-import com.example.sleepschedule.ui.viewmodels.MainScheduleViewModel
 import models.ScheduledEvent
 
 @Composable
@@ -48,7 +48,7 @@ fun ScheduleListRoute(
 
 @Composable
 private fun ScheduleListScreen(
-    uiState: MainScheduleViewModel.UiState,
+    uiState: UiState,
     onNavigateToAdd: () -> Unit,
     onClickItem: (ScheduledEvent) -> Unit,
     onDialogChangeVisibility: (DialogType, Boolean, ScheduledEvent?) -> Unit,
@@ -93,7 +93,11 @@ private fun ScheduleListScreen(
             }
         } else {
             if (uiState.scheduleEvents.isNullOrEmpty()) {
-                EmptyScheduleScreen(Modifier.padding(paddingValues))
+                EmptyScheduleScreen(
+                    Modifier.padding(
+                        paddingValues
+                    )
+                )
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -132,7 +136,7 @@ private fun ScheduleListScreen(
 private fun PrevMainScheduleScreen() {
     SleepScheduleTheme {
         ScheduleListScreen(
-            uiState = MainScheduleViewModel.UiState(
+            uiState = UiState(
                 scheduleEvents = scheduleEventMockList
             ),
             onNavigateToAdd = {},

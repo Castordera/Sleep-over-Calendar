@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sleepschedule.R
-import com.example.sleepschedule.common.TimeHelper.toHumanReadable
-import com.example.sleepschedule.common.TimeHelper.toMillis
+import com.ulises.common.time.utils.TimeHelper.toHumanReadable
+import com.ulises.common.time.utils.TimeHelper.toMillis
 import com.example.sleepschedule.ui.viewmodels.ScheduleDateDetailViewModel
 import com.example.sleepschedule.ui.viewmodels.TextFieldType
 import com.ulises.components.pickers.DatePickerDialog

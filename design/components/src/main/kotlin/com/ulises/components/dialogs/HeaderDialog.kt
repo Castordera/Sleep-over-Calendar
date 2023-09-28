@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.components.dialogs
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -11,8 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.sleepschedule.R
 import com.ulises.components.IconButton
+import com.ulises.components.R
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.dialogs
+package com.ulises.features.events.list.dialogs
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -20,12 +20,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sleepschedule.R
-import com.example.sleepschedule.common.TimeHelper
-import com.example.sleepschedule.common.scheduleEventMockList
-import com.example.sleepschedule.ui.components.HeaderDialog
+import com.ulises.common.time.utils.TimeHelper
+import com.ulises.components.dialogs.HeaderDialog
+import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.SleepScheduleTheme
 import models.ScheduledEvent
+import com.ulises.features.events.list.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,12 +1,13 @@
-package com.example.sleepschedule.ui.viewmodels
+package com.ulises.features.events.list.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sleepschedule.ui.utils.DialogType
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.events.DeleteScheduleEventUseCase
 import com.ulises.events.GetAllScheduledEventsUseCase
 import com.ulises.events.UpdateScheduleEventUseCase
+import com.ulises.features.events.list.models.DialogType
+import com.ulises.features.events.list.models.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,14 +29,6 @@ class MainScheduleViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
-
-    data class UiState(
-        val scheduleEvents: List<ScheduledEvent>? = null,
-        val isLoading: Boolean = false,
-        val showDialogDelete: Boolean = false,
-        val showDialogRating: Boolean = false,
-        val selectedEvent: ScheduledEvent? = null
-    )
 
     init {
         viewModelScope.launch(dispatchers.io) {

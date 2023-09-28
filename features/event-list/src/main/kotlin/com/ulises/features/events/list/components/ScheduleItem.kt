@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.components
+package com.ulises.features.events.list.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
@@ -37,12 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.sleepschedule.R
-import com.example.sleepschedule.common.TimeHelper
-import com.example.sleepschedule.common.scheduleEventMockList
-import com.ulises.theme.SleepScheduleTheme
-import com.example.sleepschedule.ui.utils.getImageFromMonth
+import com.ulises.common.time.utils.TimeHelper
 import com.ulises.components.IconButton
+import com.ulises.features.events.list.R
+import com.ulises.features.events.list.utils.getImageFromMonth
+import com.ulises.features.events.list.utils.scheduleEventMockList
+import com.ulises.theme.SleepScheduleTheme
 import models.CardFace
 import models.ScheduledEvent
 

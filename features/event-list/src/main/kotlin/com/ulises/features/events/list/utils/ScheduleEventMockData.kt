@@ -1,4 +1,4 @@
-package com.example.sleepschedule.common
+package com.ulises.features.events.list.utils
 
 import models.CardFace
 import models.ScheduledEvent

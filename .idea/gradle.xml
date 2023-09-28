@@ -30,17 +30,22 @@
             <option value="$PROJECT_DIR$/common/dispatcher-core" />
             <option value="$PROJECT_DIR$/common/navigation" />
             <option value="$PROJECT_DIR$/common/test-core" />
+            <option value="$PROJECT_DIR$/common/time-utils" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/design" />
             <option value="$PROJECT_DIR$/design/components" />
             <option value="$PROJECT_DIR$/design/theme" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/event-list" />
             <option value="$PROJECT_DIR$/features/splash" />
             <option value="$PROJECT_DIR$/features/user-detail" />
             <option value="$PROJECT_DIR$/features/user-login" />
             <option value="$PROJECT_DIR$/features/user-register" />
             <option value="$PROJECT_DIR$/usecases" />
+            <option value="$PROJECT_DIR$/usecases/events" />
+            <option value="$PROJECT_DIR$/usecases/session" />
+            <option value="$PROJECT_DIR$/usecases/user" />
           </set>
         </option>
       </GradleProjectSettings>

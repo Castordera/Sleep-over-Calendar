@@ -1,4 +1,4 @@
-package com.example.sleepschedule.ui.dialogs
+package com.ulises.features.events.list.dialogs
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
@@ -14,11 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sleepschedule.R
-import com.example.sleepschedule.ui.components.HeaderDialog
 import com.ulises.components.RatingButton
 import com.ulises.theme.SleepScheduleTheme
-import com.example.sleepschedule.ui.utils.RatingType
+import com.ulises.components.dialogs.HeaderDialog
+import com.ulises.features.events.list.R
+import com.ulises.features.events.list.utils.RatingType
 import models.ScheduledEvent
 
 private val ratingValues = arrayOf(RatingType.Bad, RatingType.Neutral, RatingType.Good)

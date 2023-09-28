@@ -1,9 +1,9 @@
-package com.example.sleepschedule.ui.utils
+package com.ulises.features.events.list.utils
 
-import com.example.sleepschedule.R
 import models.Birthday
 import models.ScheduledEvent
 import java.time.LocalDate
+import com.ulises.features.events.list.R
 
 private val birthdays = setOf(
     Birthday(2, 15, "Ricardo"),
