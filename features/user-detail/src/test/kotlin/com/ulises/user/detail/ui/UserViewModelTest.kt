@@ -24,7 +24,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class UserViewModelTest {
 
     @MockK
-    private lateinit var closeSessionUseCase: com.ulises.usecase.session.CloseSessionUseCase
+    private lateinit var closeSessionUseCase: CloseSessionUseCase
     private lateinit var viewModel: UserViewModel
 
     @BeforeEach

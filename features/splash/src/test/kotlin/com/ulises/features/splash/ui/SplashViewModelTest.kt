@@ -22,7 +22,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class SplashViewModelTest {
 
     @MockK
-    private lateinit var getCurrentUserUseCase: com.ulises.usecase.session.GetCurrentUserUseCase
+    private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
     private lateinit var viewModel: SplashViewModel
 
     @BeforeEach

@@ -25,7 +25,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class LoginViewModelTest {
 
     @MockK
-    private lateinit var loginUseCase: com.ulises.usecase.session.LoginUseCase
+    private lateinit var loginUseCase: LoginUseCase
     private lateinit var viewModel: LoginViewModel
 
 

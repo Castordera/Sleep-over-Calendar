@@ -27,10 +27,10 @@ import org.junit.jupiter.api.parallel.ExecutionMode
 class RegisterViewModelTest {
 
     @MockK
-    private lateinit var registerUserUseCase: com.ulises.usecase.session.RegisterUserUseCase
+    private lateinit var registerUserUseCase: RegisterUserUseCase
 
     @MockK
-    private lateinit var createUserUseCase: com.ulises.usecase.user.CreateUserUseCase
+    private lateinit var createUserUseCase: CreateUserUseCase
     private lateinit var viewModel: RegisterViewModel
 
     @BeforeEach
