@@ -18,7 +18,6 @@ dependencies {
     //  UI
     implementation(project(":design:theme"))
     implementation(project(":design:components"))
-    implementation(libs.compose.material3)
     //  Data
     implementation(project(":usecases:session"))
     implementation(project(":domain"))
