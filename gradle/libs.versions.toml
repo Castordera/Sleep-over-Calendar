@@ -1,38 +1,35 @@
 [versions]
-agp = "8.1.1"
-kotlin = "1.9.10"
-ksp = "1.9.10-1.0.13"
-composeCompiler = "1.5.3"
+agp = "8.1.4"
+kotlin = "1.9.23"
+ksp = "1.9.22-1.0.17"
+composeCompiler = "1.5.11"
 androidx-core = "1.12.0"
-lifecycle-runtime = "2.6.2"
-material = "1.5.1"
-material3 = "1.1.2"
-activity-compose = "1.7.2"
-compose = "1.5.1"
+lifecycle-runtime = "2.7.0"
+material3 = "1.2.1"
+activity-compose = "1.8.2"
+compose = "1.6.4"
 android-junit = "1.1.5"
 junit = "4.13.2"
-junit5 = "5.10.0"
+junit5 = "5.10.1"
 mockk = "1.13.8"
 espresso-core = "3.5.1"
-hilt = "2.46.1"
-coil = "2.4.0"
-coil-svg = "2.3.0"
-navigation-compose = "2.7.3"
-hilt-navigation-compose = "1.0.0"
+hilt = "2.50"
+coil = "2.5.0"
+coil-svg = "2.5.0"
+navigation-compose = "2.7.7"
+hilt-navigation-compose = "1.2.0"
 javax-inject = "1"
-room = "2.5.2"
+room = "2.6.1"
 coroutine-core = "1.7.3"
 timber = "5.0.1"
 appcompat = "1.6.1"
 turbine = "1.0.0"
-com-google-android-material-material = "1.9.0"
 
 [libraries]
 # Android
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
 #androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx"}
 # Compose
-compose-material = { module = "androidx.compose.material:material", version.ref = "material"}
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose"}
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose"}
@@ -71,7 +68,6 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-ui-preview", "compose-activity"]
