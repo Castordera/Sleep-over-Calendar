@@ -46,7 +46,7 @@ class LoginViewModel @Inject constructor(
                     _uiState.update { it.copy(navigateTo = Screens.Home) }
                 },
                 onFailure = { error ->
-                    Timber.d("Login error ${error.message}", error)
+                    Timber.e("Login error ${error.message}", error)
                     _uiState.update { it.copy(error = error.message.orEmpty()) }
                 }
             )
