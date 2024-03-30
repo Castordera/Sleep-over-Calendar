@@ -1,7 +1,12 @@
 package com.example.sleepschedule.ui.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.sleepschedule.ui.components.SleepBottomNavigation
@@ -13,7 +18,11 @@ fun MainScreensNavigation() {
 
     Scaffold(
         bottomBar = {
-            if (appState.shouldShowBottomBar) {
+            AnimatedVisibility(
+                visible = appState.shouldShowBottomBar,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
                 SleepBottomNavigation(
                     appState = appState,
                     items = com.ulises.navigation.bottomNavigationScreens
@@ -21,10 +30,14 @@ fun MainScreensNavigation() {
             }
         }
     ) { padding ->
-        AppNavHost(
-            modifier = Modifier.padding(padding),
-            appState = appState,
-            navController = appState.navController
-        )
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            AppNavHost(
+                modifier = Modifier.padding(padding),
+                appState = appState,
+                navController = appState.navController
+            )
+        }
     }
 }
