@@ -32,10 +32,10 @@ class SplashViewModel @Inject constructor(
                 getCurrentUserUseCase()
             }.onFailure { error ->
                 Timber.e(error, "Error getting user data")
-                _uiState.update { it.copy(error = error.message) }
+                _uiState.update { it.copy(error = error.message, isLoading = false) }
             }.onSuccess { user ->
                 Timber.d("User found with data: $user")
-                _uiState.update { it.copy(userFound = user != null) }
+                _uiState.update { it.copy(userFound = user != null, isLoading = false) }
             }
         }
     }

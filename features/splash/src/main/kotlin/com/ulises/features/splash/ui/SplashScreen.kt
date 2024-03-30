@@ -21,20 +21,20 @@ import com.ulises.theme.SleepScheduleTheme
 @Composable
 fun SplashRoute(
     splashViewModel: SplashViewModel = hiltViewModel(),
-    onUserLogAction: (Boolean) -> Unit
+    onUserLogAction: (Boolean) -> Unit,
 ) {
     val uiState by splashViewModel.uiState.collectAsStateWithLifecycle()
 
     SplashScreen(
         uiState = uiState,
-        onUserLogAction = onUserLogAction
+        onUserLogAction = onUserLogAction,
     )
 }
 
 @Composable
 fun SplashScreen(
     uiState: UiState,
-    onUserLogAction: (Boolean) -> Unit = {}
+    onUserLogAction: (Boolean) -> Unit = {},
 ) {
     LaunchedEffect(uiState.userFound) {
         uiState.userFound?.also(onUserLogAction)
@@ -45,10 +45,11 @@ fun SplashScreen(
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             LoadingIndicator(
-                modifier = Modifier.size(300.dp)
+                modifier = Modifier.size(150.dp),
+                isVisible = uiState.isLoading,
             )
         }
     }

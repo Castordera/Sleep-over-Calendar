@@ -8,15 +8,20 @@ import com.ulises.theme.SleepScheduleTheme
 
 @Composable
 fun LoadingIndicator(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isVisible: Boolean,
 ) {
-    CircularProgressIndicator(modifier = modifier)
+    if (isVisible) {
+        CircularProgressIndicator(modifier = modifier)
+    }
 }
 
 @Preview
 @Composable
 fun Prev_LoadingIndicator() {
     SleepScheduleTheme {
-        LoadingIndicator()
+        LoadingIndicator(
+            isVisible = true
+        )
     }
 }
