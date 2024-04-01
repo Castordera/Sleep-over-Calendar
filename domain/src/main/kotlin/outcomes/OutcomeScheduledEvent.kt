@@ -1,7 +1,10 @@
 package outcomes
 
+import androidx.annotation.Keep
 import models.Kid
 
+
+@Keep
 data class OutcomeScheduledEvent(
     val id: String,
     val date: String,

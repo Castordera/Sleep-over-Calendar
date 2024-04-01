@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 -keepattributes Signature
 -keepclassmembers class com.ulises.domain.models.** {*;}
+-keep class com.ulises.domain.models.** {*;}
 -keep public class com.google.firebase.** {*;}
 -keep class com.google.android.gms.internal.** {*;}
 -keepclasseswithmembers class com.google.firebase.FirebaseException
