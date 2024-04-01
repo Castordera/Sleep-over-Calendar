@@ -20,6 +20,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keepattributes Signature
--keepclassmembers class com.ulises.domain.models.** {
-      *;
-    }
+-keepclassmembers class com.ulises.domain.models.** {*;}
+-keep public class com.google.firebase.** {*;}
+-keep class com.google.android.gms.internal.** {*;}
+-keepclasseswithmembers class com.google.firebase.FirebaseException
+-keepclassmembers class com.google.firebase.database.GenericTypeIndicator{*;}
+-keep class * extends com.google.firebase.database.GenericTypeIndicator{*;}
+-keep class com.google.firebase.database.GenericTypeIndicator{*;}
