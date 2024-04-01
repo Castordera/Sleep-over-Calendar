@@ -10,8 +10,8 @@ val outcomeEvent = OutcomeScheduledEvent(
     createdOn = "Today",
     createdById = "111",
     rating = 0,
-    kidName = "Kid name",
-    comments = "Demo comments"
+    comments = "Demo comments",
+    selectedKids = emptyList()
 )
 
 val event = ScheduledEvent(
@@ -21,5 +21,6 @@ val event = ScheduledEvent(
     createdOn = "Today",
     rating = 0,
     kidName = "Kid name",
-    comments = "Demo comments"
+    comments = "Demo comments",
+    selectedKids = emptyList(),
 )

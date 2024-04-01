@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,6 +23,9 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,6 +43,7 @@ import com.ulises.common.time.utils.TimeHelper.toMillis
 import com.ulises.components.pickers.DatePickerDialog
 import com.ulises.components.toolbar.TopBar
 import com.ulises.features.event.add.R
+import models.AvailableKids
 import com.ulises.features.event.add.models.UiState
 import com.ulises.theme.SleepScheduleTheme
 import java.time.LocalDate
@@ -48,28 +55,32 @@ fun ScheduleDetailRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ScheduleDateDetail(
+    ScheduleDateDetailScreen(
         uiState = uiState,
         onDateDialogVisibilityChange = viewModel::onDateDialogVisibilityChange,
         onDateSelected = viewModel::onDateSelected,
         onUpdateTextField = viewModel::onUpdateTextField,
         onUpdateCommentField = viewModel::onUpdateTextField,
         onAddEvent = viewModel::onAddSchedule,
-        onNavigateBackClick = onNavigateBackClick
+        onNavigateBackClick = onNavigateBackClick,
+        onUpdateKidName = viewModel::onUpdateSelectedKid
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScheduleDateDetail(
+fun ScheduleDateDetailScreen(
     uiState: UiState,
     onDateDialogVisibilityChange: (Boolean) -> Unit,
     onDateSelected: (Long?) -> Unit,
     onUpdateTextField: (type: TextFieldType, text: String) -> Unit,
     onUpdateCommentField: (type: TextFieldType, text: String) -> Unit,
     onAddEvent: () -> Unit,
-    onNavigateBackClick: () -> Unit
+    onNavigateBackClick: () -> Unit,
+    onUpdateKidName: (AvailableKids) -> Unit,
 ) {
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+
     if (uiState.addComplete) {
         LaunchedEffect(Unit) {
             onNavigateBackClick()
@@ -84,7 +95,7 @@ fun ScheduleDateDetail(
             modifier = Modifier
                 .padding(it)
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
 
         ) {
             DatePickerDialog(
@@ -139,13 +150,30 @@ fun ScheduleDateDetail(
                     }
                 }
             }
-            TextField(
-                value = "Renata",
-                onValueChange = {},
-                label = { Text(text = stringResource(id = R.string.add_schedule_kid_name)) },
-                readOnly = true,
+            ExposedDropdownMenuBox(
+                expanded = isDropdownExpanded,
+                onExpandedChange = { isDropdownExpanded = !isDropdownExpanded},
                 modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                TextField(
+                    value = uiState.selectedKids.joinToString(separator = ", "),
+                    onValueChange = {},
+                    label = { Text(text = stringResource(id = R.string.add_schedule_kid_name)) },
+                    readOnly = true,
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(),
+                )
+                ExposedDropdownMenu(expanded = isDropdownExpanded, onDismissRequest = { isDropdownExpanded = false }) {
+                    AvailableKids.entries.forEach { value ->
+                        DropdownMenuItem(
+                            text = { Text(text = value.name) },
+                            onClick = { onUpdateKidName(value); isDropdownExpanded = false },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                        )
+                    }
+                }
+            }
             TextField(
                 label = { Text(text = "Comentarios") },
                 value = uiState.comments,
@@ -167,11 +195,11 @@ fun ScheduleDateDetail(
 }
 
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, fontScale = 2f)
 @Composable
 fun PrevScheduleDateDetail() {
     SleepScheduleTheme {
-        ScheduleDateDetail(
+        ScheduleDateDetailScreen(
             uiState = UiState(
                 selectedDate = LocalDate.now()
             ),
@@ -180,7 +208,8 @@ fun PrevScheduleDateDetail() {
             onDateSelected = {},
             onUpdateTextField = { _, _ -> },
             onUpdateCommentField = { _, _ -> },
-            onAddEvent = {}
+            onAddEvent = {},
+            onUpdateKidName = {},
         )
     }
 }

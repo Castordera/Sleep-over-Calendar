@@ -8,9 +8,9 @@ import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.ulises.features.event.add.ui.ScheduleDetailRoute
 import com.ulises.features.events.list.ui.ScheduleListRoute
-import com.ulises.user.detail.ui.UserRoute
 import com.ulises.navigation.Graphs
 import com.ulises.navigation.Screens
+import com.ulises.user.detail.ui.UserRoute
 
 @Composable
 fun AppNavHost(
@@ -32,6 +32,7 @@ fun AppNavHost(
             route = Screens.Home.route
         ) {
             ScheduleListRoute(
+                snackBarHostState = appState.snackBarHostState,
                 onNavigateToAdd = { navController.navigate(Screens.AddEvent.route) }
             )
         }

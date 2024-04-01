@@ -9,7 +9,9 @@ data class ScheduledEvent(
     val createdBy: String? = null,
     val createdOn: String? = null,
     val rating: Int? = null,
-    val comments: String? = null
+    val comments: String? = null,
+    val kidName: String? = null,
+    val selectedKids: List<Kid>? = null,
 )
 
 fun ScheduledEvent.toDomain() = models.ScheduledEvent(
@@ -18,6 +20,7 @@ fun ScheduledEvent.toDomain() = models.ScheduledEvent(
     createdBy = createdBy.orEmpty(),
     createdOn = date.orEmpty(),
     rating = rating ?: 0,
-    kidName = "Renata",
-    comments = comments.orEmpty()
+    kidName = kidName.orEmpty(),
+    comments = comments.orEmpty(),
+    selectedKids = selectedKids?.map { it.toDomain() } ?: emptyList(),
 )

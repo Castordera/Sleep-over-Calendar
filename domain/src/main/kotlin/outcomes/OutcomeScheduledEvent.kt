@@ -1,5 +1,7 @@
 package outcomes
 
+import models.Kid
+
 data class OutcomeScheduledEvent(
     val id: String,
     val date: String,
@@ -7,6 +9,6 @@ data class OutcomeScheduledEvent(
     val createdById: String,
     val createdOn: String,
     val rating: Int,
-    val kidName: String,
-    val comments: String
+    val comments: String,
+    val selectedKids: List<Kid>,
 )

@@ -9,4 +9,8 @@ class UpdateScheduleEventUseCase @Inject constructor(
     suspend operator fun invoke(eventId: String, newRating: Int) {
         repository.updateScheduleEventRating(eventId, newRating)
     }
+
+    suspend operator fun invoke(eventId: String, newRate: Int, index: Int) {
+        repository.updateScheduleEventRating(eventId, newRate, index)
+    }
 }

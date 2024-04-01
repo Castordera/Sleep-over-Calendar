@@ -1,5 +1,6 @@
 package com.ulises.features.events.list.models
 
+import models.Kid
 import models.ScheduledEvent
 
 data class UiState(
@@ -7,5 +8,7 @@ data class UiState(
     val isLoading: Boolean = false,
     val showDialogDelete: Boolean = false,
     val showDialogRating: Boolean = false,
-    val selectedEvent: ScheduledEvent? = null
+    val selectedEvent: ScheduledEvent? = null,
+    val selectedKid: Kid? = null,
+    val error: String? = null,
 )

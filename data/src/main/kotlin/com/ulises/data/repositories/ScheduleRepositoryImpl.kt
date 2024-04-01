@@ -25,4 +25,8 @@ class ScheduleRepositoryImpl @Inject constructor(
     override suspend fun updateScheduleEventRating(eventId: String, newRating: Int) {
         remoteDataSource.updateScheduleEventRating(eventId, newRating)
     }
+
+    override suspend fun updateScheduleEventRating(eventId: String, newRate: Int, index: Int) {
+        remoteDataSource.updateScheduleEventRating(eventId, newRate, index)
+    }
 }

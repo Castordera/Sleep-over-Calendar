@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -44,13 +45,14 @@ import com.ulises.features.events.list.utils.getImageFromMonth
 import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.SleepScheduleTheme
 import models.CardFace
+import models.Kid
 import models.ScheduledEvent
 
 @Composable
 fun ScheduleItem(
     modifier: Modifier = Modifier,
     item: ScheduledEvent,
-    onClickUpdateFeedback: () -> Unit,
+    onClickUpdateFeedback: (Kid?) -> Unit,
     onClickDelete: () -> Unit,
     onClickItem: (ScheduledEvent) -> Unit
 ) {
@@ -105,19 +107,26 @@ fun ScheduleItem(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             modifier = Modifier.padding(top = 16.dp)
                         ) {
-                            items(1) {
-                                KidRate(
-                                    name = item.kidName,
-                                    rating = item.rating
-                                )
+                            if (item.selectedKids.isNotEmpty()) {
+                                items(item.selectedKids) { kid ->
+                                    KidRate(
+                                        name = kid.name,
+                                        rating = kid.rate,
+                                        onClickRate = { onClickUpdateFeedback(kid) },
+                                    )
+                                }
+                            } else {// Legacy way
+                                items(1) {
+                                    KidRate(
+                                        name = item.kidName,
+                                        rating = item.rating,
+                                        onClickRate = { onClickUpdateFeedback(null) },
+                                    )
+                                }
                             }
                         }
                     }
                     Row {
-                        IconButton(
-                            icon = R.drawable.ic_thumbs_up_down,
-                            onClick = onClickUpdateFeedback,
-                        )
                         IconButton(
                             icon = R.drawable.ic_delete,
                             onClick = onClickDelete,

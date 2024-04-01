@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import models.CardFace
+import models.Kid
 import models.ScheduledEvent
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,14 +46,15 @@ class MainScheduleViewModel @Inject constructor(
     fun onDialogCloseVisibilityChange(
         dialogType: DialogType,
         isVisible: Boolean,
-        event: ScheduledEvent? = null
+        event: ScheduledEvent? = null,
+        kid: Kid? = null,
     ) {
         when (dialogType) {
             is DialogType.Rating -> {
-                _uiState.update { it.copy(showDialogRating = isVisible, selectedEvent = event) }
+                _uiState.update { it.copy(showDialogRating = isVisible, selectedEvent = event, selectedKid = kid) }
             }
             is DialogType.Delete -> {
-                _uiState.update { it.copy(showDialogDelete = isVisible, selectedEvent = event) }
+                _uiState.update { it.copy(showDialogDelete = isVisible, selectedEvent = event, selectedKid = kid) }
             }
         }
     }
@@ -61,9 +64,11 @@ class MainScheduleViewModel @Inject constructor(
             if (!eventId.isNullOrEmpty()) {
                 runCatching {
                     deleteScheduleEventUseCase(eventId)
-                }.onFailure {
-
+                }.onFailure { error ->
+                    Timber.e(error, "Error deleting event: $eventId")
+                    _uiState.update { it.copy(error = error.localizedMessage) }
                 }.onSuccess {
+                    Timber.d("Deleted event: $eventId")
                     onDialogCloseVisibilityChange(DialogType.Delete, false)
                 }
             }
@@ -74,10 +79,20 @@ class MainScheduleViewModel @Inject constructor(
         viewModelScope.launch(dispatchers.io) {
             event?.also {
                 runCatching {
-                    updateScheduleEventUseCase(it.id, newRating)
-                }.onFailure {
-
+                    val newVersion = _uiState.value.selectedKid
+                    if (newVersion == null) {
+                        updateScheduleEventUseCase(it.id, newRating)
+                    } else {
+                        val kidIndex = getIndexForKid(event)
+                        Timber.d("Kid data: $newVersion, index: $kidIndex")
+                        updateScheduleEventUseCase(it.id, newRating, kidIndex)
+                    }
+                }.onFailure { error ->
+                    Timber.e(error, "Error updating the rating to :$event")
+                    _uiState.update { it.copy(error = error.localizedMessage) }
+                    onDialogCloseVisibilityChange(DialogType.Rating, false)
                 }.onSuccess {
+                    Timber.d("Rating updated: $event")
                     onDialogCloseVisibilityChange(DialogType.Rating, false)
                 }
             }
@@ -93,5 +108,13 @@ class MainScheduleViewModel @Inject constructor(
             }
             _uiState.update { it.copy(scheduleEvents = items.toList()) }
         }
+    }
+
+    fun onErrorDisplayed() {
+        _uiState.update { it.copy(error = null) }
+    }
+
+    private fun getIndexForKid(event: ScheduledEvent): Int {
+        return event.selectedKids.indexOf(_uiState.value.selectedKid)
     }
 }

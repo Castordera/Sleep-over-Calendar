@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import models.AvailableKids
+import models.Kid
 import outcomes.OutcomeScheduledEvent
 import timber.log.Timber
 import java.time.LocalDateTime
@@ -46,6 +48,18 @@ class ScheduleDateDetailViewModel @Inject constructor(
         }
     }
 
+    fun onUpdateSelectedKid(kids: AvailableKids) {
+        when (kids) {
+            AvailableKids.Ambos -> {
+                _uiState.update { it.copy(selectedKids = listOf(AvailableKids.Renata.name, AvailableKids.Lando.name)) }
+            }
+            else -> {
+                _uiState.update { it.copy(selectedKids = listOf(kids.name)) }
+            }
+        }
+        validateInputsFilled()
+    }
+
     fun onDateSelected(millis: Long?) {
         viewModelScope.launch(dispatchers.main) {
             runCatching {
@@ -76,9 +90,9 @@ class ScheduleDateDetailViewModel @Inject constructor(
                     createdBy = _uiState.value.createdText.trim(),
                     createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                     rating = 0,
-                    kidName = _uiState.value.kidName,
                     comments = _uiState.value.comments,
-                    createdById = user?.id ?: "Unknown"
+                    createdById = user?.id ?: "Unknown",
+                    selectedKids = _uiState.value.selectedKids.map { Kid(it, 0) },
                 )
                 addScheduledEventUseCase(scheduleEvent)
                 scheduleEvent
@@ -86,13 +100,14 @@ class ScheduleDateDetailViewModel @Inject constructor(
                 Timber.d("Event created: $event")
                 _uiState.update { it.copy(isLoading = false, addComplete = true) }
             }.onFailure {
+                Timber.e(it, "Error creating this event")
                 _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
 
     private fun validateInputsFilled() {
-        val isReady = _uiState.value.createdText.isNotBlank()
+        val isReady = _uiState.value.createdText.trim().isNotBlank() && _uiState.value.selectedKids.isNotEmpty()
         _uiState.update { it.copy(isReadyToSend = isReady) }
     }
 }

@@ -27,6 +27,7 @@ class FirebaseRemoteDataSource @Inject constructor (
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val mapResponse = snapshot.getValue<Map<String, ScheduledEvent>>() ?: emptyMap()
+                Timber.d("Data retrieved: $mapResponse")
                 trySend(mapResponse)
             }
 
@@ -56,7 +57,13 @@ class FirebaseRemoteDataSource @Inject constructor (
         database.child(eventId).child(KEY_RATING).setValue(newRating).await()
     }
 
+    override suspend fun updateScheduleEventRating(eventId: String, newRate: Int, index: Int) {
+        database.child(eventId).child(KEY_SELECTED_KIDS).child(index.toString()).child(KEY_KID_RATING).setValue(newRate).await()
+    }
+
     private companion object {
         const val KEY_RATING = "rating"
+        const val KEY_SELECTED_KIDS = "selectedKids"
+        const val KEY_KID_RATING = "rate"
     }
 }
