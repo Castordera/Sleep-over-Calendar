@@ -42,7 +42,7 @@ fun DialogFeedback(
     onDismiss: () -> Unit,
     onUpdateRating: (Int) -> Unit,
 ) {
-    var rateSelected by remember { mutableIntStateOf(event?.rating ?: 0) }
+    var rateSelected by remember { mutableIntStateOf( kid?.rate ?: event?.rating ?: 0) }
 
     BasicAlertDialog(
         onDismissRequest = onDismiss
