@@ -23,7 +23,7 @@ import com.ulises.theme.SleepScheduleTheme
 fun FabButton(
     @DrawableRes icon: Int,
     contentDescription: String = "",
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
 ) {
     FloatingActionButton(
         onClick = onClick,
@@ -31,20 +31,6 @@ fun FabButton(
     ) {
         Icon(
             painter = painterResource(icon),
-            contentDescription = contentDescription
-        )
-    }
-}
-
-@Composable
-fun IconButton(
-    @DrawableRes icon: Int,
-    contentDescription: String = "",
-    onClick: () -> Unit,
-) {
-    androidx.compose.material3.IconButton(onClick = onClick) {
-        Icon(
-            painter = painterResource(id = icon),
             contentDescription = contentDescription
         )
     }
@@ -80,11 +66,6 @@ fun PrevFabButton() {
             FabButton(
                 icon = R.drawable.ic_add,
                 contentDescription = "Content Description",
-                onClick = {}
-            )
-            IconButton(
-                icon = R.drawable.ic_add,
-                onClick = {}
             )
         }
     }
