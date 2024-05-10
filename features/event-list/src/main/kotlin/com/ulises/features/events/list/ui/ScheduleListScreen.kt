@@ -13,13 +13,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ulises.components.FabButton
 import com.ulises.components.indicators.LoadingIndicator
 import com.ulises.features.events.list.R
@@ -34,27 +31,7 @@ import models.Kid
 import models.ScheduledEvent
 
 @Composable
-fun ScheduleListRoute(
-    viewModel: MainScheduleViewModel = hiltViewModel(),
-    snackBarHostState: SnackbarHostState,
-    onNavigateToAdd: () -> Unit,
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    ScheduleListScreen(
-        uiState = uiState,
-        snackBarHostState = snackBarHostState,
-        onNavigateToAdd = onNavigateToAdd,
-        onClickItem = viewModel::onClickItemForRotation,
-        onDialogChangeVisibility = viewModel::onDialogCloseVisibilityChange,
-        onUpdateRating = viewModel::onUpdateRating,
-        onDeleteEvent = viewModel::onDeleteScheduleEvent,
-        onErrorDisplayed = viewModel::onErrorDisplayed,
-    )
-}
-
-@Composable
-private fun ScheduleListScreen(
+internal fun ScheduleListScreen(
     uiState: UiState,
     snackBarHostState: SnackbarHostState,
     onNavigateToAdd: () -> Unit,

@@ -22,7 +22,7 @@ import com.ulises.features.events.list.R
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable
-fun EmptyScheduleScreen(
+internal fun EmptyScheduleScreen(
     modifier: Modifier = Modifier
 ) {
     Surface(
