@@ -4,8 +4,12 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
@@ -58,6 +62,7 @@ internal fun ScheduleListScreen(
             }
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
+        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
     ) { paddingValues ->
         if (uiState.showDialogDelete) {
             DialogDeleteEvent(
