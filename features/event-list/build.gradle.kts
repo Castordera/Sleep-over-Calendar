@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":common:time-utils"))
     //  Hilt
     implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
     //  Core
     implementation(project(":common:dispatcher-core"))
     implementation(libs.hilt.navigation.compose)
