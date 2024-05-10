@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ulises.components.RatingButton
-import com.ulises.components.dialogs.HeaderDialog
+import com.ulises.components.dialogs.AlertDialog
 import com.ulises.features.events.list.R
 import com.ulises.features.events.list.utils.RatingType
 import com.ulises.features.events.list.utils.scheduleEventMockList
@@ -34,7 +31,6 @@ import models.ScheduledEvent
 
 private val ratingValues = arrayOf(RatingType.Bad, RatingType.Neutral, RatingType.Good)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DialogFeedback(
     event: ScheduledEvent?,
@@ -44,46 +40,37 @@ fun DialogFeedback(
 ) {
     var rateSelected by remember { mutableIntStateOf( kid?.rate ?: event?.rating ?: 0) }
 
-    BasicAlertDialog(
-        onDismissRequest = onDismiss
-    ) {
-        Surface {
-            Column(
-                modifier = Modifier.fillMaxWidth()
+    AlertDialog(onDismiss = onDismiss) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        ) {
+            Text(
+                text = stringResource(
+                    id = R.string.dialog_rating_message,
+                    event?.kidName?.ifEmpty { kid?.name }.orEmpty()
+                ),
+                fontSize = 18.sp
+            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(60.dp)
             ) {
-                HeaderDialog(onClickIcon = onDismiss)
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-                ) {
-                    Text(
-                        text = stringResource(
-                            id = R.string.dialog_rating_message,
-                            event?.kidName?.ifEmpty { kid?.name }.orEmpty()
-                        ),
-                        fontSize = 18.sp
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .size(60.dp)
+                (ratingValues).forEach { ratingType ->
+                    RatingButton(
+                        image = ratingType.icon,
+                        isSelected = rateSelected == ratingType.value
                     ) {
-                        (ratingValues).forEach { ratingType ->
-                            RatingButton(
-                                image = ratingType.icon,
-                                isSelected = rateSelected == ratingType.value
-                            ) {
-                                rateSelected = ratingType.value
-                            }
-                        }
-                    }
-                    Button(onClick = { onUpdateRating(rateSelected) }) {
-                        Text(text = stringResource(id = R.string.dialog_rating_save))
+                        rateSelected = ratingType.value
                     }
                 }
+            }
+            Button(onClick = { onUpdateRating(rateSelected) }) {
+                Text(text = stringResource(id = R.string.dialog_rating_save))
             }
         }
     }
@@ -92,7 +79,7 @@ fun DialogFeedback(
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PrevDialogFeedback() {
+private fun PrevDialogFeedback() {
     SleepScheduleTheme {
         DialogFeedback(
             event = scheduleEventMockList[0],
