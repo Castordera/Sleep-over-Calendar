@@ -10,20 +10,20 @@ activity-compose = "1.8.2"
 compose = "1.6.5"
 android-junit = "1.1.5"
 junit = "4.13.2"
-junit5 = "5.10.1"
+junit5 = "5.10.2"
 mockk = "1.13.8"
 espresso-core = "3.5.1"
-hilt = "2.50"
-coil = "2.5.0"
-coil-svg = "2.5.0"
+hilt = "2.51.1"
+coil = "2.6.0"
+coil-svg = "2.6.0"
 navigation-compose = "2.7.7"
 hilt-navigation-compose = "1.2.0"
 javax-inject = "1"
 room = "2.6.1"
-coroutine-core = "1.7.3"
+coroutine-core = "1.8.0"
 timber = "5.0.1"
 appcompat = "1.6.1"
-turbine = "1.0.0"
+turbine = "1.1.0"
 annotationJvm = "1.7.1"
 
 [libraries]
@@ -88,3 +88,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.1" }
