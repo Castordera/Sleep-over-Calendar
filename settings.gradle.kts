@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 }
 
 includeBuild("build-logic")
-
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
 rootProject.name = "SleepSchedule"
 include(":app")
 include(":domain")

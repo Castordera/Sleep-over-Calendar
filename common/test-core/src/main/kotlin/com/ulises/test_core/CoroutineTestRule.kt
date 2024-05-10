@@ -14,10 +14,12 @@ class CoroutineTestRule: BeforeAllCallback, AfterAllCallback {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun beforeAll(context: ExtensionContext?) {
         Dispatchers.setMain(dispatcher)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun afterAll(context: ExtensionContext?) {
         Dispatchers.resetMain()
     }

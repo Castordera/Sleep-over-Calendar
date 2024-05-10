@@ -132,7 +132,8 @@ private fun ScheduleListScreen(
                             onClickDelete = {
                                 onDialogChangeVisibility(DialogType.Delete, true, event, null)
                             },
-                            onClickItem = onClickItem
+                            onClickItem = onClickItem,
+                            onClickEdit = {},
                         )
                     }
                 }
@@ -142,7 +143,7 @@ private fun ScheduleListScreen(
 }
 
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, fontScale = 1.5f)
 @Composable
 private fun PrevMainScheduleScreen() {
     SleepScheduleTheme {

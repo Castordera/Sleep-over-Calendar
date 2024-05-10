@@ -43,7 +43,9 @@ class ScheduleDateDetailViewModel @Inject constructor(
                 validateInputsFilled()
             }
             is TextFieldType.Comment -> {
-                _uiState.update { it.copy(comments = text) }
+                if (text.length <= MAX_COMMENT_LENGTH) {
+                    _uiState.update { it.copy(comments = text) }
+                }
             }
         }
     }
@@ -109,6 +111,10 @@ class ScheduleDateDetailViewModel @Inject constructor(
     private fun validateInputsFilled() {
         val isReady = _uiState.value.createdText.trim().isNotBlank() && _uiState.value.selectedKids.isNotEmpty()
         _uiState.update { it.copy(isReadyToSend = isReady) }
+    }
+
+    companion object {
+        const val MAX_COMMENT_LENGTH = 250
     }
 }
 

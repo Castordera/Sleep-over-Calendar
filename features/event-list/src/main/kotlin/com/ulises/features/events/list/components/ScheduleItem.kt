@@ -2,19 +2,29 @@ package com.ulises.features.events.list.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.capitalize
@@ -34,6 +45,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -47,20 +59,37 @@ import com.ulises.theme.SleepScheduleTheme
 import models.CardFace
 import models.Kid
 import models.ScheduledEvent
+import kotlin.math.roundToInt
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleItem(
     modifier: Modifier = Modifier,
     item: ScheduledEvent,
     onClickUpdateFeedback: (Kid?) -> Unit,
     onClickDelete: () -> Unit,
-    onClickItem: (ScheduledEvent) -> Unit
+    onClickItem: (ScheduledEvent) -> Unit,
+    onClickEdit: (ScheduledEvent) -> Unit,
 ) {
     var image by remember { mutableStateOf<Int?>(null) }
     val rotation: Float by animateFloatAsState(
         targetValue = if (item.cardFace == CardFace.BACK) 180f else 0f,
         label = "Rotation Card"
     )
+    val localDensity = LocalDensity.current
+    val dragState = remember {
+        AnchoredDraggableState(
+            initialValue = DragAnchors.CLOSED,
+            anchors = DraggableAnchors {
+                DragAnchors.CLOSED at 0f
+                DragAnchors.LEFT at 200f
+                DragAnchors.RIGHT at -200f
+            },
+            positionalThreshold = { totalDistance: Float -> totalDistance * 0.5f },
+            velocityThreshold = { with(localDensity) { 100.dp.toPx() } },
+            animationSpec = tween()
+        )
+    }
 
     LaunchedEffect(key1 = Unit) {
         image = item.getImageFromMonth()
@@ -69,6 +98,15 @@ fun ScheduleItem(
     Card(
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
+            .offset {
+                IntOffset(
+                    x = dragState
+                        .requireOffset()
+                        .roundToInt(),
+                    y = 0
+                )
+            }
+            .anchoredDraggable(dragState, Orientation.Horizontal)
             .graphicsLayer {
                 rotationY = rotation
                 cameraDistance = 8 * density
@@ -151,23 +189,43 @@ fun ScheduleItem(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(end = 16.dp, bottom = 16.dp)
                         .graphicsLayer { rotationY = 180f }
                 ) {
+                    Row {
+                        Text(
+                            text = stringResource(id = R.string.card_comments_title),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(top = 16.dp),
+                        )
+                        androidx.compose.material3.IconButton(onClick = { onClickEdit(item) }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                            )
+                        }
+                    }
                     Text(
-                        text = stringResource(id = R.string.card_comments_title),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        text = item.comments,
+                        modifier = Modifier.padding(end = 16.dp),
                     )
-                    Text(text = item.comments)
                 }
             }
         }
     }
 }
 
+private enum class DragAnchors {
+    LEFT,
+    CLOSED,
+    RIGHT
+}
+
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, fontScale = 1.5f)
 @Composable
 private fun PrevScheduleItem() {
     SleepScheduleTheme {
@@ -175,13 +233,14 @@ private fun PrevScheduleItem() {
             item = scheduleEventMockList[0],
             onClickUpdateFeedback = {},
             onClickDelete = {},
-            onClickItem = {}
+            onClickItem = {},
+            onClickEdit = {},
         )
     }
 }
 
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, fontScale = 1.5f)
 @Composable
 private fun PrevScheduleItemBack() {
     SleepScheduleTheme {
@@ -189,7 +248,8 @@ private fun PrevScheduleItemBack() {
             item = scheduleEventMockList[0].copy(cardFace = CardFace.BACK),
             onClickUpdateFeedback = {},
             onClickDelete = {},
-            onClickItem = {}
+            onClickItem = {},
+            onClickEdit = {},
         )
     }
 }

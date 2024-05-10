@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,9 +44,10 @@ import com.ulises.common.time.utils.TimeHelper.toMillis
 import com.ulises.components.pickers.DatePickerDialog
 import com.ulises.components.toolbar.TopBar
 import com.ulises.features.event.add.R
-import models.AvailableKids
 import com.ulises.features.event.add.models.UiState
+import com.ulises.features.event.add.ui.ScheduleDateDetailViewModel.Companion.MAX_COMMENT_LENGTH
 import com.ulises.theme.SleepScheduleTheme
+import models.AvailableKids
 import java.time.LocalDate
 
 @Composable
@@ -181,7 +183,14 @@ fun ScheduleDateDetailScreen(
                     onUpdateCommentField(TextFieldType.Comment, value)
                 },
                 maxLines = 3,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                supportingText = {
+                    Text(
+                        text = "Total de letras ${uiState.comments.length}/$MAX_COMMENT_LENGTH",
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             )
             Button(
                 enabled = !uiState.isLoading && uiState.isReadyToSend,

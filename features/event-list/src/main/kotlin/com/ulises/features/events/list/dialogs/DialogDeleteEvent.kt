@@ -2,8 +2,12 @@ package com.ulises.features.events.list.dialogs
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -22,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ulises.common.time.utils.TimeHelper
 import com.ulises.components.dialogs.HeaderDialog
+import com.ulises.features.events.list.R
 import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.SleepScheduleTheme
 import models.ScheduledEvent
-import com.ulises.features.events.list.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +38,7 @@ fun DialogDeleteEvent(
     onDismiss: () -> Unit,
     onDelete: () -> Unit
 ) {
-    AlertDialog(
+    BasicAlertDialog(
         onDismissRequest = onDismiss
     ) {
         Surface {

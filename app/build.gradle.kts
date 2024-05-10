@@ -4,8 +4,8 @@ plugins {
     id("sleepover.android.common")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
     id("com.google.devtools.ksp")
+    id("kotlin-kapt")
 }
 
 android {
@@ -14,8 +14,8 @@ android {
     defaultConfig {
         applicationId = "com.ulises.sleepschedule"
         targetSdk = 33
-        versionCode = 2
-        versionName = "1.1.0"
+        versionCode = 4
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -62,18 +62,14 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":design:theme"))
-    implementation(project(":design:components"))
     implementation(project(":common:dispatcher-core"))
-    implementation(project(":common:time-utils"))
+    implementation(project(":common:navigation"))
     implementation(project(":features:splash"))
     implementation(project(":features:user-register"))
     implementation(project(":features:user-login"))
     implementation(project(":features:user-detail"))
     implementation(project(":features:event-list"))
     implementation(project(":features:event-add"))
-    implementation(project(":common:navigation"))
-    implementation(project(":usecases:events"))
-    implementation(project(":usecases:session"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.android.test)
