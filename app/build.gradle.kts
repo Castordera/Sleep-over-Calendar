@@ -5,7 +5,6 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
-    id("kotlin-kapt")
 }
 
 android {
@@ -13,9 +12,8 @@ android {
 
     defaultConfig {
         applicationId = "com.ulises.sleepschedule"
-        targetSdk = 33
-        versionCode = 4
-        versionName = "1.2.1"
+        versionCode = 5
+        versionName = "1.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -35,10 +33,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     //  Firebase
     implementation(platform("com.google.firebase:firebase-bom:31.2.2"))
@@ -50,7 +44,7 @@ dependencies {
     implementation(libs.compose.lifecycle.runtime)
     //  Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     // Coil
     implementation(libs.bundles.coil)
     //  Navigation
