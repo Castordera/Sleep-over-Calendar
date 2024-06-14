@@ -3,7 +3,7 @@ plugins {
     id("sleepover.android.kotlin")
     id("sleepover.android.common")
     id("sleepover.unit.test")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -24,7 +24,7 @@ dependencies {
     implementation(project(":domain"))
     //  Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     //  Core
     implementation(project(":common:dispatcher-core"))
     implementation(libs.hilt.navigation.compose)
