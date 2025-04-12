@@ -1,17 +1,18 @@
-import com.android.build.api.dsl.LibraryExtension
-import config.configureAndroidCompose
+import com.android.build.gradle.LibraryExtension
+import config.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
+class AndroidLibraryConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("org.jetbrains.kotlin.plugin.compose")
+                apply("com.android.library")
+                apply("org.jetbrains.kotlin.android")
             }
             extensions.configure<LibraryExtension> {
-                configureAndroidCompose(this)
+                configureKotlinAndroid(this)
             }
         }
     }

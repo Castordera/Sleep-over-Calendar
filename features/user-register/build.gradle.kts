@@ -1,9 +1,8 @@
 plugins {
-    id("sleepover.android.library.compose")
-    id("sleepover.android.kotlin")
-    id("sleepover.android.common")
+    alias(libs.plugins.sleep.android.library)
+    alias(libs.plugins.sleep.android.library.compose)
     id("sleepover.unit.test")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -18,7 +17,6 @@ dependencies {
     //  UI
     implementation(project(":design:theme"))
     implementation(project(":design:components"))
-    implementation(libs.compose.material3)
     //  Data
     implementation(project(":usecases:session"))
     implementation(project(":usecases:user"))

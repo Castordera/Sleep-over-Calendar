@@ -12,20 +12,11 @@ internal fun Project.configureAndroidCompose(
             compose = true
         }
 
-        composeOptions {
-
-        }
-
-        packaging {
-            resources.excludes.add("META-INF/LICENSE-notice.md")
-            resources.excludes.add("META-INF/LICENSE.md")
-        }
-
         dependencies {
-            add("implementation", libs.library("compose-ui"))
-            add("implementation", libs.library("compose-ui-preview"))
-            add("implementation", libs.library("compose-material3"))
-            add("debugImplementation", libs.library("compose-ui-tooling"))
+            implementation(libs.library("compose-ui"))
+            implementation(libs.library("compose-ui-preview"))
+            implementation(libs.library("compose-material3"))
+            debugImplementation(libs.library("compose-ui-tooling"))
         }
     }
 }

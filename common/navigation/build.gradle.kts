@@ -1,7 +1,6 @@
 plugins {
-    id("sleepover.android.library.compose")
-    id("sleepover.android.kotlin")
-    id("sleepover.android.common")
+    alias(libs.plugins.sleep.android.library)
+    alias(libs.plugins.sleep.android.library.compose)
 }
 
 android {

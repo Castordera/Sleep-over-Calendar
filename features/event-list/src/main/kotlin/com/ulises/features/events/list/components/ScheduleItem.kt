@@ -2,20 +2,14 @@ package com.ulises.features.events.list.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.AnchoredDraggableState
-import androidx.compose.foundation.gestures.DraggableAnchors
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -47,7 +41,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -60,7 +53,6 @@ import com.ulises.theme.SleepScheduleTheme
 import models.CardFace
 import models.Kid
 import models.ScheduledEvent
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -78,19 +70,21 @@ fun ScheduleItem(
         label = "Rotation Card"
     )
     val localDensity = LocalDensity.current
-    val dragState = remember {
-        AnchoredDraggableState(
-            initialValue = DragAnchors.CLOSED,
-            anchors = DraggableAnchors {
-                DragAnchors.CLOSED at 0f
-                DragAnchors.LEFT at 200f
-                DragAnchors.RIGHT at -200f
-            },
-            positionalThreshold = { totalDistance: Float -> totalDistance * 0.5f },
-            velocityThreshold = { with(localDensity) { 100.dp.toPx() } },
-            animationSpec = tween()
-        )
-    }
+    //Todo(Fix this)
+//    val dragState = remember {
+//        AnchoredDraggableState(
+//            initialValue = DragAnchors.CLOSED,
+//            anchors = DraggableAnchors {
+//                DragAnchors.CLOSED at 0f
+//                DragAnchors.LEFT at 200f
+//                DragAnchors.RIGHT at -200f
+//            },
+//            positionalThreshold = { totalDistance: Float -> totalDistance * 0.5f },
+//            velocityThreshold = { with(localDensity) { 100.dp.toPx() } },
+//            animationSpec = tween(),
+//            animateDecay =
+//        )
+//    }
 
     LaunchedEffect(key1 = Unit) {
         image = item.getImageFromMonth()
@@ -99,15 +93,15 @@ fun ScheduleItem(
     Card(
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
-            .offset {
-                IntOffset(
-                    x = dragState
-                        .requireOffset()
-                        .roundToInt(),
-                    y = 0
-                )
-            }
-            .anchoredDraggable(dragState, Orientation.Horizontal)
+//            .offset {
+//                IntOffset(
+//                    x = dragState
+//                        .requireOffset()
+//                        .roundToInt(),
+//                    y = 0
+//                )
+//            }
+//            .anchoredDraggable(dragState, Orientation.Horizontal)
             .graphicsLayer {
                 rotationY = rotation
                 cameraDistance = 8 * density

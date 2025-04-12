@@ -1,3 +1,3 @@
 plugins {
-    id("sleepover.kotlin.library")
+    alias(libs.plugins.sleep.kotlin.library)
 }

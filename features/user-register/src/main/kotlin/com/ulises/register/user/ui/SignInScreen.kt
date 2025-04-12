@@ -119,7 +119,7 @@ private fun SignInScreen(
                 onTextChange = { onTextChange(TextType.Password, it) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
-                    autoCorrect = false
+                    autoCorrectEnabled = false
                 ),
             )
             AppTextField(
@@ -131,7 +131,7 @@ private fun SignInScreen(
                 onTextChange = { onTextChange(TextType.RePassword, it) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
-                    autoCorrect = false
+                    autoCorrectEnabled = false
                 ),
             )
             Button(

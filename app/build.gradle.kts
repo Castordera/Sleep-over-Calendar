@@ -1,10 +1,9 @@
 plugins {
-    id("sleepover.android.app.compose")
-    id("sleepover.android.kotlin")
-    id("sleepover.android.common")
-    id("com.google.gms.google-services")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.sleep.android.app)
+    alias(libs.plugins.sleep.android.app.compose)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -16,9 +15,6 @@ android {
         versionName = "1.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -40,7 +36,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     //  Compose
     implementation(libs.compose.activity)
-    implementation(libs.compose.material3)
     implementation(libs.compose.lifecycle.runtime)
     //  Hilt
     implementation(libs.hilt.android)

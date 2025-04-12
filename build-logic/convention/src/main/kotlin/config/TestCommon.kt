@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureUnitTestCommon(
-    extension: CommonExtension<*, *, *, *, *>
+    extension: CommonExtension<*, *, *, *, *, *>
 ) {
     extension.apply {
         configure()
