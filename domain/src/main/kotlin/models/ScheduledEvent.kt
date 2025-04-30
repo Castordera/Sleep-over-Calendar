@@ -8,11 +8,6 @@ data class ScheduledEvent(
     val rating: Int,
     val kidName: String,
     val comments: String,
-    val cardFace: CardFace = CardFace.FRONT,
+    val isExpanded: Boolean = false,
     val selectedKids: List<Kid>,
 )
-
-enum class CardFace {
-    FRONT,
-    BACK
-}

@@ -1,7 +1,7 @@
 package models
 
-data class Birthday(
+data class Holiday(
     val month: Int,
     val day: Int,
-    val name: String
+    val image: Int = -1,
 )

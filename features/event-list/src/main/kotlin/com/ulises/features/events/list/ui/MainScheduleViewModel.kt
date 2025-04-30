@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import models.CardFace
 import models.ScheduledEvent
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,7 +36,7 @@ class MainScheduleViewModel @Inject constructor(
 
     fun onHandleIntent(intent: Intents) {
         when (intent) {
-            is Intents.ClickItem -> onClickItemForRotation(intent.item)
+            is Intents.ClickItem -> onExpandCollapseItem(intent.item)
             Intents.ClearError -> onErrorDisplayed()
             is Intents.UpdateRating -> onUpdateRating(
                 _uiState.value.selectedEvent,
@@ -115,12 +114,12 @@ class MainScheduleViewModel @Inject constructor(
         }
     }
 
-    private fun onClickItemForRotation(item: ScheduledEvent) {
+    private fun onExpandCollapseItem(item: ScheduledEvent) {
         viewModelScope.launch(dispatchers.default) {
             val items = _uiState.value.scheduleEvents?.toMutableList() ?: return@launch
             val itemSelected = items.indexOf(item)
             items[itemSelected] = with(items[itemSelected]) {
-                copy(cardFace = if (cardFace == CardFace.FRONT) CardFace.BACK else CardFace.FRONT)
+                copy(isExpanded = !this.isExpanded)
             }
             _uiState.update { it.copy(scheduleEvents = items.toList()) }
         }
