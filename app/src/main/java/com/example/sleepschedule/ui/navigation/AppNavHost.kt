@@ -32,7 +32,6 @@ fun AppNavHost(
             route = Screens.Home.route
         ) {
             ScheduleListRoute(
-                snackBarHostState = appState.snackBarHostState,
                 onNavigateToAdd = { navController.navigate(Screens.AddEvent.route) }
             )
         }

@@ -17,6 +17,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,28 +28,23 @@ import com.ulises.features.events.list.R
 import com.ulises.features.events.list.components.ScheduleItem
 import com.ulises.features.events.list.dialogs.DialogDeleteEvent
 import com.ulises.features.events.list.dialogs.DialogFeedback
-import com.ulises.features.events.list.models.DialogType
+import com.ulises.features.events.list.models.Intents
 import com.ulises.features.events.list.models.UiState
 import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.SleepScheduleTheme
-import models.Kid
-import models.ScheduledEvent
 
 @Composable
 internal fun ScheduleListScreen(
     uiState: UiState,
-    snackBarHostState: SnackbarHostState,
-    onNavigateToAdd: () -> Unit,
-    onClickItem: (ScheduledEvent) -> Unit,
-    onDialogChangeVisibility: (DialogType, Boolean, ScheduledEvent?, Kid?) -> Unit,
-    onUpdateRating: (event: ScheduledEvent?, rating: Int) -> Unit,
-    onDeleteEvent: (eventId: String?) -> Unit,
-    onErrorDisplayed: () -> Unit,
+    onNavigateToAdd: () -> Unit = {},
+    onHandleIntent: (Intents) -> Unit = {},
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     if (uiState.error != null) {
         LaunchedEffect(uiState.error) {
             snackBarHostState.showSnackbar(uiState.error)
-            onErrorDisplayed()
+            onHandleIntent(Intents.ClearError)
         }
     }
 
@@ -67,16 +63,20 @@ internal fun ScheduleListScreen(
         if (uiState.showDialogDelete) {
             DialogDeleteEvent(
                 event = uiState.selectedEvent,
-                onDismiss = { onDialogChangeVisibility(DialogType.Delete, false, null, null) },
-                onDelete = { onDeleteEvent(uiState.selectedEvent?.id) }
+                onDismiss = {
+                    onHandleIntent(Intents.ChangeDeleteDialogState(false, null))
+                },
+                onDelete = { onHandleIntent(Intents.DeleteItem) },
             )
         }
         if (uiState.showDialogRating) {
             DialogFeedback(
                 event = uiState.selectedEvent,
                 kid = uiState.selectedKid,
-                onDismiss = { onDialogChangeVisibility(DialogType.Rating, false, null, null) },
-                onUpdateRating = { onUpdateRating(uiState.selectedEvent, it) }
+                onDismiss = {
+                    onHandleIntent(Intents.ChangeRateDialogState(false, null, null))
+                },
+                onUpdateRating = { onHandleIntent(Intents.UpdateRating(it)) }
             )
         }
         if (uiState.isLoading) {
@@ -109,12 +109,12 @@ internal fun ScheduleListScreen(
                         ScheduleItem(
                             item = event,
                             onClickUpdateFeedback = { kid ->
-                                onDialogChangeVisibility(DialogType.Rating, true, event, kid)
+                                onHandleIntent(Intents.ChangeRateDialogState(true, event, kid))
                             },
                             onClickDelete = {
-                                onDialogChangeVisibility(DialogType.Delete, true, event, null)
+                                onHandleIntent(Intents.ChangeDeleteDialogState(true, event))
                             },
-                            onClickItem = onClickItem,
+                            onClickItem = { onHandleIntent(Intents.ClickItem(event)) },
                             onClickEdit = {},
                         )
                     }
@@ -130,16 +130,7 @@ internal fun ScheduleListScreen(
 private fun PrevMainScheduleScreen() {
     SleepScheduleTheme {
         ScheduleListScreen(
-            uiState = UiState(
-                scheduleEvents = scheduleEventMockList
-            ),
-            snackBarHostState = SnackbarHostState(),
-            onNavigateToAdd = {},
-            onClickItem = {},
-            onDialogChangeVisibility = { _, _, _, _ -> },
-            onUpdateRating = { _, _ -> },
-            onDeleteEvent = {},
-            onErrorDisplayed = {},
+            uiState = UiState(scheduleEvents = scheduleEventMockList),
         )
     }
 }

@@ -80,10 +80,3 @@ fun PrevTextField() {
         }
     }
 }
-
-sealed interface TextType {
-    data object Email : TextType
-    data object Password : TextType
-    data object RePassword : TextType
-    data object Name : TextType
-}

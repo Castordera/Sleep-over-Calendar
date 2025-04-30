@@ -1,9 +1,13 @@
 package com.ulises.login.user.ui
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ulises.components.TextType
 import com.ulises.dispatcher_core.ScheduleDispatchers
+import com.ulises.login.user.model.Intents
+import com.ulises.login.user.model.TextFieldType
 import com.ulises.login.user.model.UiState
 import com.ulises.navigation.Screens
 import com.ulises.usecase.session.LoginUseCase
@@ -23,23 +27,28 @@ class LoginViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
+    //
+    private var email by mutableStateOf("")
+    private var password by mutableStateOf("")
+    //
 
-    fun onTextChange(type: TextType, text: String) {
-        when (type) {
-            is TextType.Email -> {
-                _uiState.update { it.copy(email = text) }
+    fun onHandleIntent(intent: Intents) {
+        when (intent) {
+            Intents.LoginClicked -> onLoginClick()
+            Intents.SignInClicked -> onSignInClicked()
+            is Intents.UpdateTextField -> {
+                when (intent.type) {
+                    TextFieldType.Email -> email = intent.value
+                    TextFieldType.Password -> password = intent.value
+                }
             }
-            is TextType.Password -> {
-                _uiState.update { it.copy(password = text) }
-            }
-            else -> Timber.d("Option not handled: $type")
         }
     }
 
-    fun onLoginClick() {
+    private fun onLoginClick() {
         viewModelScope.launch(dispatchers.main) {
             runCatching {
-                loginUseCase(uiState.value.email, uiState.value.password)
+                loginUseCase(email, password)
             }.fold(
                 onSuccess = { user ->
                     Timber.d("Login Success for: $user")
@@ -53,11 +62,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun getTextFieldValue(textFieldType: TextFieldType): String {
+        return when (textFieldType) {
+            TextFieldType.Email -> email
+            TextFieldType.Password -> password
+        }
+    }
+
     fun onErrorShowed() {
         _uiState.update { it.copy(error = "") }
     }
 
-    fun onSignInClicked() {
+    private fun onSignInClicked() {
         _uiState.update { it.copy(navigateTo = Screens.SignIn) }
     }
 

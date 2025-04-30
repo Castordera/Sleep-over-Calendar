@@ -13,13 +13,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.components.SleepBottomNavigation
 import com.example.sleepschedule.ui.rememberAppState
 
 @Composable
-fun MainScreensNavigation() {
-    val appState = rememberAppState()
-
+fun MainScreensNavigation(
+    appState: SleepScheduleAppState = rememberAppState()
+) {
     Scaffold(
         bottomBar = {
             AnimatedVisibility(
@@ -33,7 +34,7 @@ fun MainScreensNavigation() {
                 )
             }
         },
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
+        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom),
     ) { padding ->
         Surface(
             modifier = Modifier.fillMaxSize()
