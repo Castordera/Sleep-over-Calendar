@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":design:theme"))
     implementation(project(":common:dispatcher-core"))
     implementation(project(":common:navigation"))
+    implementation(project(":common:session"))
     implementation(project(":features:splash"))
     implementation(project(":features:user-register"))
     implementation(project(":features:user-login"))

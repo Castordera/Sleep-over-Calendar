@@ -12,7 +12,7 @@ import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.events.AddScheduledEventUseCase
 import com.ulises.features.event.add.models.Intents
 import com.ulises.features.event.add.models.UiState
-import com.ulises.usecase.session.GetCurrentUserUseCase
+import com.ulises.session.UserSessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import models.AvailableKids
 import models.Kid
+import models.User
 import outcomes.OutcomeScheduledEvent
 import timber.log.Timber
 import java.time.LocalDateTime
@@ -34,18 +35,19 @@ import javax.inject.Inject
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
     private val addScheduledEventUseCase: AddScheduledEventUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    userSessionManager: UserSessionManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
+    private var user: User? = null
 
     //
-    private var createdBy by mutableStateOf("")
     private var comments by mutableStateOf("")
     private val textFieldsCombination =
-        combine(snapshotFlow { createdBy }, snapshotFlow { comments }) { created, comment ->
-            created.isNotBlank() && comment.isNotBlank()
+        combine(snapshotFlow { comments }, userSessionManager.userSessionState) { comment, user ->
+            this.user = user
+            comment.isNotBlank()
         }.map { value ->
             _uiState.update { it.copy(allTextFieldsFilled = value) }
         }.launchIn(viewModelScope)
@@ -64,7 +66,6 @@ class ScheduleDateDetailViewModel @Inject constructor(
     fun getTextField(type: TextFieldType): String {
         return when (type) {
             TextFieldType.Comment -> comments
-            TextFieldType.CreatedBy -> createdBy
         }
     }
 
@@ -74,10 +75,6 @@ class ScheduleDateDetailViewModel @Inject constructor(
 
     private fun onUpdateTextField(type: TextFieldType, text: String) {
         when (type) {
-            is TextFieldType.CreatedBy -> {
-                createdBy = text
-            }
-
             is TextFieldType.Comment -> {
                 if (text.length <= MAX_COMMENT_LENGTH) {
                     comments = text
@@ -128,15 +125,15 @@ class ScheduleDateDetailViewModel @Inject constructor(
         viewModelScope.launch(dispatchers.main) {
             _uiState.update { it.copy(isLoading = true) }
             runCatching {
-                val user = getCurrentUserUseCase()
+                checkNotNull(user)
                 val scheduleEvent = OutcomeScheduledEvent(
                     id = Date().time.toString(),
                     date = _uiState.value.selectedDate.toISODate(),
-                    createdBy = createdBy.trim(),
+                    createdBy = user!!.name,
                     createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                     rating = 0,
                     comments = comments,
-                    createdById = user?.id ?: "Unknown",
+                    createdById = user!!.id,
                     selectedKids = _uiState.value.selectedKids.map { Kid(it, 0) },
                 )
                 addScheduledEventUseCase(scheduleEvent)
@@ -157,6 +154,5 @@ class ScheduleDateDetailViewModel @Inject constructor(
 }
 
 sealed interface TextFieldType {
-    data object CreatedBy : TextFieldType
     data object Comment : TextFieldType
 }

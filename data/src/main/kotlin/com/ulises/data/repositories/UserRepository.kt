@@ -4,5 +4,5 @@ import models.User
 
 interface UserRepository {
     suspend fun createNewUser(user: User)
-    suspend fun getCurrentUser(): User
+    suspend fun getCurrentUser(userId: String): User
 }

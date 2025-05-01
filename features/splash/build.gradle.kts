@@ -19,7 +19,9 @@ dependencies {
     implementation(project(":design:components"))
     //  Data
     implementation(project(":usecases:session"))
+    implementation(project(":usecases:user"))
     implementation(project(":domain"))
+    implementation(project(":common:session"))
     //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

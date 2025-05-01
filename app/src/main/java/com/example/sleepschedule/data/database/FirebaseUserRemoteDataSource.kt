@@ -11,7 +11,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
-import models.User
+import models.User as DomainUser
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -21,7 +21,7 @@ class FirebaseUserRemoteDataSource @Inject constructor(
     @FirebaseUsersReference private val database: DatabaseReference
 ) : UsersRemoteDataSource {
 
-    override suspend fun createUser(user: User) {
+    override suspend fun createUser(user: DomainUser) {
         database.child(user.id).setValue(user).await()
     }
 
@@ -29,7 +29,7 @@ class FirebaseUserRemoteDataSource @Inject constructor(
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue<User>()
-                trySend(user!!)
+                trySend(user!!.toDomain())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -40,12 +40,12 @@ class FirebaseUserRemoteDataSource @Inject constructor(
         awaitClose { database.child(userId).removeEventListener(listener) }
     }
 
-    override suspend fun getCurrentUser(userId: String): User = suspendCancellableCoroutine { continuation ->
+    override suspend fun getCurrentUser(userId: String): DomainUser = suspendCancellableCoroutine { continuation ->
         database.child(userId).get().addOnSuccessListener {
             val user = it.getValue<User>()
-            continuation.resume(user!!)
+            continuation.resume(user!!.toDomain())
         }.addOnFailureListener {
-            continuation.resumeWithException(Exception(""))
+            continuation.resumeWithException(it)
         }
     }
 }

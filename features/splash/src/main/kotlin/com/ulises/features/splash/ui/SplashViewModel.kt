@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.features.splash.models.UiState
-import com.ulises.usecase.session.GetCurrentUserUseCase
+import com.ulises.session.UserSessionManager
+import com.ulises.usecase.user.GetCurrentUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val userSessionManager: UserSessionManager,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -29,7 +31,7 @@ class SplashViewModel @Inject constructor(
     private fun getCurrentUser() {
         viewModelScope.launch(dispatchers.main) {
             runCatching {
-                getCurrentUserUseCase()
+                getCurrentUserUseCase()?.also(userSessionManager::updateUserSessionState)
             }.onFailure { error ->
                 Timber.e(error, "Error getting user data")
                 _uiState.update { it.copy(error = error.message, isLoading = false) }

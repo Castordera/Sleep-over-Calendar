@@ -20,9 +20,11 @@ dependencies {
     //  Data
     implementation(project(":usecases:events"))
     implementation(project(":usecases:session"))
+    implementation(project(":usecases:user"))
     implementation(project(":domain"))
     //  Utils
     implementation(project(":common:time-utils"))
+    implementation(project(":common:session"))
     //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
