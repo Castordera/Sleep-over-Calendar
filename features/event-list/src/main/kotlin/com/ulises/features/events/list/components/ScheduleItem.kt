@@ -51,7 +51,6 @@ import models.ScheduledEvent
 
 @Composable
 fun ScheduleItem(
-    modifier: Modifier = Modifier,
     item: ScheduledEvent,
     onClickUpdateFeedback: (Kid?) -> Unit,
     onClickDelete: () -> Unit,
@@ -73,8 +72,7 @@ fun ScheduleItem(
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier.weight(1f)

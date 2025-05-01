@@ -22,6 +22,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,7 @@ import com.ulises.common.time.utils.TimeHelper.toMillis
 import com.ulises.components.pickers.DatePickerDialog
 import com.ulises.components.toolbar.TopBar
 import com.ulises.features.event.add.R
+import com.ulises.features.event.add.models.Intents
 import com.ulises.features.event.add.models.UiState
 import com.ulises.features.event.add.ui.ScheduleDateDetailViewModel.Companion.MAX_COMMENT_LENGTH
 import com.ulises.theme.SleepScheduleTheme
@@ -59,38 +61,41 @@ fun ScheduleDetailRoute(
 
     ScheduleDateDetailScreen(
         uiState = uiState,
-        onDateDialogVisibilityChange = viewModel::onDateDialogVisibilityChange,
-        onDateSelected = viewModel::onDateSelected,
-        onUpdateTextField = viewModel::onUpdateTextField,
-        onUpdateCommentField = viewModel::onUpdateTextField,
-        onAddEvent = viewModel::onAddSchedule,
-        onNavigateBackClick = onNavigateBackClick,
-        onUpdateKidName = viewModel::onUpdateSelectedKid
+        onHandleIntent = {
+            when (it) {
+                Intents.NavigateBack -> onNavigateBackClick()
+                else -> viewModel.onHandleIntent(it)
+            }
+        },
+        getTextField = viewModel::getTextField,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScheduleDateDetailScreen(
+private fun ScheduleDateDetailScreen(
     uiState: UiState,
-    onDateDialogVisibilityChange: (Boolean) -> Unit,
-    onDateSelected: (Long?) -> Unit,
-    onUpdateTextField: (type: TextFieldType, text: String) -> Unit,
-    onUpdateCommentField: (type: TextFieldType, text: String) -> Unit,
-    onAddEvent: () -> Unit,
-    onNavigateBackClick: () -> Unit,
-    onUpdateKidName: (AvailableKids) -> Unit,
+    onHandleIntent: (Intents) -> Unit = {},
+    getTextField: (TextFieldType) -> String = { "" },
 ) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
-
+    val isReadyToSend by remember(uiState) {
+        derivedStateOf {
+            !uiState.isLoading && uiState.allTextFieldsFilled && uiState.selectedKids.isNotEmpty()
+        }
+    }
     if (uiState.addComplete) {
         LaunchedEffect(Unit) {
-            onNavigateBackClick()
+            onHandleIntent(Intents.NavigateBack)
         }
     }
 
     Scaffold(
-        topBar = { TopBar { onNavigateBackClick() } }
+        topBar = {
+            TopBar(title = "Nueva pijamada") {
+                onHandleIntent(Intents.NavigateBack)
+            }
+        }
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -99,21 +104,17 @@ fun ScheduleDateDetailScreen(
                 .fillMaxWidth()
                 .padding(16.dp),
 
-        ) {
+            ) {
             DatePickerDialog(
                 isVisible = uiState.isDateDialogVisible,
                 datePickerState = rememberDatePickerState(uiState.selectedDate.toMillis()),
-                onSelectDate = onDateSelected,
-                onDismiss = { onDateDialogVisibilityChange(false) }
-            )
-            Text(
-                text = stringResource(id = R.string.title_add_element),
-                fontSize = 24.sp
+                onSelectDate = { millis -> onHandleIntent(Intents.SelectDate(millis)) },
+                onDismiss = { onHandleIntent(Intents.DisplayCalendarDialog(false)) }
             )
             TextField(
-                value = uiState.createdText,
+                value = getTextField(TextFieldType.CreatedBy),
                 onValueChange = { text ->
-                    onUpdateTextField(TextFieldType.CreatedBy, text)
+                    onHandleIntent(Intents.UpdateTextField(TextFieldType.CreatedBy, text))
                 },
                 enabled = !uiState.isLoading,
                 singleLine = true,
@@ -143,7 +144,7 @@ fun ScheduleDateDetailScreen(
                     Button(
                         enabled = !uiState.isLoading,
                         modifier = Modifier.fillMaxHeight(),
-                        onClick = { onDateDialogVisibilityChange(true) }
+                        onClick = { onHandleIntent(Intents.DisplayCalendarDialog(true)) }
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_calendar),
@@ -154,7 +155,7 @@ fun ScheduleDateDetailScreen(
             }
             ExposedDropdownMenuBox(
                 expanded = isDropdownExpanded,
-                onExpandedChange = { isDropdownExpanded = !isDropdownExpanded},
+                onExpandedChange = { isDropdownExpanded = !isDropdownExpanded },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 TextField(
@@ -166,11 +167,16 @@ fun ScheduleDateDetailScreen(
                         .menuAnchor()
                         .fillMaxWidth(),
                 )
-                ExposedDropdownMenu(expanded = isDropdownExpanded, onDismissRequest = { isDropdownExpanded = false }) {
+                ExposedDropdownMenu(
+                    expanded = isDropdownExpanded,
+                    onDismissRequest = { isDropdownExpanded = false }) {
                     AvailableKids.entries.forEach { value ->
                         DropdownMenuItem(
                             text = { Text(text = value.name) },
-                            onClick = { onUpdateKidName(value); isDropdownExpanded = false },
+                            onClick = {
+                                onHandleIntent(Intents.SelectKid(value))
+                                isDropdownExpanded = false
+                            },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
                     }
@@ -178,24 +184,24 @@ fun ScheduleDateDetailScreen(
             }
             TextField(
                 label = { Text(text = "Comentarios") },
-                value = uiState.comments,
-                onValueChange = { value ->
-                    onUpdateCommentField(TextFieldType.Comment, value)
+                value = getTextField(TextFieldType.Comment),
+                onValueChange = { text ->
+                    onHandleIntent(Intents.UpdateTextField(TextFieldType.Comment, text))
                 },
                 maxLines = 3,
                 modifier = Modifier.fillMaxWidth(),
                 supportingText = {
                     Text(
-                        text = "Total de letras ${uiState.comments.length}/$MAX_COMMENT_LENGTH",
+                        text = "Total de letras ${getTextField(TextFieldType.Comment).length}/$MAX_COMMENT_LENGTH",
                         textAlign = TextAlign.End,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
             )
             Button(
-                enabled = !uiState.isLoading && uiState.isReadyToSend,
+                enabled = isReadyToSend,
                 modifier = Modifier.fillMaxWidth(),
-                onClick = onAddEvent
+                onClick = { onHandleIntent(Intents.AddItem) }
             ) {
                 Text(text = stringResource(id = R.string.add_schedule_button_add))
             }
@@ -212,13 +218,6 @@ fun PrevScheduleDateDetail() {
             uiState = UiState(
                 selectedDate = LocalDate.now()
             ),
-            onDateDialogVisibilityChange = {},
-            onNavigateBackClick = {},
-            onDateSelected = {},
-            onUpdateTextField = { _, _ -> },
-            onUpdateCommentField = { _, _ -> },
-            onAddEvent = {},
-            onUpdateKidName = {},
         )
     }
 }
