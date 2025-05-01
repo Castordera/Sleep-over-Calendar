@@ -48,7 +48,7 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch(dispatchers.main) {
             closeSessionUseCase()
             userSessionManager.updateUserSessionState(null)
-            _uiState.update { it.copy(loggedOutAction = true) }
+            _uiState.update { it.copy(loggedOutAction = true, user = null) }
         }
     }
 }

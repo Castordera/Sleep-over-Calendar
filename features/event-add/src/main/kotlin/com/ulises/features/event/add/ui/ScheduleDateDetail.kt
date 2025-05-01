@@ -9,23 +9,21 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -47,7 +45,7 @@ import com.ulises.features.event.add.models.Intents
 import com.ulises.features.event.add.models.UiState
 import com.ulises.features.event.add.ui.ScheduleDateDetailViewModel.Companion.MAX_COMMENT_LENGTH
 import com.ulises.theme.SleepScheduleTheme
-import models.AvailableKids
+import models.Kid
 import java.time.LocalDate
 
 @Composable
@@ -76,7 +74,6 @@ private fun ScheduleDateDetailScreen(
     onHandleIntent: (Intents) -> Unit = {},
     getTextField: (TextFieldType) -> String = { "" },
 ) {
-    var isDropdownExpanded by remember { mutableStateOf(false) }
     val isReadyToSend by remember(uiState) {
         derivedStateOf {
             !uiState.isLoading && uiState.allTextFieldsFilled && uiState.selectedKids.isNotEmpty()
@@ -140,36 +137,19 @@ private fun ScheduleDateDetailScreen(
                     }
                 }
             }
-            ExposedDropdownMenuBox(
-                expanded = isDropdownExpanded,
-                onExpandedChange = { isDropdownExpanded = !isDropdownExpanded },
-                modifier = Modifier.fillMaxWidth()
+            Text("¿Quién hizo la pijamada?", fontSize = 12.sp)
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                TextField(
-                    value = uiState.selectedKids.joinToString(separator = ", "),
-                    onValueChange = {},
-                    label = { Text(text = stringResource(id = R.string.add_schedule_kid_name)) },
-                    readOnly = true,
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth(),
-                )
-                ExposedDropdownMenu(
-                    expanded = isDropdownExpanded,
-                    onDismissRequest = { isDropdownExpanded = false }) {
-                    AvailableKids.entries.forEach { value ->
-                        DropdownMenuItem(
-                            text = { Text(text = value.name) },
-                            onClick = {
-                                onHandleIntent(Intents.SelectKid(value))
-                                isDropdownExpanded = false
-                            },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                        )
-                    }
+                items(uiState.kids, key = { it.name }) {
+                    FilterChip(
+                        selected = uiState.selectedKids.contains(it),
+                        onClick = { onHandleIntent(Intents.SelectKid(it)) },
+                        label = { Text(it.name) },
+                    )
                 }
             }
-            TextField(
+            OutlinedTextField(
                 label = { Text(text = "Comentarios") },
                 value = getTextField(TextFieldType.Comment),
                 onValueChange = { text ->
@@ -203,7 +183,11 @@ fun PrevScheduleDateDetail() {
     SleepScheduleTheme {
         ScheduleDateDetailScreen(
             uiState = UiState(
-                selectedDate = LocalDate.now()
+                selectedDate = LocalDate.now(),
+                kids = listOf(
+                    Kid("Renata", 0),
+                    Kid("Lando", 0),
+                )
             ),
         )
     }

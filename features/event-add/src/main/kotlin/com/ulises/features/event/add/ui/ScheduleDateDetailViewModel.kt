@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import models.AvailableKids
 import models.Kid
 import models.User
 import outcomes.OutcomeScheduledEvent
@@ -38,7 +37,11 @@ class ScheduleDateDetailViewModel @Inject constructor(
     userSessionManager: UserSessionManager,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState())
+    //  Todo(Needs refactor: This can be different but for refactor purposes we will have it like that)
+    private var listOfKids = listOf(Kid("Renata", 0), Kid("Lando", 0))
+
+    //
+    private val _uiState = MutableStateFlow(UiState(kids = listOfKids))
     val uiState = _uiState.asStateFlow()
     private var user: User? = null
 
@@ -57,7 +60,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
             is Intents.DisplayCalendarDialog -> onDateDialogVisibilityChange(intent.visible)
             is Intents.SelectDate -> onDateSelected(intent.date)
             is Intents.UpdateTextField -> onUpdateTextField(intent.type, intent.value)
-            is Intents.SelectKid -> onUpdateSelectedKid(intent.kids)
+            is Intents.SelectKid -> onUpdateSelectedKid(intent.kid)
             Intents.AddItem -> onAddSchedule()
             else -> Timber.i("Not handled: $intent")
         }
@@ -83,23 +86,14 @@ class ScheduleDateDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onUpdateSelectedKid(kids: AvailableKids) {
-        when (kids) {
-            AvailableKids.Ambos -> {
-                _uiState.update {
-                    it.copy(
-                        selectedKids = listOf(
-                            AvailableKids.Renata.name,
-                            AvailableKids.Lando.name
-                        )
-                    )
-                }
-            }
-
-            else -> {
-                _uiState.update { it.copy(selectedKids = listOf(kids.name)) }
-            }
+    private fun onUpdateSelectedKid(kid: Kid) {
+        val list = _uiState.value.selectedKids
+        val newList = if (list.contains(kid)) {
+            list - setOf(kid)
+        } else {
+            list + setOf(kid)
         }
+        _uiState.update { it.copy(selectedKids = newList) }
     }
 
     private fun onDateSelected(millis: Long?) {
@@ -134,7 +128,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
                     rating = 0,
                     comments = comments,
                     createdById = user!!.id,
-                    selectedKids = _uiState.value.selectedKids.map { Kid(it, 0) },
+                    selectedKids = _uiState.value.selectedKids,
                 )
                 addScheduledEventUseCase(scheduleEvent)
                 scheduleEvent

@@ -2,14 +2,21 @@ package com.ulises.features.splash.ui
 
 import app.cash.turbine.test
 import com.ulises.features.splash.models.UiState
+import com.ulises.session.UserSessionManager
 import com.ulises.test_core.CoroutineTestRule
-import com.ulises.usecase.session.GetCurrentUserUseCase
+import com.ulises.usecase.user.GetCurrentUserUseCase
 import io.mockk.MockKAnnotations
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import models.User
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,6 +30,9 @@ class SplashViewModelTest {
 
     @MockK
     private lateinit var getCurrentUserUseCase: GetCurrentUserUseCase
+
+    @MockK
+    private lateinit var userSessionManager: UserSessionManager
     private lateinit var viewModel: SplashViewModel
 
     @BeforeEach
@@ -31,31 +41,40 @@ class SplashViewModelTest {
     }
 
     @Test
-    fun `Init configuration and user is returned from use case`() = runTest {
-        coEvery { getCurrentUserUseCase() } returns mockk()
+    fun `Init configuration and user is returned from use case and pass it to manager`() = runTest {
+        val user = mockk<User>()
+        coEvery { getCurrentUserUseCase() } returns user
+        every { userSessionManager.updateUserSessionState(any()) } just runs
         initViewModel()
         viewModel.uiState.test {
-            assertEquals(UiState(userFound = true), awaitItem())
+            assertEquals(UiState(), awaitItem())
+            assertEquals(UiState(userFound = true, isLoading = false), awaitItem())
             ensureAllEventsConsumed()
         }
         coVerify(exactly = 1) {
             getCurrentUserUseCase()
+            userSessionManager.updateUserSessionState(user)
         }
     }
 
     @Test
-    fun `Init configuration and get an exception from use case, uiState gets error message`() = runTest {
-        val exceptionMessage = "Error here"
-        coEvery { getCurrentUserUseCase() } throws Exception(exceptionMessage)
-        initViewModel()
-        viewModel.uiState.test {
-            assertEquals(UiState(error = exceptionMessage), awaitItem())
-            ensureAllEventsConsumed()
+    fun `Init configuration and get an exception from use case, uiState gets error message`() =
+        runTest {
+            val exceptionMessage = "Error here"
+            coEvery { getCurrentUserUseCase() } throws Exception(exceptionMessage)
+            initViewModel()
+            viewModel.uiState.test {
+                assertEquals(UiState(), awaitItem())
+                assertEquals(UiState(error = exceptionMessage, isLoading = false), awaitItem())
+                ensureAllEventsConsumed()
+            }
+            coVerify(exactly = 1) {
+                getCurrentUserUseCase()
+            }
+            verify {
+                userSessionManager wasNot called
+            }
         }
-        coVerify(exactly = 1) {
-            getCurrentUserUseCase()
-        }
-    }
 
     /**
      * Because of ViewModel gets called at init
@@ -63,7 +82,8 @@ class SplashViewModelTest {
     private fun initViewModel() {
         viewModel = SplashViewModel(
             dispatchers = com.ulises.test_core.TestDispatchers(),
-            getCurrentUserUseCase = getCurrentUserUseCase
+            getCurrentUserUseCase = getCurrentUserUseCase,
+            userSessionManager = userSessionManager,
         )
     }
 }

@@ -3,7 +3,6 @@ package com.example.sleepschedule.ui.components
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,7 +37,6 @@ private fun BottomNav(
                         contentDescription = null
                     )
                 },
-                label = { Text(screen.name.orEmpty()) },
                 alwaysShowLabel = false,
                 onClick = { navigateTo(screen.route) }
             )

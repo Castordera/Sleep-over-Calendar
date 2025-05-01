@@ -1,7 +1,8 @@
 package com.ulises.login.user.ui
 
 import app.cash.turbine.test
-import com.ulises.components.TextType
+import com.ulises.login.user.model.Intents
+import com.ulises.login.user.model.TextFieldType
 import com.ulises.login.user.model.UiState
 import com.ulises.navigation.Screens
 import com.ulises.test_core.CoroutineTestRule
@@ -34,7 +35,7 @@ class LoginViewModelTest {
         MockKAnnotations.init(this)
         viewModel = LoginViewModel(
             dispatchers = TestDispatchers(),
-            loginUseCase = loginUseCase
+            loginUseCase = loginUseCase,
         )
     }
 
@@ -44,7 +45,7 @@ class LoginViewModelTest {
         coEvery { loginUseCase(any(), any()) } throws Exception(error)
         viewModel.uiState.test {
             assertEquals(UiState(), awaitItem())
-            viewModel.onLoginClick()
+            viewModel.onHandleIntent(Intents.LoginClicked)
             assertEquals(error, awaitItem().error)
             viewModel.onErrorShowed()
             assertEquals(UiState(), awaitItem())
@@ -59,7 +60,7 @@ class LoginViewModelTest {
     fun `Should update UI to navigate to a different screen and clear after`() = runTest {
         viewModel.uiState.test {
             assertEquals(UiState(), awaitItem())
-            viewModel.onSignInClicked()
+            viewModel.onHandleIntent(Intents.SignInClicked)
             assertEquals(UiState(navigateTo = Screens.SignIn), awaitItem())
             viewModel.onNavigatedToRegister()
             assertEquals(UiState(), awaitItem())
@@ -71,12 +72,10 @@ class LoginViewModelTest {
     fun `Should update email and password and react accordingly`() = runTest {
         viewModel.uiState.test {
             skipItems(1)
-            viewModel.onTextChange(TextType.Email, EMAIL)
-            assertEquals(UiState(email = EMAIL), awaitItem())
-            viewModel.onTextChange(TextType.Password, PASSWORD)
-            assertEquals(UiState(email = EMAIL, password = PASSWORD), awaitItem())
-            viewModel.onTextChange(TextType.Password, "")
-            assertEquals(UiState(email = EMAIL), awaitItem())
+            viewModel.onHandleIntent(Intents.UpdateTextField(TextFieldType.Email, EMAIL))
+            assertEquals(viewModel.getTextFieldValue(TextFieldType.Email), EMAIL)
+            viewModel.onHandleIntent(Intents.UpdateTextField(TextFieldType.Password, PASSWORD))
+            assertEquals(viewModel.getTextFieldValue(TextFieldType.Password), PASSWORD)
             ensureAllEventsConsumed()
         }
     }
@@ -85,10 +84,10 @@ class LoginViewModelTest {
     fun `Attempt to Login with success response`() = runTest {
         coEvery { loginUseCase(any(), any()) } returns mockk()
         viewModel.uiState.test {
-            viewModel.onTextChange(TextType.Email, EMAIL)
-            viewModel.onTextChange(TextType.Password, PASSWORD)
-            skipItems(3)
-            viewModel.onLoginClick()
+            skipItems(1)
+            viewModel.onHandleIntent(Intents.UpdateTextField(TextFieldType.Email, EMAIL))
+            viewModel.onHandleIntent(Intents.UpdateTextField(TextFieldType.Password, PASSWORD))
+            viewModel.onHandleIntent(Intents.LoginClicked)
             assertEquals(awaitItem().navigateTo, Screens.Home)
             ensureAllEventsConsumed()
         }
