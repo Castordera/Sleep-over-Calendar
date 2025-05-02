@@ -9,7 +9,6 @@ val outcomeEvent = OutcomeScheduledEvent(
     createdBy = "Demo user",
     createdOn = "Today",
     createdById = "111",
-    rating = 0,
     comments = "Demo comments",
     selectedKids = emptyList()
 )

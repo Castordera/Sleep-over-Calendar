@@ -30,8 +30,8 @@ fun AppNavHost(
         )
         composable<Screens.Home> {
             ScheduleListRoute(
-                onNavigateToAdd = { navController.navigate(Screens.AddItem) },
-                onGoToDetail = {}
+                onNavigateToAdd = { navController.navigate(Screens.AddItem(null)) },
+                onGoToDetail = { navController.navigate(Screens.AddItem(it.id)) },
             )
         }
         composable<Screens.AddItem> {

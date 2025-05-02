@@ -3,7 +3,6 @@ package outcomes
 import androidx.annotation.Keep
 import models.Kid
 
-
 @Keep
 data class OutcomeScheduledEvent(
     val id: String,
@@ -11,7 +10,6 @@ data class OutcomeScheduledEvent(
     val createdBy: String,
     val createdById: String,
     val createdOn: String,
-    val rating: Int,
     val comments: String,
     val selectedKids: List<Kid>,
 )

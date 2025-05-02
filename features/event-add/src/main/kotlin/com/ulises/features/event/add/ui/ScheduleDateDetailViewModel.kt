@@ -4,14 +4,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.ulises.common.time.utils.TimeHelper.toISODate
 import com.ulises.common.time.utils.TimeHelper.toLocalDate
 import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.events.AddScheduledEventUseCase
+import com.ulises.events.GetScheduledEventUseCase
+import com.ulises.events.UpdateEventUseCase
 import com.ulises.features.event.add.models.Intents
 import com.ulises.features.event.add.models.UiState
+import com.ulises.navigation.Screens
 import com.ulises.session.UserSessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,9 +27,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import models.Kid
+import models.ScheduledEvent
 import models.User
 import outcomes.OutcomeScheduledEvent
 import timber.log.Timber
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -34,16 +41,26 @@ import javax.inject.Inject
 class ScheduleDateDetailViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
     private val addScheduledEventUseCase: AddScheduledEventUseCase,
+    private val getScheduledEventUseCase: GetScheduledEventUseCase,
+    private val updateEventUseCase: UpdateEventUseCase,
+    savedStateHandle: SavedStateHandle,
     userSessionManager: UserSessionManager,
 ) : ViewModel() {
 
-    //  Todo(Needs refactor: This can be different but for refactor purposes we will have it like that)
     private var listOfKids = listOf(Kid("Renata", 0), Kid("Lando", 0))
+    private val editItemId = savedStateHandle.toRoute<Screens.AddItem>().id
 
     //
-    private val _uiState = MutableStateFlow(UiState(kids = listOfKids))
+    private val _uiState = MutableStateFlow(
+        UiState(
+            kids = listOfKids,
+            isFetchingData = editItemId != null,
+            isEdit = editItemId != null,
+        )
+    )
     val uiState = _uiState.asStateFlow()
     private var user: User? = null
+    private var event: ScheduledEvent? = null
 
     //
     private var comments by mutableStateOf("")
@@ -55,13 +72,20 @@ class ScheduleDateDetailViewModel @Inject constructor(
             _uiState.update { it.copy(allTextFieldsFilled = value) }
         }.launchIn(viewModelScope)
 
+    init {
+        if (editItemId != null) {
+            fetchEventData(editItemId)
+        }
+    }
+
     fun onHandleIntent(intent: Intents) {
         when (intent) {
             is Intents.DisplayCalendarDialog -> onDateDialogVisibilityChange(intent.visible)
             is Intents.SelectDate -> onDateSelected(intent.date)
             is Intents.UpdateTextField -> onUpdateTextField(intent.type, intent.value)
             is Intents.SelectKid -> onUpdateSelectedKid(intent.kid)
-            Intents.AddItem -> onAddSchedule()
+            Intents.AddEvent -> onAddSchedule()
+            Intents.UpdateEvent -> onUpdateEvent()
             else -> Timber.i("Not handled: $intent")
         }
     }
@@ -69,6 +93,29 @@ class ScheduleDateDetailViewModel @Inject constructor(
     fun getTextField(type: TextFieldType): String {
         return when (type) {
             TextFieldType.Comment -> comments
+        }
+    }
+
+    private fun fetchEventData(eventId: String) {
+        viewModelScope.launch {
+            runCatching {
+                //  Fetch the event
+                val event = getScheduledEventUseCase(eventId)
+                this@ScheduleDateDetailViewModel.event = event
+                val date = LocalDate.parse(event.date)
+                Timber.d("$event")
+                //  Fill fields with data from event
+                comments = event.comments
+                _uiState.update {
+                    it.copy(
+                        isFetchingData = false,
+                        selectedDate = date,
+                        selectedKids = event.selectedKids
+                    )
+                }
+            }.onFailure {
+                Timber.e("Error fetching the event with ID: $eventId", it)
+            }
         }
     }
 
@@ -88,10 +135,11 @@ class ScheduleDateDetailViewModel @Inject constructor(
 
     private fun onUpdateSelectedKid(kid: Kid) {
         val list = _uiState.value.selectedKids
-        val newList = if (list.contains(kid)) {
-            list - setOf(kid)
-        } else {
+        val toggleKid = list.find { it.name == kid.name }
+        val newList = if (toggleKid == null) {
             list + setOf(kid)
+        } else {
+            list - setOf(toggleKid)
         }
         _uiState.update { it.copy(selectedKids = newList) }
     }
@@ -125,7 +173,6 @@ class ScheduleDateDetailViewModel @Inject constructor(
                     date = _uiState.value.selectedDate.toISODate(),
                     createdBy = user!!.name,
                     createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                    rating = 0,
                     comments = comments,
                     createdById = user!!.id,
                     selectedKids = _uiState.value.selectedKids,
@@ -138,6 +185,31 @@ class ScheduleDateDetailViewModel @Inject constructor(
             }.onFailure {
                 Timber.e(it, "Error creating this event")
                 _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    private fun onUpdateEvent() {
+        viewModelScope.launch(dispatchers.io) {
+            runCatching {
+                _uiState.update { it.copy(isLoading = true) }
+                val outputEvent = OutcomeScheduledEvent(
+                    id = event!!.id,
+                    date = _uiState.value.selectedDate.toISODate(),
+                    createdBy = event!!.createdBy,
+                    createdById = event!!.createdBy,
+                    createdOn = event!!.createdOn,
+                    selectedKids = _uiState.value.selectedKids,
+                    comments = comments
+                )
+                updateEventUseCase(outputEvent)
+                outputEvent
+            }.onSuccess { response ->
+                Timber.d("Event Updated: $response")
+                _uiState.update { it.copy(isLoading = false, addComplete = true) }
+            }.onFailure {
+                Timber.d("Error Updating the event")
+                _uiState.update { it.copy(isLoading = false, addComplete = true) }
             }
         }
     }

@@ -12,7 +12,7 @@ sealed interface Screens {
     data object Home : Screens
 
     @Serializable
-    data object AddItem : Screens
+    data class AddItem(val id: String?) : Screens
 
     @Serializable
     data object Splash : Screens

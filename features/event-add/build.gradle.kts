@@ -31,6 +31,8 @@ dependencies {
     //  Core
     implementation(project(":common:dispatcher-core"))
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.compose.navigation)
+    implementation(project(":common:navigation"))
     implementation(libs.compose.lifecycle.runtime)
     // Coil
     implementation(libs.bundles.coil)

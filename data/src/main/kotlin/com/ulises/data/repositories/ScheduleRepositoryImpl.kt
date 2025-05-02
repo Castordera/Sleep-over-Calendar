@@ -7,7 +7,7 @@ import outcomes.OutcomeScheduledEvent
 import javax.inject.Inject
 
 class ScheduleRepositoryImpl @Inject constructor(
-    private val remoteDataSource: ScheduleRemoteDataSource
+    private val remoteDataSource: ScheduleRemoteDataSource,
 ) : ScheduleRepository {
 
     override suspend fun addNewSchedule(event: OutcomeScheduledEvent) {
@@ -28,5 +28,13 @@ class ScheduleRepositoryImpl @Inject constructor(
 
     override suspend fun updateScheduleEventRating(eventId: String, newRate: Int, index: Int) {
         remoteDataSource.updateScheduleEventRating(eventId, newRate, index)
+    }
+
+    override suspend fun getEvent(eventId: String): ScheduledEvent {
+        return remoteDataSource.getEvent(eventId)
+    }
+
+    override suspend fun updateEvent(data: OutcomeScheduledEvent) {
+        remoteDataSource.updateEvent(data)
     }
 }

@@ -61,6 +61,14 @@ class FirebaseRemoteDataSource @Inject constructor (
         database.child(eventId).child(KEY_SELECTED_KIDS).child(index.toString()).child(KEY_KID_RATING).setValue(newRate).await()
     }
 
+    override suspend fun getEvent(eventId: String): models.ScheduledEvent {
+        return database.child(eventId).get().await().getValue<ScheduledEvent>()!!.toDomain()
+    }
+
+    override suspend fun updateEvent(event: OutcomeScheduledEvent) {
+        database.child(event.id).setValue(event).await()
+    }
+
     private companion object {
         const val KEY_RATING = "rating"
         const val KEY_SELECTED_KIDS = "selectedKids"

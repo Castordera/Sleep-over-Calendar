@@ -154,7 +154,10 @@ fun ScheduleItem(
                                 .weight(1f)
                                 .padding(top = 16.dp),
                         )
-                        IconButton(onClick = { onClickEdit(item) }) {
+                        IconButton(
+                            onClick = { onClickEdit(item) },
+                            enabled = item.selectedKids.isNotEmpty()
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Edit",

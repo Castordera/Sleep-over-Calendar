@@ -8,6 +8,7 @@ sealed interface Intents {
     data class SelectDate(val date: Long?) : Intents
     data class UpdateTextField(val type: TextFieldType, val value: String) : Intents
     data class SelectKid(val kid: Kid) : Intents
-    data object AddItem : Intents
+    data object AddEvent : Intents
+    data object UpdateEvent : Intents
     data object NavigateBack : Intents
 }

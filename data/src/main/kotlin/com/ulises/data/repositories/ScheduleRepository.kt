@@ -10,4 +10,6 @@ interface ScheduleRepository {
     suspend fun deleteScheduleEvent(eventId: String)
     suspend fun updateScheduleEventRating(eventId: String, newRating: Int)
     suspend fun updateScheduleEventRating(eventId: String, newRate: Int, index: Int)
+    suspend fun getEvent(eventId: String): ScheduledEvent
+    suspend fun updateEvent(data: OutcomeScheduledEvent)
 }

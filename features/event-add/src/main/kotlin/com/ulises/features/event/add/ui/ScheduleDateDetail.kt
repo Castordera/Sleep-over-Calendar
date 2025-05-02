@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -38,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ulises.common.time.utils.TimeHelper.toHumanReadable
 import com.ulises.common.time.utils.TimeHelper.toMillis
+import com.ulises.components.indicators.LoadingIndicator
 import com.ulises.components.pickers.DatePickerDialog
 import com.ulises.components.toolbar.TopBar
 import com.ulises.features.event.add.R
@@ -87,25 +90,35 @@ private fun ScheduleDateDetailScreen(
 
     Scaffold(
         topBar = {
-            TopBar(title = "Nueva pijamada") {
+            TopBar(title = if (uiState.isEdit) "Edita pijamada" else "Nueva pijamada") {
                 onHandleIntent(Intents.NavigateBack)
             }
         }
-    ) {
+    ) { innerPadding ->
+        if (uiState.isFetchingData) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                LoadingIndicator(isVisible = true, modifier = Modifier.size(80.dp))
+                Text("Fetching data...")
+            }
+            return@Scaffold
+        }
+        DatePickerDialog(
+            isVisible = uiState.isDateDialogVisible,
+            datePickerState = rememberDatePickerState(uiState.selectedDate.toMillis()),
+            onSelectDate = { millis -> onHandleIntent(Intents.SelectDate(millis)) },
+            onDismiss = { onHandleIntent(Intents.DisplayCalendarDialog(false)) }
+        )
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .padding(it)
+                .padding(innerPadding)
                 .fillMaxWidth()
                 .padding(16.dp),
-
-            ) {
-            DatePickerDialog(
-                isVisible = uiState.isDateDialogVisible,
-                datePickerState = rememberDatePickerState(uiState.selectedDate.toMillis()),
-                onSelectDate = { millis -> onHandleIntent(Intents.SelectDate(millis)) },
-                onDismiss = { onHandleIntent(Intents.DisplayCalendarDialog(false)) }
-            )
+        ) {
             Column {
                 Text(
                     text = "Selecciona la fecha:",
@@ -141,11 +154,11 @@ private fun ScheduleDateDetailScreen(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(uiState.kids, key = { it.name }) {
+                items(uiState.kids, key = { it.name }) { item ->
                     FilterChip(
-                        selected = uiState.selectedKids.contains(it),
-                        onClick = { onHandleIntent(Intents.SelectKid(it)) },
-                        label = { Text(it.name) },
+                        selected = uiState.selectedKids.any { it.name == item.name },
+                        onClick = { onHandleIntent(Intents.SelectKid(item)) },
+                        label = { Text(item.name) },
                     )
                 }
             }
@@ -168,9 +181,18 @@ private fun ScheduleDateDetailScreen(
             Button(
                 enabled = isReadyToSend,
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { onHandleIntent(Intents.AddItem) }
+                onClick = {
+                    if (uiState.isEdit)
+                        onHandleIntent(Intents.UpdateEvent)
+                    else
+                        onHandleIntent(Intents.AddEvent)
+                }
             ) {
-                Text(text = stringResource(id = R.string.add_schedule_button_add))
+                if (!uiState.isEdit) {
+                    Text(text = stringResource(id = R.string.add_schedule_button_add))
+                } else {
+                    Text(text = "Actualizar")
+                }
             }
         }
     }
@@ -183,6 +205,7 @@ fun PrevScheduleDateDetail() {
     SleepScheduleTheme {
         ScheduleDateDetailScreen(
             uiState = UiState(
+                isFetchingData = false,
                 selectedDate = LocalDate.now(),
                 kids = listOf(
                     Kid("Renata", 0),

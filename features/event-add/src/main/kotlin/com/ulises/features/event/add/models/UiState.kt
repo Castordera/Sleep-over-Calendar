@@ -5,6 +5,8 @@ import java.time.LocalDate
 
 data class UiState(
     val isLoading: Boolean = false,
+    val isFetchingData: Boolean = false,
+    val isEdit: Boolean = false,
     val allTextFieldsFilled: Boolean = false,
     val selectedKids: List<Kid> = emptyList(),
     val kids: List<Kid> = emptyList(),
