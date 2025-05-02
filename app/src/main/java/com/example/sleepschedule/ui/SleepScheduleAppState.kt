@@ -9,6 +9,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ulises.navigation.Screens
 import com.ulises.navigation.bottomNavigationScreens
 import kotlinx.coroutines.CoroutineScope
 
@@ -27,16 +28,16 @@ class SleepScheduleAppState(
     val coroutineScope: CoroutineScope,
     val snackBarHostState: SnackbarHostState
 ) {
-    private val bottomBarRoutes = bottomNavigationScreens.map { it.route }
-
-    val shouldShowBottomBar: Boolean
-    @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
+    private val bottomBarRoutes = bottomNavigationScreens.map { it.route::class.qualifiedName }
 
     val currentDestination: NavDestination?
     @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    fun navigateToBottomBarRoute(route: String) {
-        navController.navigate(route) {
+    val shouldShowBottomBar: Boolean
+    @Composable get() = bottomBarRoutes.contains(currentDestination?.route)
+
+    fun navigateToBottomBarRoute(screen: Screens) {
+        navController.navigate(screen) {
             launchSingleTop = true
             restoreState = true
             popUpTo(navController.currentDestination?.route ?: "") {

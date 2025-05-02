@@ -15,4 +15,6 @@ sealed interface Intents {
     data class UpdateRating(val newRating: Int) : Intents
     data object DeleteItem : Intents
     data object ClearError : Intents
+    data class UpdatePressed(val item: ScheduledEvent) : Intents
+    data object AddPressed : Intents
 }

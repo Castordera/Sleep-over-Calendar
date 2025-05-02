@@ -12,6 +12,7 @@ junit = "4.13.2"
 junit5 = "5.11.0"
 mockk = "1.13.11"
 espresso-core = "3.6.1"
+serialization-json = "1.8.0"
 hilt = "2.52"
 coil = "2.7.0"
 coil-svg = "2.6.0"
@@ -62,6 +63,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine-core" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 # Build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }

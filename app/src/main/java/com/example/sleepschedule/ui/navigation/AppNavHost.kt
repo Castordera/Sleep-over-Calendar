@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.ulises.features.event.add.ui.ScheduleDetailRoute
 import com.ulises.features.events.list.ui.ScheduleListRoute
-import com.ulises.navigation.Graphs
+import com.ulises.navigation.Graph
 import com.ulises.navigation.Screens
 import com.ulises.user.detail.ui.UserRoute
 
@@ -21,34 +21,29 @@ fun AppNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Graphs.Splash.route
+        startDestination = Graph.Splash,
     ) {
         splashGraph(navController = navController)
         loginGraph(
             appState = appState,
             navController = navController,
         )
-        composable(
-            route = Screens.Home.route
-        ) {
+        composable<Screens.Home> {
             ScheduleListRoute(
-                onNavigateToAdd = { navController.navigate(Screens.AddEvent.route) }
+                onNavigateToAdd = { navController.navigate(Screens.AddItem) },
+                onGoToDetail = {}
             )
         }
-        composable(
-            route = Screens.AddEvent.route,
-        ) {
+        composable<Screens.AddItem> {
             ScheduleDetailRoute(
                 onNavigateBackClick = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screens.User.route
-        ) {
+        composable<Screens.User> {
             UserRoute(
                 onLoggedOut = {
-                    navController.navigate(Graphs.Login.route) {
-                        popUpTo(Screens.User.route) { inclusive = true }
+                    navController.navigate(Graph.Login) {
+                        popUpTo(Screens.User) { inclusive = true }
                     }
                 }
             )

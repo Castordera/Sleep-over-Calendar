@@ -25,6 +25,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     //  Core
     implementation(project(":common:dispatcher-core"))
+    implementation(project(":common:session"))
     implementation(libs.hilt.navigation.compose)
     implementation(libs.compose.lifecycle.runtime)
     implementation(project(":common:navigation"))

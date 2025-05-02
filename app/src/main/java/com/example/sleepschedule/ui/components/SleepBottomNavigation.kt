@@ -1,44 +1,48 @@
 package com.example.sleepschedule.ui.components
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination
 import com.example.sleepschedule.ui.SleepScheduleAppState
+import com.ulises.navigation.BottomScreen
 import com.ulises.navigation.Screens
 
 @Composable
 fun SleepBottomNavigation(
     appState: SleepScheduleAppState,
-    items: List<Screens>
+    items: List<BottomScreen>
 ) {
     BottomNav(
         items = items,
-        currentDestination = appState.currentDestination?.route,
+        currentDestination = appState.currentDestination,
         navigateTo = appState::navigateToBottomBarRoute
     )
 }
 
 @Composable
 private fun BottomNav(
-    items: List<Screens>,
-    currentDestination: String?,
-    navigateTo: (String) -> Unit,
+    items: List<BottomScreen>,
+    currentDestination: NavDestination?,
+    navigateTo: (Screens) -> Unit,
 ) {
     NavigationBar {
         items.forEach { screen ->
             NavigationBarItem(
-                selected = currentDestination == screen.route,
+                selected = currentDestination?.route == screen.route::class.qualifiedName,
                 icon = {
                     Icon(
-                        painter = painterResource(id = screen.icon!!),
-                        contentDescription = null
+                        imageVector = screen.icon,
+                        contentDescription = null,
                     )
                 },
                 alwaysShowLabel = false,
-                onClick = { navigateTo(screen.route) }
+                onClick = { navigateTo(screen.route) },
             )
         }
     }
@@ -48,8 +52,11 @@ private fun BottomNav(
 @Composable
 fun PrevNavigationBar() {
     BottomNav(
-        items = listOf(Screens.Home, Screens.User),
-        currentDestination = Screens.User.route,
+        items = listOf(
+            BottomScreen("Home", Screens.Home, Icons.Default.Home),
+            BottomScreen("User", Screens.User, Icons.Default.Person),
+        ),
+        currentDestination = NavDestination("Home"),
         navigateTo = {},
     )
 }

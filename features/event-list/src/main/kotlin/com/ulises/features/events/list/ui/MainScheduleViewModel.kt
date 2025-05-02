@@ -62,6 +62,7 @@ class MainScheduleViewModel @Inject constructor(
             Intents.DeleteItem -> {
                 _uiState.value.selectedEvent?.also { onDeleteScheduleEvent(it.id) }
             }
+            else -> Timber.i("Not handled: $intent")
         }
     }
 

@@ -36,7 +36,6 @@ import com.ulises.theme.SleepScheduleTheme
 @Composable
 internal fun ScheduleListScreen(
     uiState: UiState,
-    onNavigateToAdd: () -> Unit = {},
     onHandleIntent: (Intents) -> Unit = {},
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -53,7 +52,7 @@ internal fun ScheduleListScreen(
             if (!uiState.isLoading) {
                 FabButton(
                     icon = R.drawable.ic_add,
-                    onClick = onNavigateToAdd,
+                    onClick = { onHandleIntent(Intents.AddPressed) },
                 )
             }
         },
@@ -104,7 +103,7 @@ internal fun ScheduleListScreen(
                 ) {
                     items(
                         items = uiState.scheduleEvents,
-                        key = { it.id }
+                        key = { it.id },
                     ) { event ->
                         ScheduleItem(
                             item = event,
@@ -115,7 +114,7 @@ internal fun ScheduleListScreen(
                                 onHandleIntent(Intents.ChangeDeleteDialogState(true, event))
                             },
                             onClickItem = { onHandleIntent(Intents.ClickItem(event)) },
-                            onClickEdit = {},
+                            onClickEdit = { onHandleIntent(Intents.UpdatePressed(event)) },
                         )
                     }
                 }

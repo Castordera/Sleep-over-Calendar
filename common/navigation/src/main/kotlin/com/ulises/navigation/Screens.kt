@@ -1,23 +1,48 @@
 package com.ulises.navigation
 
-import com.ulises.common.navigation.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.serialization.Serializable
 
-sealed class Screens(
-    val route: String,
-    val name: String? = null,
-    val icon: Int? = null
-) {
-    data object Splash : Screens("splash")
-    data object Login : Screens("login")
-    data object SignIn : Screens("sign_in")
-    data object Home : Screens("home", "Home", R.drawable.ic_home)
-    data object AddEvent : Screens("add_event")
-    data object User : Screens("user", "User", R.drawable.ic_person)
+@Serializable
+sealed interface Screens {
+    @Serializable
+    data object Home : Screens
+
+    @Serializable
+    data object AddItem : Screens
+
+    @Serializable
+    data object Splash : Screens
+
+    @Serializable
+    data object Login : Screens
+
+    @Serializable
+    data object SignIn : Screens
+
+    @Serializable
+    data object User : Screens
 }
 
+@Serializable
+sealed interface Graph {
+    @Serializable
+    data object Splash : Graph
 
+    @Serializable
+    data object Login : Graph
+}
+
+data class BottomScreen(
+    val name: String,
+    val route: Screens,
+    val icon: ImageVector,
+)
 
 val bottomNavigationScreens = listOf(
-    Screens.Home,
-    Screens.User
+    BottomScreen("Home", Screens.Home, Icons.Default.Home),
+    BottomScreen("User", Screens.User, Icons.Default.Person),
 )

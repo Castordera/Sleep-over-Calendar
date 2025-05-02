@@ -5,24 +5,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ulises.features.splash.ui.SplashRoute
-import com.ulises.navigation.Graphs
+import com.ulises.navigation.Graph
 import com.ulises.navigation.Screens
 
 fun NavGraphBuilder.splashGraph(
     navController: NavHostController
 ) {
-    navigation(
-        startDestination = Screens.Splash.route,
-        route = Graphs.Splash.route
-    ) {
-        composable(
-            route = Screens.Splash.route
-        ) {
+    navigation<Graph.Splash>(startDestination = Screens.Splash) {
+        composable<Screens.Splash> {
             SplashRoute(
                 onUserLogAction = { loggedIn ->
-                    val route = if (loggedIn) Screens.Home.route else Graphs.Login.route
-                    navController.navigate(route) {
-                        popUpTo(Screens.Splash.route) { inclusive = true }
+                    if (loggedIn) {
+                        navController.navigate(Screens.Home) {
+                            popUpTo(Screens.Splash) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(Graph.Login) {
+                            popUpTo(Screens.Splash) { inclusive = true }
+                        }
                     }
                 }
             )
