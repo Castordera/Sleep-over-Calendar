@@ -19,8 +19,10 @@ fun ScheduledEvent.toDomain() = models.ScheduledEvent(
     date = date.orEmpty(),
     createdBy = createdBy.orEmpty(),
     createdOn = date.orEmpty(),
-    rating = rating ?: 0,
-    kidName = kidName.orEmpty(),
     comments = comments.orEmpty(),
-    selectedKids = selectedKids?.map { it.toDomain() } ?: emptyList(),
+    selectedKids = mapToKidList(),
 )
+
+private fun ScheduledEvent.mapToKidList(): List<models.Kid> {
+    return selectedKids?.map { it.toDomain() } ?: listOf(models.Kid(kidName.orEmpty(), rating ?: 0))
+}

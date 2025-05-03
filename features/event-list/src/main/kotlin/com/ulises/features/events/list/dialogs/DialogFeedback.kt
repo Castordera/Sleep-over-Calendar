@@ -1,6 +1,5 @@
 package com.ulises.features.events.list.dialogs
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ulises.components.RatingButton
@@ -38,7 +37,7 @@ fun DialogFeedback(
     onDismiss: () -> Unit,
     onUpdateRating: (Int) -> Unit,
 ) {
-    var rateSelected by remember { mutableIntStateOf( kid?.rate ?: event?.rating ?: 0) }
+    var rateSelected by remember { mutableIntStateOf( kid?.rate ?: 0) }
 
     AlertDialog(onDismiss = onDismiss) {
         Column(
@@ -49,7 +48,7 @@ fun DialogFeedback(
             Text(
                 text = stringResource(
                     id = R.string.dialog_rating_message,
-                    event?.kidName?.ifEmpty { kid?.name }.orEmpty()
+                    kid?.name.orEmpty(),
                 ),
                 fontSize = 18.sp
             )
@@ -76,8 +75,7 @@ fun DialogFeedback(
     }
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@PreviewLightDark
 @Composable
 private fun PrevDialogFeedback() {
     SleepScheduleTheme {

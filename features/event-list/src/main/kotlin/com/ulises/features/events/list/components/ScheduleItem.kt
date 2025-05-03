@@ -2,6 +2,7 @@ package com.ulises.features.events.list.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,6 +59,10 @@ fun ScheduleItem(
     onClickEdit: (ScheduledEvent) -> Unit,
 ) {
     val image = remember { item.getImageFromMonth() }
+    val alphaAnimation = animateFloatAsState(
+        targetValue = if (item.isExpanded) 0.5f else 1f
+    )
+
 
     Card(
         shape = RoundedCornerShape(15.dp),
@@ -70,6 +75,20 @@ fun ScheduleItem(
                 contentAlignment = Alignment.BottomEnd,
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
+                if (image != null) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(image)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        alpha = alphaAnimation.value,
+                        modifier = Modifier
+                            .size(110.dp)
+                            .absoluteOffset(25.dp, 25.dp)
+                    )
+                }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -96,44 +115,21 @@ fun ScheduleItem(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             modifier = Modifier.padding(top = 16.dp)
                         ) {
-                            if (item.selectedKids.isNotEmpty()) {
-                                items(item.selectedKids) { kid ->
-                                    KidRate(
-                                        name = kid.name,
-                                        rating = kid.rate,
-                                        onClickRate = { onClickUpdateFeedback(kid) },
-                                    )
-                                }
-                            } else {// Legacy way
-                                items(1) {
-                                    KidRate(
-                                        name = item.kidName,
-                                        rating = item.rating,
-                                        onClickRate = { onClickUpdateFeedback(null) },
-                                    )
-                                }
+                            items(item.selectedKids) { kid ->
+                                KidRate(
+                                    name = kid.name,
+                                    rating = kid.rate,
+                                    onClickRate = { onClickUpdateFeedback(kid) },
+                                )
                             }
                         }
                     }
                     IconButton(onClick = onClickDelete) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Delete"
+                            contentDescription = "Delete",
                         )
                     }
-                }
-                if (image != null) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(image)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(110.dp)
-                            .absoluteOffset(25.dp, 25.dp)
-                    )
                 }
             }
             AnimatedVisibility(
@@ -154,10 +150,7 @@ fun ScheduleItem(
                                 .weight(1f)
                                 .padding(top = 16.dp),
                         )
-                        IconButton(
-                            onClick = { onClickEdit(item) },
-                            enabled = item.selectedKids.isNotEmpty()
-                        ) {
+                        IconButton(onClick = { onClickEdit(item) }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Edit",

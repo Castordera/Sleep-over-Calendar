@@ -18,8 +18,6 @@ val event = ScheduledEvent(
     date = "This date",
     createdBy = "Demo user",
     createdOn = "Today",
-    rating = 0,
-    kidName = "Kid name",
     comments = "Demo comments",
     selectedKids = emptyList(),
 )
