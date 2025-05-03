@@ -16,7 +16,7 @@ import com.ulises.user.detail.ui.UserRoute
 fun AppNavHost(
     modifier: Modifier = Modifier,
     appState: SleepScheduleAppState,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     NavHost(
         modifier = modifier,

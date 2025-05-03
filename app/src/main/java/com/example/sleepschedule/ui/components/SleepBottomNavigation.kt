@@ -9,6 +9,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.ulises.navigation.BottomScreen
 import com.ulises.navigation.Screens
@@ -34,7 +36,7 @@ private fun BottomNav(
     NavigationBar {
         items.forEach { screen ->
             NavigationBarItem(
-                selected = currentDestination?.route == screen.route::class.qualifiedName,
+                selected = currentDestination?.hierarchy?.any { it.hasRoute(screen.route::class) } == true,
                 icon = {
                     Icon(
                         imageVector = screen.icon,

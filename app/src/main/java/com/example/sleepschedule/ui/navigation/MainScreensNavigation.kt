@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import com.example.sleepschedule.ui.SleepScheduleAppState
 import com.example.sleepschedule.ui.components.SleepBottomNavigation
 import com.example.sleepschedule.ui.rememberAppState
+import com.ulises.navigation.bottomNavigationScreens
 
 @Composable
 fun MainScreensNavigation(
@@ -28,7 +29,7 @@ fun MainScreensNavigation(
             ) {
                 SleepBottomNavigation(
                     appState = appState,
-                    items = com.ulises.navigation.bottomNavigationScreens,
+                    items = bottomNavigationScreens,
                 )
             }
         },

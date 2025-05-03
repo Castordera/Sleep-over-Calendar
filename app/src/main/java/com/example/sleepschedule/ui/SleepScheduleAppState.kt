@@ -6,6 +6,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -28,13 +30,13 @@ class SleepScheduleAppState(
     val coroutineScope: CoroutineScope,
     val snackBarHostState: SnackbarHostState
 ) {
-    private val bottomBarRoutes = bottomNavigationScreens.map { it.route::class.qualifiedName }
+    private val bottomBarRoutes = bottomNavigationScreens.map { it.route::class }
 
     val currentDestination: NavDestination?
     @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
     val shouldShowBottomBar: Boolean
-    @Composable get() = bottomBarRoutes.contains(currentDestination?.route)
+    @Composable get() = currentDestination?.hierarchy?.any { it.hasRoute(bottomBarRoutes[0]) || it.hasRoute(bottomBarRoutes[1]) } == true
 
     fun navigateToBottomBarRoute(screen: Screens) {
         navController.navigate(screen) {
