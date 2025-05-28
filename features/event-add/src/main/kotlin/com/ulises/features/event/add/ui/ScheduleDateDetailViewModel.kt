@@ -14,7 +14,7 @@ import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.events.AddScheduledEventUseCase
 import com.ulises.events.GetScheduledEventUseCase
 import com.ulises.events.UpdateEventUseCase
-import com.ulises.features.event.add.models.Intents
+import com.ulises.features.event.add.models.Actions
 import com.ulises.features.event.add.models.UiState
 import com.ulises.navigation.Screens
 import com.ulises.session.UserSessionManager
@@ -78,15 +78,14 @@ class ScheduleDateDetailViewModel @Inject constructor(
         }
     }
 
-    fun onHandleIntent(intent: Intents) {
-        when (intent) {
-            is Intents.DisplayCalendarDialog -> onDateDialogVisibilityChange(intent.visible)
-            is Intents.SelectDate -> onDateSelected(intent.date)
-            is Intents.UpdateTextField -> onUpdateTextField(intent.type, intent.value)
-            is Intents.SelectKid -> onUpdateSelectedKid(intent.kid)
-            Intents.AddEvent -> onAddSchedule()
-            Intents.UpdateEvent -> onUpdateEvent()
-            else -> Timber.i("Not handled: $intent")
+    fun onHandleIntent(action: Actions.Interaction) {
+        when (action) {
+            is Actions.Interaction.DisplayCalendarDialog -> onDateDialogVisibilityChange(action.visible)
+            is Actions.Interaction.SelectDate -> onDateSelected(action.date)
+            is Actions.Interaction.UpdateTextField -> onUpdateTextField(action.type, action.value)
+            is Actions.Interaction.SelectKid -> onUpdateSelectedKid(action.kid)
+            Actions.Interaction.AddEvent -> onAddSchedule()
+            Actions.Interaction.UpdateEvent -> onUpdateEvent()
         }
     }
 

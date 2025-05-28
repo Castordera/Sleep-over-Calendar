@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ulises.features.events.list.models.Intents
+import com.ulises.features.events.list.models.Actions
 import models.ScheduledEvent
 
 @Composable
@@ -19,9 +19,9 @@ fun ScheduleListRoute(
         uiState = uiState,
         onHandleIntent = {
             when (it) {
-                is Intents.UpdatePressed -> onGoToDetail(it.item)
-                Intents.AddPressed -> onNavigateToAdd()
-                else -> viewModel.onHandleIntent(it)
+                is Actions.Navigation.UpdatePressed -> onGoToDetail(it.item)
+                Actions.Navigation.AddPressed -> onNavigateToAdd()
+                is Actions.Interaction -> viewModel.onHandleIntent(it)
             }
         },
     )

@@ -24,11 +24,13 @@ coroutine-core = "1.10.1"
 timber = "5.0.1"
 turbine = "1.1.0"
 annotationJvm = "1.8.0"
+coreSplashscreen = "1.0.1"
 
 [libraries]
 # Android
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 #androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx"}
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 # Compose
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }

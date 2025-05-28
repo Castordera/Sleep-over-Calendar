@@ -3,6 +3,7 @@ package com.ulises.features.events.list.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -11,10 +12,13 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -28,7 +32,7 @@ import com.ulises.features.events.list.R
 import com.ulises.features.events.list.components.ScheduleItem
 import com.ulises.features.events.list.dialogs.DialogDeleteEvent
 import com.ulises.features.events.list.dialogs.DialogFeedback
-import com.ulises.features.events.list.models.Intents
+import com.ulises.features.events.list.models.Actions
 import com.ulises.features.events.list.models.UiState
 import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.SleepScheduleTheme
@@ -36,14 +40,14 @@ import com.ulises.theme.SleepScheduleTheme
 @Composable
 internal fun ScheduleListScreen(
     uiState: UiState,
-    onHandleIntent: (Intents) -> Unit = {},
+    onHandleIntent: (Actions) -> Unit = {},
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
     if (uiState.error != null) {
         LaunchedEffect(uiState.error) {
             snackBarHostState.showSnackbar(uiState.error)
-            onHandleIntent(Intents.ClearError)
+            onHandleIntent(Actions.Interaction.ClearError)
         }
     }
 
@@ -52,7 +56,7 @@ internal fun ScheduleListScreen(
             if (!uiState.isLoading) {
                 FabButton(
                     icon = R.drawable.ic_add,
-                    onClick = { onHandleIntent(Intents.AddPressed) },
+                    onClick = { onHandleIntent(Actions.Navigation.AddPressed) },
                 )
             }
         },
@@ -63,9 +67,9 @@ internal fun ScheduleListScreen(
             DialogDeleteEvent(
                 event = uiState.selectedEvent,
                 onDismiss = {
-                    onHandleIntent(Intents.ChangeDeleteDialogState(false, null))
+                    onHandleIntent(Actions.Interaction.ChangeDeleteDialogState(false, null))
                 },
-                onDelete = { onHandleIntent(Intents.DeleteItem) },
+                onDelete = { onHandleIntent(Actions.Interaction.DeleteItem) },
             )
         }
         if (uiState.showDialogRating) {
@@ -73,9 +77,9 @@ internal fun ScheduleListScreen(
                 event = uiState.selectedEvent,
                 kid = uiState.selectedKid,
                 onDismiss = {
-                    onHandleIntent(Intents.ChangeRateDialogState(false, null, null))
+                    onHandleIntent(Actions.Interaction.ChangeRateDialogState(false, null, null))
                 },
-                onUpdateRating = { onHandleIntent(Intents.UpdateRating(it)) }
+                onUpdateRating = { onHandleIntent(Actions.Interaction.UpdateRating(it)) }
             )
         }
         if (uiState.isLoading) {
@@ -91,31 +95,46 @@ internal fun ScheduleListScreen(
             if (uiState.scheduleEvents.isNullOrEmpty()) {
                 EmptyScheduleScreen(Modifier.padding(paddingValues))
             } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 82.dp
-                    ),
+                Column(
                     modifier = Modifier.padding(paddingValues)
                 ) {
-                    items(
-                        items = uiState.scheduleEvents,
-                        key = { it.id },
-                    ) { event ->
-                        ScheduleItem(
-                            item = event,
-                            onClickUpdateFeedback = { kid ->
-                                onHandleIntent(Intents.ChangeRateDialogState(true, event, kid))
-                            },
-                            onClickDelete = {
-                                onHandleIntent(Intents.ChangeDeleteDialogState(true, event))
-                            },
-                            onClickItem = { onHandleIntent(Intents.ClickItem(event)) },
-                            onClickEdit = { onHandleIntent(Intents.UpdatePressed(event)) },
-                        )
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(uiState.years) {
+                            FilterChip(
+                                selected = it == uiState.selectedYear,
+                                onClick = { onHandleIntent(Actions.Interaction.ChangeSelectedYear(it)) },
+                                label = { Text(it) }
+                            )
+                        }
+                    }
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 82.dp
+                        ),
+                    ) {
+                        items(
+                            items = uiState.scheduleEvents,
+                            key = { it.id },
+                        ) { event ->
+                            ScheduleItem(
+                                item = event,
+                                onClickUpdateFeedback = { kid ->
+                                    onHandleIntent(Actions.Interaction.ChangeRateDialogState(true, event, kid))
+                                },
+                                onClickDelete = {
+                                    onHandleIntent(Actions.Interaction.ChangeDeleteDialogState(true, event))
+                                },
+                                onClickItem = { onHandleIntent(Actions.Interaction.ClickItem(event)) },
+                                onClickEdit = { onHandleIntent(Actions.Navigation.UpdatePressed(event)) },
+                            )
+                        }
                     }
                 }
             }
@@ -129,7 +148,11 @@ internal fun ScheduleListScreen(
 private fun PrevMainScheduleScreen() {
     SleepScheduleTheme {
         ScheduleListScreen(
-            uiState = UiState(scheduleEvents = scheduleEventMockList),
+            uiState = UiState(
+                years = listOf("2015", "2020"),
+                selectedYear = "2015",
+                scheduleEvents = scheduleEventMockList
+            ),
         )
     }
 }

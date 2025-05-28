@@ -52,6 +52,8 @@ dependencies {
     //  Room
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
+    //  Splash
+    implementation(libs.androidx.core.splashscreen)
 
     implementation(project(":data"))
     implementation(project(":domain"))

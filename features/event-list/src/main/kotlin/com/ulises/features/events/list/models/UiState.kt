@@ -11,4 +11,12 @@ data class UiState(
     val selectedEvent: ScheduledEvent? = null,
     val selectedKid: Kid? = null,
     val error: String? = null,
+    //
+    val selectedYear: String = "",
+    val years: List<String> = emptyList(),
+)
+
+data class YearsData(
+    val initialYear: String,
+    val yearsList: List<String>,
 )

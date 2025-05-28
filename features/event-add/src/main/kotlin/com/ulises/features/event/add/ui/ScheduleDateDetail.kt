@@ -44,7 +44,7 @@ import com.ulises.components.indicators.LoadingIndicator
 import com.ulises.components.pickers.DatePickerDialog
 import com.ulises.components.toolbar.TopBar
 import com.ulises.features.event.add.R
-import com.ulises.features.event.add.models.Intents
+import com.ulises.features.event.add.models.Actions
 import com.ulises.features.event.add.models.UiState
 import com.ulises.features.event.add.ui.ScheduleDateDetailViewModel.Companion.MAX_COMMENT_LENGTH
 import com.ulises.theme.SleepScheduleTheme
@@ -62,8 +62,8 @@ fun ScheduleDetailRoute(
         uiState = uiState,
         onHandleIntent = {
             when (it) {
-                Intents.NavigateBack -> onNavigateBackClick()
-                else -> viewModel.onHandleIntent(it)
+                Actions.Navigation.NavigateBack -> onNavigateBackClick()
+                is Actions.Interaction -> viewModel.onHandleIntent(it)
             }
         },
         getTextField = viewModel::getTextField,
@@ -74,7 +74,7 @@ fun ScheduleDetailRoute(
 @Composable
 private fun ScheduleDateDetailScreen(
     uiState: UiState,
-    onHandleIntent: (Intents) -> Unit = {},
+    onHandleIntent: (Actions) -> Unit = {},
     getTextField: (TextFieldType) -> String = { "" },
 ) {
     val isReadyToSend by remember(uiState) {
@@ -84,14 +84,14 @@ private fun ScheduleDateDetailScreen(
     }
     if (uiState.addComplete) {
         LaunchedEffect(Unit) {
-            onHandleIntent(Intents.NavigateBack)
+            onHandleIntent(Actions.Navigation.NavigateBack)
         }
     }
 
     Scaffold(
         topBar = {
             TopBar(title = if (uiState.isEdit) "Edita pijamada" else "Nueva pijamada") {
-                onHandleIntent(Intents.NavigateBack)
+                onHandleIntent(Actions.Navigation.NavigateBack)
             }
         }
     ) { innerPadding ->
@@ -109,8 +109,8 @@ private fun ScheduleDateDetailScreen(
         DatePickerDialog(
             isVisible = uiState.isDateDialogVisible,
             datePickerState = rememberDatePickerState(uiState.selectedDate.toMillis()),
-            onSelectDate = { millis -> onHandleIntent(Intents.SelectDate(millis)) },
-            onDismiss = { onHandleIntent(Intents.DisplayCalendarDialog(false)) }
+            onSelectDate = { millis -> onHandleIntent(Actions.Interaction.SelectDate(millis)) },
+            onDismiss = { onHandleIntent(Actions.Interaction.DisplayCalendarDialog(false)) }
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -141,7 +141,7 @@ private fun ScheduleDateDetailScreen(
                     Button(
                         enabled = !uiState.isLoading,
                         modifier = Modifier.fillMaxHeight(),
-                        onClick = { onHandleIntent(Intents.DisplayCalendarDialog(true)) }
+                        onClick = { onHandleIntent(Actions.Interaction.DisplayCalendarDialog(true)) }
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_calendar),
@@ -157,7 +157,7 @@ private fun ScheduleDateDetailScreen(
                 items(uiState.kids, key = { it.name }) { item ->
                     FilterChip(
                         selected = uiState.selectedKids.any { it.name == item.name },
-                        onClick = { onHandleIntent(Intents.SelectKid(item)) },
+                        onClick = { onHandleIntent(Actions.Interaction.SelectKid(item)) },
                         label = { Text(item.name) },
                     )
                 }
@@ -166,7 +166,7 @@ private fun ScheduleDateDetailScreen(
                 label = { Text(text = "Comentarios") },
                 value = getTextField(TextFieldType.Comment),
                 onValueChange = { text ->
-                    onHandleIntent(Intents.UpdateTextField(TextFieldType.Comment, text))
+                    onHandleIntent(Actions.Interaction.UpdateTextField(TextFieldType.Comment, text))
                 },
                 maxLines = 3,
                 modifier = Modifier.fillMaxWidth(),
@@ -183,9 +183,9 @@ private fun ScheduleDateDetailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     if (uiState.isEdit)
-                        onHandleIntent(Intents.UpdateEvent)
+                        onHandleIntent(Actions.Interaction.UpdateEvent)
                     else
-                        onHandleIntent(Intents.AddEvent)
+                        onHandleIntent(Actions.Interaction.AddEvent)
                 }
             ) {
                 if (!uiState.isEdit) {
