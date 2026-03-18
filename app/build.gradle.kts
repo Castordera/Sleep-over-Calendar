@@ -11,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.ulises.sleepschedule"
-        versionCode = 9
-        versionName = "1.4.1"
+        versionCode = 10
+        versionName = "2026.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

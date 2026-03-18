@@ -16,6 +16,7 @@ internal fun Project.configureAndroidCompose(
             implementation(libs.library("compose-ui"))
             implementation(libs.library("compose-ui-preview"))
             implementation(libs.library("compose-material3"))
+            implementation(libs.library("compose-icons"))
             debugImplementation(libs.library("compose-ui-tooling"))
         }
     }
