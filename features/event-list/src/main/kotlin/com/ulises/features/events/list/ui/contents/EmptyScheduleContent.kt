@@ -1,4 +1,4 @@
-package com.ulises.features.events.list.ui
+package com.ulises.features.events.list.ui.contents
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -22,39 +22,36 @@ import com.ulises.features.events.list.R
 import com.ulises.theme.SleepScheduleTheme
 
 @Composable
-internal fun EmptyScheduleScreen(
+internal fun EmptyScheduleContent(
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = modifier
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(16.dp)
             .fillMaxSize()
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.svg_sleeping_dog),
-                contentDescription = null,
-                modifier = Modifier.size(250.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.empty_schedule_title),
-                fontSize = 32.sp,
-                textAlign = TextAlign.Center
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.svg_sleeping_dog),
+            contentDescription = null,
+            modifier = Modifier.size(250.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.empty_schedule_title),
+            fontSize = 32.sp,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun Prev_EmptyScheduleScreen() {
+private fun Prev_EmptyScheduleContent() {
     SleepScheduleTheme {
         Surface {
-            EmptyScheduleScreen()
+            EmptyScheduleContent()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ulises.features.events.list.components
+package com.ulises.features.events.list.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
