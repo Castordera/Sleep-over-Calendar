@@ -8,4 +8,7 @@ data class ScheduledEvent(
     val comments: String,
     val isExpanded: Boolean = false,
     val selectedKids: List<Kid>,
+    //  V2
+    val attendees: List<Attendee> = emptyList(),
+    val isLegacy: Boolean = false,
 )

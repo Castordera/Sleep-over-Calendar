@@ -64,11 +64,42 @@ class MainScheduleViewModel @Inject constructor(
                 }
             }
 
-            Actions.Interaction.DeleteItem -> {
-                _uiState.value.selectedEvent?.also { onDeleteScheduleEvent(it.id) }
-            }
-
+            is Actions.Interaction.ShowDeleteDialog -> showDeleteDialog(action.event)
+            Actions.Interaction.DismissDeleteDialog -> dismissDeleteDialog()
+            Actions.Interaction.DeleteItem -> onDeleteScheduleEvent(_uiState.value.deleteDialogState.event)
             is Actions.Interaction.ChangeSelectedYear -> onChangeSelectedYear(action.year)
+            Actions.Interaction.DismissMessage -> dismissMessage()
+            is Actions.Interaction.ShowMessage -> showMessage(action.message)
+        }
+    }
+
+    private fun showMessage(message: String) {
+        _uiState.update { it.copy(message = message) }
+    }
+
+    private fun dismissMessage() {
+        _uiState.update { it.copy(message = "") }
+    }
+
+    private fun showDeleteDialog(event: ScheduledEvent) {
+        _uiState.update {
+            it.copy(
+                deleteDialogState = it.deleteDialogState.copy(
+                    isVisible = true,
+                    event = event,
+                )
+            )
+        }
+    }
+
+    private fun dismissDeleteDialog() {
+        _uiState.update {
+            it.copy(
+                deleteDialogState = it.deleteDialogState.copy(
+                    isVisible = false,
+                    event = null,
+                )
+            )
         }
     }
 
@@ -118,16 +149,19 @@ class MainScheduleViewModel @Inject constructor(
         }
     }
 
-    private fun onDeleteScheduleEvent(eventId: String) {
+    private fun onDeleteScheduleEvent(event: ScheduledEvent?) {
+        val event = _uiState.value.deleteDialogState.event
         viewModelScope.launch(dispatchers.io) {
             runCatching {
-                deleteScheduleEventUseCase(eventId)
+                requireNotNull(event?.id)
+                deleteScheduleEventUseCase(event.id)
             }.onFailure { error ->
-                Timber.e(error, "Error deleting event: $eventId")
-                _uiState.update { it.copy(error = error.localizedMessage) }
+                Timber.e(error, "Error deleting event: $event")
+                onHandleIntent(Actions.Interaction.DismissDeleteDialog)
+                _uiState.update { it.copy(message = error.localizedMessage) }
             }.onSuccess {
-                Timber.d("Deleted event: $eventId")
-                onHandleIntent(Actions.Interaction.ChangeDeleteDialogState(false, null))
+                Timber.d("Deleted event: $event")
+                onHandleIntent(Actions.Interaction.DismissDeleteDialog)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.ulises.features.events.list.utils
 
+import models.Attendee
 import models.Kid
 import models.ScheduledEvent
 
@@ -28,4 +29,10 @@ val scheduleEventMockList = listOf(
         comments = "This is my comment just to provide some extra data to fill in and use more space that it might require, but lets see how this ends",
         selectedKids = emptyList(),
     )
+)
+
+val attendeesMockList = listOf(
+    Attendee("Renata", Attendee.Mood.GOOD),
+    Attendee("Renata", Attendee.Mood.NEUTRAL),
+    Attendee("Renata", Attendee.Mood.BAD),
 )
