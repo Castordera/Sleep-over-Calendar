@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sleepschedule.ui.SleepScheduleAppState
-import com.ulises.features.event.add.ui.ScheduleDetailRoute
+import com.ulises.features.event.add.ui.ScheduleDetailScreen
 import com.ulises.features.events.list.ui.ScheduleListScreen
 import com.ulises.navigation.Graph
 import com.ulises.navigation.Screens
@@ -37,7 +37,7 @@ fun AppNavHost(
             )
         }
         composable<Screens.AddItem> {
-            ScheduleDetailRoute(
+            ScheduleDetailScreen(
                 onNavigateBackClick = { navController.popBackStack() }
             )
         }
