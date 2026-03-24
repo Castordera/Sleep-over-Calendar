@@ -26,11 +26,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import models.Attendee
 import models.Kid
 import models.ScheduledEvent
 import models.User
 import outcomes.OutcomeScheduledEvent
+import outcomes.toKidsList
 import timber.log.Timber
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -84,8 +87,12 @@ class ScheduleDateDetailViewModel @Inject constructor(
             is Actions.Interaction.SelectDate -> onDateSelected(action.date)
             is Actions.Interaction.UpdateTextField -> onUpdateTextField(action.type, action.value)
             is Actions.Interaction.SelectKid -> onUpdateSelectedKid(action.kid)
+            is Actions.Interaction.SelectAttendeeClicked -> updateSelectedAttendee(action.attendee)
+            is Actions.Interaction.MoodSelected -> updateMoodForAttendee(action.attendee, action.newMood)
             Actions.Interaction.AddEvent -> onAddSchedule()
             Actions.Interaction.UpdateEvent -> onUpdateEvent()
+            Actions.Interaction.DismissCalendarDialog -> onDateDialogVisibilityChange(false)
+            is Actions.Interaction.AddScheduledEventClicked -> scheduleEvent(comments)
         }
     }
 
@@ -113,7 +120,7 @@ class ScheduleDateDetailViewModel @Inject constructor(
                     )
                 }
             }.onFailure {
-                Timber.e("Error fetching the event with ID: $eventId", it)
+                Timber.e(it, "Error fetching the event with ID: $eventId")
             }
         }
     }
@@ -141,6 +148,24 @@ class ScheduleDateDetailViewModel @Inject constructor(
             list - setOf(toggleKid)
         }
         _uiState.update { it.copy(selectedKids = newList) }
+    }
+
+    private fun updateSelectedAttendee(attendee: Attendee) {
+        val list = _uiState.value.selectedAttendees
+        val item = list.find { it.name == attendee.name }
+        val updatedList = if (item == null) {
+            list + listOf(attendee)
+        } else {
+            list - listOf(item)
+        }
+        _uiState.update { it.copy(selectedAttendees = updatedList) }
+    }
+
+    private fun updateMoodForAttendee(attendee: Attendee, mood: Attendee.Mood) {
+        val list = _uiState.value.selectedAttendees.toMutableList()
+        val index = list.indexOf(attendee)
+        list[index] = attendee.copy(mood = mood)
+        _uiState.update { it.copy(selectedAttendees = list.toList()) }
     }
 
     private fun onDateSelected(millis: Long?) {
@@ -184,6 +209,30 @@ class ScheduleDateDetailViewModel @Inject constructor(
             }.onFailure {
                 Timber.e(it, "Error creating this event")
                 _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    private fun scheduleEvent(comments: String) {
+        viewModelScope.launch {
+            runCatching {
+                _uiState.update { it.copy(isLoading = true) }
+                val outputEvent = OutcomeScheduledEvent(
+                    id = Instant.now().toEpochMilli().toString(),
+                    date = _uiState.value.selectedDate.toISODate(),
+                    createdBy = user!!.name,
+                    createdOn = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    comments = comments,
+                    createdById = user!!.id,
+                    selectedKids = _uiState.value.selectedAttendees.toKidsList(),
+                )
+                updateEventUseCase(outputEvent)
+            }.onSuccess {
+                Timber.d("Event created")
+                _uiState.update { it.copy(isLoading = false, addComplete = true) }
+            }.onFailure {
+                Timber.d("Error Creating the event")
+                _uiState.update { it.copy(isLoading = false, addComplete = true) }
             }
         }
     }

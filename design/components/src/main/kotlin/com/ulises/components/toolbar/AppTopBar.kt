@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.NightlightRound
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,7 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ulises.theme.LavenderGlow
 import com.ulises.theme.NightElevated
@@ -41,7 +43,8 @@ import com.ulises.theme.TextSecondary
 @Composable
 fun AppTopBar(
     title: String,
-    onNavigateBack: () -> Unit = {},
+    withIcon: Boolean = true,
+    onNavigateBack: (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     TopAppBar(
@@ -52,13 +55,15 @@ fun AppTopBar(
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.NightlightRound,
-                    contentDescription = null,
-                    tint = LavenderGlow,
-                    modifier = Modifier.size(26.dp),
-                )
-                Spacer(Modifier.width(10.dp))
+                if (withIcon) {
+                    Icon(
+                        imageVector = Icons.Rounded.NightlightRound,
+                        contentDescription = null,
+                        tint = LavenderGlow,
+                        modifier = Modifier.size(26.dp),
+                    )
+                    Spacer(Modifier.width(10.dp))
+                }
                 Text(
                     text = title,
                     style = MaterialTheme.typography.headlineLarge,
@@ -66,7 +71,14 @@ fun AppTopBar(
                 )
             }
         },
-        navigationIcon = {},
+        navigationIcon = {
+            onNavigateBack?.let {
+                TopActionButton(
+                    Icons.AutoMirrored.Rounded.ArrowBack,
+                    description = "Back"
+                ) { it() }
+            }
+        },
         actions = actions,
     )
 }
@@ -120,12 +132,15 @@ fun BackgroundStar(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun PreviewAppTopBar() {
     SleepScheduleTheme {
         Surface {
-            AppTopBar("Demos")
+            Column {
+                AppTopBar("Demos")
+                AppTopBar("Otro", onNavigateBack = {}, withIcon = false)
+            }
         }
     }
 }

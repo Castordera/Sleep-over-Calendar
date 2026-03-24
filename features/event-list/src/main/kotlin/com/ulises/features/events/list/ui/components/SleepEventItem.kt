@@ -41,6 +41,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ulises.common.time.utils.TimeHelper.toFormat
+import com.ulises.common.time.utils.TimeHelper.toWeekDay
 import com.ulises.features.events.list.utils.attendeesMockList
 import com.ulises.features.events.list.utils.scheduleEventMockList
 import com.ulises.theme.DangerRed
@@ -115,7 +117,7 @@ internal fun SleepEventItem(
                                 modifier = Modifier.size(14.dp),
                             )
                             Text(
-                                text = entry.date.uppercase(),
+                                text = entry.dateScheduled.toWeekDay().uppercase(),
                                 style = MaterialTheme.typography.labelMedium.copy(
                                     letterSpacing = 1.2.sp,
                                     color = LavenderGlow.copy(alpha = 0.8f),
@@ -124,7 +126,7 @@ internal fun SleepEventItem(
                         }
                         Spacer(Modifier.height(2.dp))
                         Text(
-                            text = entry.date,
+                            text = entry.dateScheduled.toFormat(),
                             style = MaterialTheme.typography.headlineMedium,
                         )
                         Spacer(Modifier.height(2.dp))

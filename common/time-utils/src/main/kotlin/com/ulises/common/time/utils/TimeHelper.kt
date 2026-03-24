@@ -30,4 +30,12 @@ object TimeHelper {
     fun LocalDate.toISODate(): String {
         return this.format(DateTimeFormatter.ISO_DATE)
     }
+    // V2
+    fun LocalDate.toWeekDay(): String {
+        return this.format(DateTimeFormatter.ofPattern("EEEE"))
+    }
+
+    fun LocalDate.toFormat(pattern: String = "dd 'de' MMMM 'del' yyyy"): String {
+        return this.format(DateTimeFormatter.ofPattern(pattern))
+    }
 }

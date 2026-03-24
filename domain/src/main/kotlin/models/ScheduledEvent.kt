@@ -1,5 +1,7 @@
 package models
 
+import java.time.LocalDate
+
 data class ScheduledEvent(
     val id: String,
     val date: String,
@@ -11,4 +13,5 @@ data class ScheduledEvent(
     //  V2
     val attendees: List<Attendee> = emptyList(),
     val isLegacy: Boolean = false,
+    val dateScheduled: LocalDate,
 )

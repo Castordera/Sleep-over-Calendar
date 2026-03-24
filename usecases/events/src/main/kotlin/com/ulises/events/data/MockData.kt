@@ -2,6 +2,7 @@ package com.ulises.events.data
 
 import models.ScheduledEvent
 import outcomes.OutcomeScheduledEvent
+import java.time.LocalDate
 
 val outcomeEvent = OutcomeScheduledEvent(
     id = "123",
@@ -20,4 +21,5 @@ val event = ScheduledEvent(
     createdOn = "Today",
     comments = "Demo comments",
     selectedKids = emptyList(),
+    dateScheduled = LocalDate.now()
 )

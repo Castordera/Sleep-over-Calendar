@@ -2,6 +2,7 @@ package com.example.sleepschedule.data.database
 
 import androidx.annotation.Keep
 import models.Attendee
+import java.time.LocalDate
 
 @Keep
 data class ScheduledEvent(
@@ -24,6 +25,7 @@ fun ScheduledEvent.toDomain() = models.ScheduledEvent(
     selectedKids = mapToKidList(),
     attendees = mapAttendees(),
     isLegacy = selectedKids == null,
+    dateScheduled = date.toLocalDate(),
 )
 
 private fun ScheduledEvent.mapToKidList(): List<models.Kid> {
@@ -37,4 +39,12 @@ private fun ScheduledEvent.mapAttendees(): List<Attendee> {
             rating.getMood()
         )
     )
+}
+
+private fun String?.toLocalDate(): LocalDate {
+    return if (this != null) {
+        LocalDate.parse(this)
+    } else {
+        LocalDate.now()
+    }
 }
