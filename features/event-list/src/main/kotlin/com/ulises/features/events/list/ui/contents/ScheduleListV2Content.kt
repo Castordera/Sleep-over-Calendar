@@ -75,6 +75,8 @@ internal fun ScheduleListV2Content(
             )
         },
         floatingActionButton = {
+            if (uiState.scheduleEvents.isNullOrEmpty()) return@Scaffold
+            //
             ExtendedFloatingActionButton(
                 onClick = { onHandleAction(Actions.Navigation.AddPressed) },
                 containerColor = LavenderGlow,
@@ -98,11 +100,6 @@ internal fun ScheduleListV2Content(
         }
     ) { innerPadding ->
         BackgroundStar {
-            //  Empty State
-            if (uiState.scheduleEvents.isNullOrEmpty()) {
-                EmptyScheduleContent()
-                return@BackgroundStar
-            }
             //  Data
             Column(
                 modifier = Modifier.padding(innerPadding)
@@ -110,6 +107,15 @@ internal fun ScheduleListV2Content(
                 Spacer(modifier = Modifier.height(16.dp))
                 YearList(uiState.years, uiState.selectedYear) {
                     onHandleAction(Actions.Interaction.ChangeSelectedYear(it))
+                }
+                //  Empty State
+                if (uiState.scheduleEvents.isNullOrEmpty()) {
+                    EmptyScheduleContent(
+                        modifier = Modifier.padding(innerPadding),
+                        selectedYear = uiState.selectedYear,
+                        onAddClick = { onHandleAction(Actions.Navigation.AddPressed) }
+                    )
+                    return@BackgroundStar
                 }
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),

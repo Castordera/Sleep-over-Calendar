@@ -43,6 +43,7 @@ fun AppNavHost(
         }
         composable<Screens.User> {
             UserRoute(
+                onBackClicked = { navController.popBackStack() },
                 onLoggedOut = {
                     navController.navigate(Graph.Login) {
                         popUpTo(Screens.User) { inclusive = true }

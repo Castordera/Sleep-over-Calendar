@@ -93,7 +93,10 @@ internal fun ScheduleListContent(
             }
         } else {
             if (uiState.scheduleEvents.isNullOrEmpty()) {
-                EmptyScheduleContent(Modifier.padding(paddingValues))
+                EmptyScheduleContent(
+                    modifier = Modifier.padding(paddingValues),
+                    selectedYear = uiState.selectedYear,
+                )
             } else {
                 Column(
                     modifier = Modifier.padding(paddingValues)
