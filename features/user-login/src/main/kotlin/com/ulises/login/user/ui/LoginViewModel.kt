@@ -1,15 +1,12 @@
 package com.ulises.login.user.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.dispatcher_core.ScheduleDispatchers
-import com.ulises.login.user.model.Intents
-import com.ulises.login.user.model.TextFieldType
+import com.ulises.login.user.model.Action
 import com.ulises.login.user.model.UiState
 import com.ulises.navigation.Screens
+import com.ulises.session.UserSessionManager
 import com.ulises.usecase.session.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,50 +19,35 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val sessionManager: UserSessionManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
-    //
-    private var email by mutableStateOf("")
-    private var password by mutableStateOf("")
-    //
 
-    fun onHandleIntent(intent: Intents) {
-        when (intent) {
-            Intents.LoginClicked -> onLoginClick()
-            Intents.SignInClicked -> onSignInClicked()
-            is Intents.UpdateTextField -> {
-                when (intent.type) {
-                    TextFieldType.Email -> email = intent.value
-                    TextFieldType.Password -> password = intent.value
-                }
-            }
+    fun onHandleIntent(action: Action) {
+        when (action) {
+            is Action.LoginClicked -> onLoginClick(action.email, action.password)
+            Action.SignInClicked -> onSignInClicked()
         }
     }
 
-    private fun onLoginClick() {
+    private fun onLoginClick(email: String, password: String) {
         viewModelScope.launch(dispatchers.main) {
             runCatching {
                 loginUseCase(email, password)
             }.fold(
                 onSuccess = { user ->
                     Timber.d("Login Success for: $user")
+                    sessionManager.updateUserSessionState(user)
                     _uiState.update { it.copy(navigateTo = Screens.Home) }
                 },
                 onFailure = { error ->
-                    Timber.e("Login error ${error.message}", error)
+                    Timber.e(error, "Login error ${error.message}")
                     _uiState.update { it.copy(error = error.message.orEmpty()) }
                 }
             )
-        }
-    }
-
-    fun getTextFieldValue(textFieldType: TextFieldType): String {
-        return when (textFieldType) {
-            TextFieldType.Email -> email
-            TextFieldType.Password -> password
         }
     }
 

@@ -46,7 +46,7 @@ fun AppNavHost(
                 onBackClicked = { navController.popBackStack() },
                 onLoggedOut = {
                     navController.navigate(Graph.Login) {
-                        popUpTo(Screens.User) { inclusive = true }
+                        popUpTo(Screens.Home) { inclusive = true }
                     }
                 }
             )

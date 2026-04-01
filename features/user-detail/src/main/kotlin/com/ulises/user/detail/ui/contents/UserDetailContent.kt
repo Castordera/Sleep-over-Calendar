@@ -87,7 +87,7 @@ internal fun UserDetailContent(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = uiState.user?.name.orEmpty().first().toString().uppercase(),
+                        text = uiState.user.name.first().toString().uppercase(),
                         style = MaterialTheme.typography.headlineLarge.copy(
                             fontSize = 32.sp,
                             color = LavenderGlow,
@@ -97,13 +97,13 @@ internal fun UserDetailContent(
             }
             Spacer(Modifier.height(14.dp))
             Text(
-                text = uiState.user?.name.orEmpty(),
+                text = uiState.user.name,
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(3.dp))
             Text(
-                text = uiState.user?.email.orEmpty(),
+                text = uiState.user.email,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
             )

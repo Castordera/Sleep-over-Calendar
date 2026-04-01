@@ -129,14 +129,19 @@ class MainScheduleViewModel @Inject constructor(
     }
 
     private fun Map<String, List<ScheduledEvent>>.getYearsData(): YearsData {
-        val selectedYear = uiState.value.selectedYear.ifBlank {
-            val currentYear = LocalDate.now().year.toString()
-            if (isNotEmpty()) this[currentYear]?.let { currentYear } ?: keys.first() else ""
+        val currentYear = LocalDate.now().year.toString()
+        //  Only the first time
+        val selectedYear = when {
+            uiState.value.selectedYear.isBlank() -> currentYear
+            isEmpty() -> currentYear
+            !containsKey(uiState.value.selectedYear) -> currentYear
+            else -> uiState.value.selectedYear
         }
-        //
+        //  Add current year even if no elements present
+        val years = (keys + currentYear).sortedByDescending { it }
         return YearsData(
             initialYear = selectedYear,
-            yearsList = if (isEmpty()) emptyList() else keys.toList(),
+            yearsList = years,
         )
     }
 

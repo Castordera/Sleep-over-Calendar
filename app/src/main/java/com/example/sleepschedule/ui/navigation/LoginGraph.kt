@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.sleepschedule.ui.SleepScheduleAppState
-import com.ulises.login.user.ui.LoginRoute
+import com.ulises.login.user.ui.LoginScreen
 import com.ulises.navigation.Graph
 import com.ulises.navigation.Screens
 import com.ulises.register.user.ui.SignInRoute
@@ -17,7 +17,7 @@ fun NavGraphBuilder.loginGraph(
     navigation<Graph.Login>(startDestination = Screens.Login) {
         /** Login  */
         composable<Screens.Login> {
-            LoginRoute(
+            LoginScreen(
                 snackBarHostState = appState.snackBarHostState,
                 navigateTo = { dest ->
                     if (dest is Screens.SignIn) {
