@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ulises.dispatcher_core.ScheduleDispatchers
-import com.ulises.register.user.models.Intents
+import com.ulises.register.user.models.Action
 import com.ulises.register.user.models.TextType
 import com.ulises.register.user.models.UiState
 import com.ulises.usecase.session.RegisterUserUseCase
@@ -35,11 +35,11 @@ class RegisterViewModel @Inject constructor(
     private var verifyPassword by mutableStateOf("")
     //
 
-    fun onHandleIntent(intent: Intents) {
+    fun onHandleIntent(intent: Action) {
         when (intent) {
-            Intents.RegisterUser -> onSignInButtonClick()
-            Intents.DismissError -> onErrorShown()
-            is Intents.UpdateText -> onTextChange(intent.type, intent.text)
+            Action.RegisterUser -> onSignInButtonClick()
+            Action.DismissError -> onErrorShown()
+            is Action.UpdateText -> onTextChange(intent.type, intent.text)
         }
     }
 

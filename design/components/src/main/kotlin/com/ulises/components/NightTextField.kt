@@ -1,4 +1,4 @@
-package com.ulises.login.user.ui.components
+package com.ulises.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

@@ -56,7 +56,7 @@ import androidx.compose.ui.unit.sp
 import com.ulises.login.user.model.Action
 import com.ulises.login.user.model.UiState
 import com.ulises.login.user.ui.components.BedIllustration
-import com.ulises.login.user.ui.components.NightTextField
+import com.ulises.components.NightTextField
 import com.ulises.theme.DangerRed
 import com.ulises.theme.LavenderDim
 import com.ulises.theme.LavenderGlow

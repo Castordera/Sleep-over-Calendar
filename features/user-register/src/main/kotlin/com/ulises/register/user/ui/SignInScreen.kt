@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.ulises.components.AppTextField
 import com.ulises.components.toolbar.TopBar
 import com.ulises.register.user.R
-import com.ulises.register.user.models.Intents
+import com.ulises.register.user.models.Action
 import com.ulises.register.user.models.TextType
 import com.ulises.register.user.models.UiState
 import com.ulises.theme.SleepScheduleTheme
@@ -33,14 +33,14 @@ internal fun SignInScreen(
     uiState: UiState,
     navigateBack: () -> Unit = {},
     getTextField: (TextType) -> String = { _ -> "" },
-    onHandleIntent: (Intents) -> Unit = {},
+    onHandleIntent: (Action) -> Unit = {},
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
     if (uiState.error.isNotBlank()) {
         LaunchedEffect(uiState.error) {
             snackBarHostState.showSnackbar(uiState.error)
-            onHandleIntent(Intents.DismissError)
+            onHandleIntent(Action.DismissError)
         }
     }
 
@@ -64,7 +64,7 @@ internal fun SignInScreen(
                 text = getTextField(TextType.Name),
                 label = stringResource(id = R.string.filed_name_or_nickname),
                 enabled = !uiState.isLoading,
-                onTextChange = { onHandleIntent(Intents.UpdateText(TextType.Name, it)) },
+                onTextChange = { onHandleIntent(Action.UpdateText(TextType.Name, it)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -75,7 +75,7 @@ internal fun SignInScreen(
                 text = getTextField(TextType.Email),
                 label = stringResource(id = R.string.field_email),
                 enabled = !uiState.isLoading,
-                onTextChange = { onHandleIntent(Intents.UpdateText(TextType.Email, it)) },
+                onTextChange = { onHandleIntent(Action.UpdateText(TextType.Email, it)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
@@ -87,7 +87,7 @@ internal fun SignInScreen(
                 message = stringResource(id = R.string.field_label_min_characters, "6"),
                 enabled = !uiState.isLoading,
                 passwordVisible = false,
-                onTextChange = { onHandleIntent(Intents.UpdateText(TextType.Password, it)) },
+                onTextChange = { onHandleIntent(Action.UpdateText(TextType.Password, it)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
                     autoCorrectEnabled = false
@@ -99,14 +99,14 @@ internal fun SignInScreen(
                 message = stringResource(id = R.string.field_label_min_characters, "6"),
                 enabled = !uiState.isLoading,
                 passwordVisible = false,
-                onTextChange = { onHandleIntent(Intents.UpdateText(TextType.RePassword, it)) },
+                onTextChange = { onHandleIntent(Action.UpdateText(TextType.RePassword, it)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
                     autoCorrectEnabled = false
                 ),
             )
             Button(
-                onClick = { onHandleIntent(Intents.RegisterUser) },
+                onClick = { onHandleIntent(Action.RegisterUser) },
                 enabled = uiState.isEnabled,
                 modifier = Modifier.fillMaxWidth()
             ) {

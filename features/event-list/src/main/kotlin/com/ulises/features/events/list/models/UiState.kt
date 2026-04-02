@@ -6,9 +6,6 @@ import models.ScheduledEvent
 data class UiState(
     val scheduleEvents: List<ScheduledEvent>? = null,
     val isLoading: Boolean = false,
-    val showDialogDelete: Boolean = false,//Todo(Delete)
-    val showDialogRating: Boolean = false,//Todo(Delete)
-    val selectedEvent: ScheduledEvent? = null,//Todo(Delete)
     val selectedKid: Kid? = null,
     val error: String? = null,//v1
     val selectedYear: String = "",

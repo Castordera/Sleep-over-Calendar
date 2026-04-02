@@ -43,27 +43,6 @@ class MainScheduleViewModel @Inject constructor(
         when (action) {
             is Actions.Interaction.ClickItem -> onExpandCollapseItem(action.item)
             Actions.Interaction.ClearError -> onErrorDisplayed()
-            is Actions.Interaction.UpdateRating -> onUpdateRating(
-                _uiState.value.selectedEvent,
-                action.newRating
-            )
-
-            is Actions.Interaction.ChangeDeleteDialogState -> {
-                _uiState.update {
-                    it.copy(showDialogDelete = action.isVisible, selectedEvent = action.item)
-                }
-            }
-
-            is Actions.Interaction.ChangeRateDialogState -> {
-                _uiState.update {
-                    it.copy(
-                        showDialogRating = action.isVisible,
-                        selectedEvent = action.item,
-                        selectedKid = action.kid
-                    )
-                }
-            }
-
             is Actions.Interaction.ShowDeleteDialog -> showDeleteDialog(action.event)
             Actions.Interaction.DismissDeleteDialog -> dismissDeleteDialog()
             Actions.Interaction.DeleteItem -> onDeleteScheduleEvent(_uiState.value.deleteDialogState.event)
@@ -155,7 +134,6 @@ class MainScheduleViewModel @Inject constructor(
     }
 
     private fun onDeleteScheduleEvent(event: ScheduledEvent?) {
-        val event = _uiState.value.deleteDialogState.event
         viewModelScope.launch(dispatchers.io) {
             runCatching {
                 requireNotNull(event?.id)
@@ -163,34 +141,10 @@ class MainScheduleViewModel @Inject constructor(
             }.onFailure { error ->
                 Timber.e(error, "Error deleting event: $event")
                 onHandleIntent(Actions.Interaction.DismissDeleteDialog)
-                _uiState.update { it.copy(message = error.localizedMessage) }
+                _uiState.update { it.copy(message = error.localizedMessage.orEmpty()) }
             }.onSuccess {
                 Timber.d("Deleted event: $event")
                 onHandleIntent(Actions.Interaction.DismissDeleteDialog)
-            }
-        }
-    }
-
-    private fun onUpdateRating(event: ScheduledEvent?, newRating: Int) {
-        viewModelScope.launch(dispatchers.io) {
-            event?.also {
-                runCatching {
-                    val newVersion = _uiState.value.selectedKid
-                    if (newVersion == null) {
-                        updateScheduleEventUseCase(it.id, newRating)
-                    } else {
-                        val kidIndex = getIndexForKid(event)
-                        Timber.d("Kid data: $newVersion, index: $kidIndex")
-                        updateScheduleEventUseCase(it.id, newRating, kidIndex)
-                    }
-                }.onFailure { error ->
-                    Timber.e(error, "Error updating the rating to :$event")
-                    _uiState.update { it.copy(error = error.localizedMessage) }
-                    onHandleIntent(Actions.Interaction.ChangeRateDialogState(false, null, null))
-                }.onSuccess {
-                    Timber.d("Rating updated: $event")
-                    onHandleIntent(Actions.Interaction.ChangeRateDialogState(false, null, null))
-                }
             }
         }
     }
@@ -208,9 +162,5 @@ class MainScheduleViewModel @Inject constructor(
 
     private fun onErrorDisplayed() {
         _uiState.update { it.copy(error = null) }
-    }
-
-    private fun getIndexForKid(event: ScheduledEvent): Int {
-        return event.selectedKids.indexOf(_uiState.value.selectedKid)
     }
 }
