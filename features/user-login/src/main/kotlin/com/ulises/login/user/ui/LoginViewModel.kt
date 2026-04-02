@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
     fun onHandleIntent(action: Action) {
         when (action) {
             is Action.LoginClicked -> onLoginClick(action.email, action.password)
-            Action.SignInClicked -> onSignInClicked()
+            else -> Timber.d("Action not handled: $action")
         }
     }
 
@@ -49,17 +49,5 @@ class LoginViewModel @Inject constructor(
                 }
             )
         }
-    }
-
-    fun onErrorShowed() {
-        _uiState.update { it.copy(error = "") }
-    }
-
-    private fun onSignInClicked() {
-        _uiState.update { it.copy(navigateTo = Screens.SignIn) }
-    }
-
-    fun onNavigatedToRegister() {
-        _uiState.update { it.copy(navigateTo = null) }
     }
 }

@@ -18,16 +18,14 @@ fun NavGraphBuilder.loginGraph(
         /** Login  */
         composable<Screens.Login> {
             LoginScreen(
-                snackBarHostState = appState.snackBarHostState,
-                navigateTo = { dest ->
-                    if (dest is Screens.SignIn) {
-                        navController.navigate(dest)
-                    } else {
-                        navController.navigate(dest) {
-                            popUpTo(Screens.Login) { inclusive = true }
-                        }
+                navigateToSignIn = {
+                    navController.navigate(Screens.SignIn)
+                },
+                navigateToHome = {
+                    navController.navigate(Screens.Home) {
+                        popUpTo(Screens.Login) { inclusive = true }
                     }
-                }
+                },
             )
         }
         /** SignIn  */
