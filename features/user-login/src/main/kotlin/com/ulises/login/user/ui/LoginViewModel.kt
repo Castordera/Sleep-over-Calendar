@@ -6,7 +6,6 @@ import com.ulises.dispatcher_core.ScheduleDispatchers
 import com.ulises.login.user.model.Action
 import com.ulises.login.user.model.UiState
 import com.ulises.navigation.Screens
-import com.ulises.session.UserSessionManager
 import com.ulises.usecase.session.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val dispatchers: ScheduleDispatchers,
     private val loginUseCase: LoginUseCase,
-    private val sessionManager: UserSessionManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -40,12 +38,11 @@ class LoginViewModel @Inject constructor(
             }.fold(
                 onSuccess = { user ->
                     Timber.d("Login Success for: $user")
-                    sessionManager.updateUserSessionState(user)
                     _uiState.update { it.copy(navigateTo = Screens.Home) }
                 },
                 onFailure = { error ->
                     Timber.e(error, "Login error ${error.message}")
-                    _uiState.update { it.copy(error = error.message.orEmpty()) }
+                    _uiState.update { it.copy(error = error.message ?: "$error") }
                 }
             )
         }

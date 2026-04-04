@@ -5,7 +5,7 @@ import models.User
 import javax.inject.Inject
 
 class SessionRepositoryImpl @Inject constructor(
-    private val sessionRemoteDataSource: SessionRemoteDataSource
+    private val sessionRemoteDataSource: SessionRemoteDataSource,
 ) : SessionRepository {
 
     override suspend fun getCurrentUser() = sessionRemoteDataSource.getCurrentUser()

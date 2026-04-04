@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import models.User
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserSessionManager @Inject constructor() {
 
     //  Todo (Inject this)

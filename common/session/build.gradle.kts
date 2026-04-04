@@ -1,9 +1,5 @@
 plugins {
-    alias(libs.plugins.sleep.android.library)
-}
-
-android {
-    namespace = "com.ulises.session"
+    alias(libs.plugins.sleep.kotlin.library)
 }
 
 dependencies {

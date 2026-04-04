@@ -2,7 +2,6 @@ package com.example.sleepschedule.data.session
 
 import com.google.firebase.auth.FirebaseAuth
 import com.ulises.data.datasources.SessionRemoteDataSource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import models.User
 import timber.log.Timber
@@ -21,10 +20,12 @@ class FirebaseSessionDataSource @Inject constructor(
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    continuation.resume(firebaseAuth.currentUser?.toUser()) {
-                        continuation.resumeWithException(it)
+                    continuation.resume(firebaseAuth.currentUser?.toUser()) { cause, _, _ ->
+                        Timber.e(cause, "Error getting user")
+                        continuation.resumeWithException(cause)
                     }
                 } else {
+                    Timber.e(task.exception, "Error getting user")
                     continuation.resumeWithException(task.exception!!)
                 }
             }
@@ -34,12 +35,12 @@ class FirebaseSessionDataSource @Inject constructor(
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    continuation.resume(firebaseAuth.currentUser?.toUser()) {
-                        Timber.e("Error getting user", it)
-                        continuation.resumeWithException(it)
+                    continuation.resume(firebaseAuth.currentUser?.toUser()) { cause, _, _ ->
+                        Timber.e(cause, "Error getting user")
+                        continuation.resumeWithException(cause)
                     }
                 } else {
-                    Timber.e("Error getting user", task.exception)
+                    Timber.e(task.exception!!,"Error getting user")
                     continuation.resumeWithException(task.exception!!)
                 }
             }

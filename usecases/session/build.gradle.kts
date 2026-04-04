@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":common:session"))
     //
     implementation(libs.javax.inject)
     implementation(libs.coroutines.core)

@@ -11,11 +11,11 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
-import models.User as DomainUser
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import models.User as DomainUser
 
 class FirebaseUserRemoteDataSource @Inject constructor(
     @FirebaseUsersReference private val database: DatabaseReference
