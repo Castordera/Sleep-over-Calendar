@@ -1,14 +1,9 @@
 plugins {
-    alias(libs.plugins.sleep.android.library)
-    alias(libs.plugins.sleep.android.library.compose)
+    alias(libs.plugins.castorena.bl.compose.lib)
 }
 
 android {
     namespace = "com.ulises.components"
-
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 }
 
 dependencies {

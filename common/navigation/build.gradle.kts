@@ -1,7 +1,6 @@
 plugins {
-    alias(libs.plugins.sleep.android.library)
+    alias(libs.plugins.castorena.bl.compose.lib)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.sleep.android.library.compose)
 }
 
 android {

@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.sleep.android.app)
-    alias(libs.plugins.sleep.android.app.compose)
+    alias(libs.plugins.castorena.bl.compose.app)
+    alias(libs.plugins.castorena.bl.test.unit)
     alias(libs.plugins.google.services)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -25,6 +25,7 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -45,6 +46,7 @@ dependencies {
     //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
     // Coil
     implementation(libs.bundles.coil)
     //  Navigation

@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.sleep.kotlin.library)
-    id("sleepover.unit.test")
+    alias(libs.plugins.castorena.bl.kotlin.lib)
+    alias(libs.plugins.castorena.bl.test.unit)
 }
 
 dependencies {

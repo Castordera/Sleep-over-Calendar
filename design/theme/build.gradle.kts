@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.sleep.android.library)
-    alias(libs.plugins.sleep.android.library.compose)
+    alias(libs.plugins.castorena.bl.compose.lib)
 }
 
 android {
@@ -12,5 +11,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.android.core.ktx)
+    implementation(libs.androidx.ui.text.google.fonts)
 }

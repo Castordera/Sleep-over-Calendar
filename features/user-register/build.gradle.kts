@@ -1,16 +1,11 @@
 plugins {
-    alias(libs.plugins.sleep.android.library)
-    alias(libs.plugins.sleep.android.library.compose)
-    id("sleepover.unit.test")
+    alias(libs.plugins.castorena.bl.compose.lib)
+    alias(libs.plugins.castorena.bl.test.unit)
     alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.ulises.register.user"
-
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 }
 
 dependencies {
@@ -24,6 +19,7 @@ dependencies {
     //  Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
     //  Core
     implementation(project(":common:dispatcher-core"))
     implementation(libs.hilt.navigation.compose)

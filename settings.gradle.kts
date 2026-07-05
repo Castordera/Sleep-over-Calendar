@@ -3,9 +3,14 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        includeBuild("build-logic")
     }
+    includeBuild("../build-logic")
 }
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -14,8 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-includeBuild("build-logic")
-gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
 rootProject.name = "SleepSchedule"
 include(":app")
 include(":domain")
