@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     implementation(project(":common:dispatcher-core"))
-    implementation(libs.mockk)
     implementation(libs.coroutines.test)
     implementation(libs.junit5)
 }

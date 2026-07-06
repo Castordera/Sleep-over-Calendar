@@ -7,26 +7,26 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+              <build path="$PROJECT_DIR$/../build-logic" name="Custom-build-logic">
                 <projects>
-                  <project path="$PROJECT_DIR$/build-logic" />
-                  <project path="$PROJECT_DIR$/build-logic/convention" />
+                  <project path="$PROJECT_DIR$/../build-logic" />
+                  <project path="$PROJECT_DIR$/../build-logic/convention" />
                 </projects>
               </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/build-logic" />
-            <option value="$PROJECT_DIR$/build-logic/convention" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/dispatcher-core" />
             <option value="$PROJECT_DIR$/common/navigation" />
+            <option value="$PROJECT_DIR$/common/session" />
             <option value="$PROJECT_DIR$/common/test-core" />
             <option value="$PROJECT_DIR$/common/time-utils" />
             <option value="$PROJECT_DIR$/data" />
@@ -45,9 +45,10 @@
             <option value="$PROJECT_DIR$/usecases/events" />
             <option value="$PROJECT_DIR$/usecases/session" />
             <option value="$PROJECT_DIR$/usecases/user" />
+            <option value="$PROJECT_DIR$/../build-logic" />
+            <option value="$PROJECT_DIR$/../build-logic/convention" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
